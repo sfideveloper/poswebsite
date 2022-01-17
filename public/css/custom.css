@@ -1,0 +1,115 @@
+.btn-block {
+    padding: 1rem 3rem;
+    text-transform: uppercase;
+}
+
+.btn-block.qc-btn{
+    padding: 0.5rem;
+    text-transform: capitalize;
+}
+
+/* LOGIN */
+.form-inner .brand-logo {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #FF0035;
+}
+
+.nav-category {
+    color: #404040;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+    margin: 10px 0px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 10px 15px 10px 35px;
+    text-transform: uppercase;
+}
+
+.side-menu {
+    margin-right: 0.5rem;
+}
+
+.side-menu li {
+    margin-bottom: 8px;
+}
+
+.menu-icon {
+    font-size: 22px !important;
+    margin-right: 1rem !important;
+    color: #878891;
+}
+
+.navbar .menu-icon {
+    margin: 0;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #dee2e6 !important;
+    border-bottom-width: 1px !important;
+    border-bottom-style: solid !important;
+    border-bottom-color: rgb(222, 226, 230) !important;
+}
+
+.greeting .welcome {
+    font-weight: 400;
+    font-size: 24px;
+    text-transform: capitalize;
+}
+
+.greeting .welcome span {
+    font-weight: 400;
+    text-transform: capitalize;
+}
+
+.greeting .date {
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.greeting .time {
+    font-size: 30px;
+}
+
+.greeting {
+    border-radius: 24px;
+    background: #FF0035;
+}
+
+.dashboard-counts .card .card-body {
+    height: 100%;
+}
+
+table td .badge {
+    padding: .5rem;
+    width: 100%;
+    text-align: center;
+}
+
+.blink_me {
+    animation: blinker 1s linear infinite;
+}
+
+.blink_me a, .blink_me a i{
+    color : #FF0035!important;
+    fonr-weight : 800;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+.btn-md-block{
+    margin-top: 8px;
+    padding: 1rem 2rem 1rem 2rem !important;
+}
+
+@media (max-width: 911px) {
+    .btn-md-block {
+        display: block;
+        width: 100%;
+        padding: 1rem !important;
+    }
+}
