@@ -458,11 +458,8 @@ class ProductController extends Controller
                 }
             }
             $lims_product_data->update($data);
-            if ($lims_product_data) {
-                return redirect()->back();
-                // \Session::flash('edit_message', 'Product updated successfully');
-                // return redirect()->back()->with('edit_message', 'Product updated successfully');
-            }
+            \Session::flash('edit_message', 'Product updated successfully');
+            return redirect('products')->with('edit_message', 'Product updated successfully');
         }
     }
 

@@ -805,7 +805,7 @@
           myDropzone.files = newQueue;
         }
     });
-
+    
     myDropzone = new Dropzone('div#imageUpload', {
         addRemoveLinks: true,
         autoProcessQueue: false,

@@ -13,8 +13,7 @@ return [
 	'profile' => 'Profil',
 	'add' => 'Tambahkan',
 	'parent' => 'induk',
-	'action' => 'Aksi
-	',
+	'action' => 'Aksi',
 	'import' => 'impor',
 	'edit' => 'edit',
 	'delete' => 'hapus',
