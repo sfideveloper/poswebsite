@@ -1020,6 +1020,18 @@
 													</div>
 												</div>
 											</span>
+											<span>
+												<div aria-checked="false" aria-disabled="false">
+													<div class="checkbox">
+														@if(in_array("biller-report", $all_permission))
+														<input type="checkbox" value="1" id="biller-report" name="biller-report" checked>
+														@else
+														<input type="checkbox" value="1" id="biller-report" name="biller-report">
+														@endif
+														<label for="biller-report" class="padding05">{{trans('file.Biller Report')}} &nbsp;&nbsp;</label>
+													</div>
+												</div>
+											</span>
 										</td>
 									</tr>
 									<tr>

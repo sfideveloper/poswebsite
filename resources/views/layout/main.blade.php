@@ -492,6 +492,11 @@
                       ->where([
                         ['permissions.name', 'due-report'],
                         ['role_id', $role->id] ])->first();
+                $biller_report_active = DB::table('permissions')
+                      ->join('role_has_permissions', 'permissions.id', '=', 'role_has_permissions.permission_id')
+                      ->where([
+                        ['permissions.name', 'biller-report'],
+                        ['role_id', $role->id] ])->first();
               ?>
               @if($profit_loss_active || $best_seller_active || $warehouse_report_active || $warehouse_stock_report_active || $product_report_active || $daily_sale_active || $monthly_sale_active || $daily_purchase_active || $monthly_purchase_active || $purchase_report_active || $sale_report_active || $payment_report_active || $product_qty_alert_active || $user_report_active || $customer_report_active || $supplier_report_active || $due_report_active)
               <li><a href="#report" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-document-remove"></i><span>{{trans('file.Reports')}}</span></a>
@@ -606,6 +611,11 @@
                     <input type="hidden" name="end_date" value="{{date('Y-m-d')}}" />
                     <a id="due-report-link" href="">{{trans('file.Due Report')}}</a>
                     {!! Form::close() !!}
+                  </li>
+                  @endif
+                  @if($biller_report_active)
+                  <li id="biller-report-menu">
+                    <a id="biller-report-menu" href="">{{trans('file.Biller Report')}}</a>
                   </li>
                   @endif
                 </ul>
@@ -993,6 +1003,11 @@
       $("a#supplier-report-link").click(function(e){
         e.preventDefault();
         $('#supplier-modal').modal();
+      });
+
+      $("a#biller-report-menu").click(function(e){
+        e.preventDefault();
+        $('#biller-modal').modal();
       });
 
       $("a#due-report-link").click(function(e){

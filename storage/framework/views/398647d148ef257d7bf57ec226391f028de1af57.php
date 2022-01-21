@@ -1,95 +1,91 @@
-@extends('layout.main') @section('content')
+ <?php $__env->startSection('content'); ?>
 <section class="forms">
     <div class="container-fluid">
         <div class="card">
             <div class="card-header mt-2">
-                <h3 class="text-center">{{ucwords(trans('file.Warehouse Report'))}}</h3>
+                <h3 class="text-center"><?php echo e(ucwords(trans('file.Biller Report'))); ?></h3>
             </div>
-            {!! Form::open(['route' => 'report.warehouse', 'method' => 'post']) !!}
+            <?php echo Form::open(['route' => 'report.biller', 'method' => 'post']); ?>
+
             <div class="row mb-3">
                 <div class="col-md-5 offset-md-1 mt-3">
                     <div class="form-group row">
-                        <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Your Date'))}}</strong> &nbsp;</label>
+                        <label class="d-tc mt-2"><strong><?php echo e(ucwords(trans('file.Choose Your Date'))); ?></strong> &nbsp;</label>
                         <div class="d-tc">
                             <div class="input-group">
-                                <input type="text" class="daterangepicker-field form-control" value="{{$start_date}} To {{$end_date}}" required />
-                                <input type="hidden" name="start_date" value="{{$start_date}}" />
-                                <input type="hidden" name="end_date" value="{{$end_date}}" />
+                                <input type="text" class="daterangepicker-field form-control" value="<?php echo e($start_date); ?> To <?php echo e($end_date); ?>" required />
+                                <input type="hidden" name="start_date" value="<?php echo e($start_date); ?>" />
+                                <input type="hidden" name="end_date" value="<?php echo e($end_date); ?>" />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 mt-3">
                     <div class="form-group row">
-                        <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Warehouse'))}}</strong> &nbsp;</label>
+                        <label class="d-tc mt-2"><strong><?php echo e(ucwords(trans('file.Choose Biller'))); ?></strong> &nbsp;</label>
                         <div class="d-tc">
-                            <input type="hidden" name="warehouse_id_hidden" value="{{$warehouse_id}}" />
-                            <select id="warehouse_id" name="warehouse_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
-                                @foreach($lims_warehouse_list as $warehouse)
-                                <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
-                                @endforeach
+                            <input type="hidden" name="biller_id_hidden" value="<?php echo e($biller_id); ?>" />
+                            <select id="biller_id" name="biller_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
+                                <?php $__currentLoopData = $lims_biller_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $biller): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($biller->id); ?>"><?php echo e($biller->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-2 mt-3">
                     <div class="form-group text-right">
-                        <button class="btn btn-primary btn-md-block" type="submit">{{ucfirst(trans('file.submit'))}}</button>
+                        <button class="btn btn-primary btn-md-block" type="submit"><?php echo e(ucfirst(trans('file.submit'))); ?></button>
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="warehouse_id_hidden" value="{{$warehouse_id}}" />
-            {!! Form::close() !!}
+            <input type="hidden" name="biller_id_hidden" value="<?php echo e($biller_id); ?>" />
+            <?php echo Form::close(); ?>
+
 
     
         </div>
     </div>
     <ul class="nav nav-tabs ml-4 mt-3" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" href="#warehouse-sale" role="tab" data-toggle="tab">{{trans('file.Sale')}}</a>
+        <a class="nav-link active" href="#biller-sale" role="tab" data-toggle="tab"><?php echo e(trans('file.Sale')); ?></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#warehouse-purchase" role="tab" data-toggle="tab">{{trans('file.Purchase')}}</a>
+        <a class="nav-link" href="#biller-quotation" role="tab" data-toggle="tab"><?php echo e(trans('file.Quotation')); ?></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#warehouse-quotation" role="tab" data-toggle="tab">{{trans('file.Quotation')}}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#warehouse-return" role="tab" data-toggle="tab">{{trans('file.return')}}</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#warehouse-expense" role="tab" data-toggle="tab">{{trans('file.Expense')}}</a>
+        <a class="nav-link" href="#biller-return" role="tab" data-toggle="tab"><?php echo e(trans('file.return')); ?></a>
       </li>
     </ul>
 
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade show active" id="warehouse-sale">
+        <div role="tabpanel" class="tab-pane fade show active" id="biller-sale">
             <div class="table-responsive mb-4">
                 <table id="sale-table" class="table table-hover">
                     <thead>
                         <tr>
                             <th class="not-exported-sale"></th>
-                            <th>{{ucfirst(trans('file.Date'))}}</th>
-                            <th>{{ucfirst(trans('file.reference'))}} No</th>
-                            <th>{{ucfirst(trans('file.Biller'))}}</th>
-                            <th>{{ucfirst(trans('file.customer'))}}</th>
-                            <th>{{ucfirst(trans('file.product'))}} ({{ucfirst(trans('file.qty'))}})</th>
-                            <th>{{ucfirst(trans('file.grand total'))}}</th>
-                            <th>{{ucfirst(trans('file.Paid'))}}</th>
-                            <th>{{ucfirst(trans('file.Due'))}}</th>
-                            <th>{{ucfirst(trans('file.Status'))}}</th>
+                            <th><?php echo e(ucfirst(trans('file.Date'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.reference'))); ?> No</th>
+                            <th><?php echo e(ucfirst(trans('file.Warehouse'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.customer'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.product'))); ?> (<?php echo e(ucfirst(trans('file.qty'))); ?>)</th>
+                            <th><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Paid'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Due'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Status'))); ?></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($lims_sale_data as $key=>$sale)
+                        <?php $__currentLoopData = $lims_sale_data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <td>{{$key}}</td>
-                            <td>{{date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()}}</td>
-                            <td>{{$sale->reference_no}}</td>
-                            <td>{{$sale->biller->name}}</td>
-                            <td>{{$sale->customer->name}}</td>
+                            <td><?php echo e($key); ?></td>
+                            <td><?php echo e(date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()); ?></td>
+                            <td><?php echo e($sale->reference_no); ?></td>
+                            <td><?php echo e($sale->warehouse->name); ?></td>
+                            <td><?php echo e($sale->customer->name); ?></td>
                             <td>
-                                @foreach($lims_product_sale_data[$key] as $product_sale_data)
+                                <?php $__currentLoopData = $lims_product_sale_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php 
                                     $product = App\Product::select('name')->find($product_sale_data->product_id);
                                     if($product_sale_data->variant_id) {
@@ -98,24 +94,26 @@
                                     }
                                     $unit = App\Unit::find($product_sale_data->sale_unit_id);
                                 ?>
-                                @if($unit)
-                                    {{$product->name.' ('.$product_sale_data->qty.' '.$unit->unit_code.')'}}
-                                @else
-                                    {{$product->name.' ('.$product_sale_data->qty.')'}}
-                                @endif
+                                <?php if($unit): ?>
+                                    <?php echo e($product->name.' ('.$product_sale_data->qty.' '.$unit->unit_code.')'); ?>
+
+                                <?php else: ?>
+                                    <?php echo e($product->name.' ('.$product_sale_data->qty.')'); ?>
+
+                                <?php endif; ?>
                                 <br>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </td>
-                            <td>{{$sale->grand_total}}</td>
-                            <td>{{$sale->paid_amount}}</td>
-                            <td>{{number_format((float)($sale->grand_total - $sale->paid_amount), 2, '.', '')}}</td>
-                            @if($sale->sale_status == 1)
-                            <td><div class="badge badge-success">{{trans('file.Completed')}}</div></td>
-                            @else
-                            <td><div class="badge badge-danger">{{trans('file.Pending')}}</div></td>
-                            @endif
+                            <td><?php echo e($sale->grand_total); ?></td>
+                            <td><?php echo e($sale->paid_amount); ?></td>
+                            <td><?php echo e(number_format((float)($sale->grand_total - $sale->paid_amount), 2, '.', '')); ?></td>
+                            <?php if($sale->sale_status == 1): ?>
+                            <td><div class="badge badge-success"><?php echo e(trans('file.Completed')); ?></div></td>
+                            <?php else: ?>
+                            <td><div class="badge badge-danger"><?php echo e(trans('file.Pending')); ?></div></td>
+                            <?php endif; ?>
                         </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                     <tfoot class="tfoot active">
                         <tr>
@@ -134,118 +132,40 @@
             </div>
         </div>
 
-        <div role="tabpanel" class="tab-pane fade" id="warehouse-purchase">
-            <div class="table-responsive mb-4">
-                <table id="purchase-table" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th class="not-exported-purchase"></th>
-                            <th>{{ucfirst(trans('file.Date'))}}</th>
-                            <th>{{ucfirst(trans('file.reference No'))}}</th>
-                            <th>{{ucfirst(trans('file.Supplier'))}}</th>
-                            <th>{{ucfirst(trans('file.product'))}} ({{ucfirst(trans('file.qty'))}})</th>
-                            <th>{{ucfirst(trans('file.grand total'))}}</th>
-                            <th>{{ucfirst(trans('file.Paid'))}}</th>
-                            <th>{{ucfirst(trans('file.Due'))}}</th>
-                            <th>{{ucfirst(trans('file.Status'))}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($lims_purchase_data as $key=>$purchase)
-                        <tr>
-                            <td>{{$key}}</td>
-                            <?php 
-                                $supplier = DB::table('suppliers')->find($purchase->supplier_id);
-                            ?>
-                            <td>{{date($general_setting->date_format, strtotime($purchase->created_at->toDateString())) . ' '. $purchase->created_at->toTimeString()}}</td>
-                            <td>{{$purchase->reference_no}}</td>
-                            @if($supplier)
-                            <td>{{$supplier->name}}</td>
-                            @else
-                            <td>N/A</td>
-                            @endif
-                            <td>
-                                @foreach($lims_product_purchase_data[$key] as $product_purchase_data)
-                                <?php 
-                                    $product = App\Product::select('name')->find($product_purchase_data->product_id);
-                                    if($product_purchase_data->variant_id) {
-                                        $variant = App\Variant::find($product_purchase_data->variant_id);
-                                        $product->name .= ' ['.$variant->name.' ]';
-                                    }
-                                    $unit = App\Unit::find($product_purchase_data->purchase_unit_id);
-                                ?>
-                                @if($unit)
-                                    {{$product->name.' ('.$product_purchase_data->qty.' '.$unit->unit_code.')'}}
-                                @else
-                                    {{$product->name.' ('.$product_purchase_data->qty.')'}}
-                                @endif
-                                <br>
-                                @endforeach
-                            </td>
-                            <td>{{$purchase->grand_total}}</td>
-                            <td>{{$purchase->paid_amount}}</td>
-                            <td>{{number_format((float)($purchase->grand_total - $purchase->paid_amount), 2, '.', '')}}</td>
-                            @if($purchase->status == 1)
-                            <td><div class="badge badge-success">{{trans('file.Completed')}}</div></td>
-                            @elseif($purchase->status == 2)
-                            <td><div class="badge badge-success">{{trans('file.Partial')}}</div></td>
-                            @elseif($purchase->status == 3)
-                            <td><div class="badge badge-success">{{trans('file.Pending')}}</div></td>
-                            @else
-                            <td><div class="badge badge-danger">{{trans('file.Ordered')}}</div></td>
-                            @endif
-                        </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot class="tfoot active">
-                        <tr>
-                            <th></th>
-                            <th>Total:</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>0.00</th>
-                            <th>0.00</th>
-                            <th>0.00</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-
-        <div role="tabpanel" class="tab-pane fade" id="warehouse-quotation">
+        <div role="tabpanel" class="tab-pane fade" id="biller-quotation">
             <div class="table-responsive mb-4">
                 <table id="quotation-table" class="table table-hover">
                     <thead>
                         <tr>
                             <th class="not-exported-quotation"></th>
-                            <th>{{ucfirst(trans('file.Date'))}}</th>
-                            <th>{{ucfirst(trans('file.reference'))}}</th>
-                            <th>{{ucfirst(trans('file.customer'))}}</th>
-                            <th>{{ucfirst(trans('file.Supplier'))}}</th>
-                            <th>{{ucfirst(trans('file.product'))}} ({{ucfirst(trans('file.qty'))}})</th>
-                            <th>{{ucfirst(trans('file.grand total'))}}</th>
-                            <th>{{ucfirst(trans('file.Status'))}}</th>
+                            <th><?php echo e(ucfirst(trans('file.Date'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.reference'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Warehouse'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.customer'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Supplier'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.product'))); ?> (<?php echo e(ucfirst(trans('file.qty'))); ?>)</th>
+                            <th><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Status'))); ?></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($lims_quotation_data as $key=>$quotation)
+                        <?php $__currentLoopData = $lims_quotation_data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$quotation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <td>{{$key}}</td>
+                            <td><?php echo e($key); ?></td>
                             <?php 
                                 $supplier = DB::table('suppliers')->find($quotation->supplier_id);
                             ?>
-                            <td>{{ date($general_setting->date_format, strtotime($quotation->created_at->toDateString())) }}<br>{{$quotation->created_at->toTimeString()}}</td>
-                            <td>{{$quotation->reference_no}}</td>
-                            <td>{{$quotation->customer->name}}</td>
-                            @if($supplier)
-                                <td>{{$supplier->name}}</td>
-                            @else
+                            <td><?php echo e(date($general_setting->date_format, strtotime($quotation->created_at->toDateString()))); ?><br><?php echo e($quotation->created_at->toTimeString()); ?></td>
+                            <td><?php echo e($quotation->reference_no); ?></td>
+                            <td><?php echo e($quotation->warehouse->name); ?></td>
+                            <td><?php echo e($quotation->customer->name); ?></td>
+                            <?php if($supplier): ?>
+                                <td><?php echo e($supplier->name); ?></td>
+                            <?php else: ?>
                                 <td>N/A</td>
-                            @endif
+                            <?php endif; ?>
                             <td>
-                                @foreach($lims_product_quotation_data[$key] as $product_quotation_data)
+                                <?php $__currentLoopData = $lims_product_quotation_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_quotation_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php 
                                     $product = App\Product::select('name')->find($product_quotation_data->product_id);
                                     if($product_quotation_data->variant_id) {
@@ -254,22 +174,24 @@
                                     }
                                     $unit = App\Unit::find($product_quotation_data->sale_unit_id);
                                 ?>
-                                @if($unit)
-                                    {{$product->name.' ('.$product_quotation_data->qty.' '.$unit->unit_code.')'}}
-                                @else
-                                    {{$product->name.' ('.$product_quotation_data->qty.')'}}
-                                @endif
+                                <?php if($unit): ?>
+                                    <?php echo e($product->name.' ('.$product_quotation_data->qty.' '.$unit->unit_code.')'); ?>
+
+                                <?php else: ?>
+                                    <?php echo e($product->name.' ('.$product_quotation_data->qty.')'); ?>
+
+                                <?php endif; ?>
                                 <br>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </td>
-                            <td>{{$quotation->grand_total}}</td>
-                            @if($quotation->quotation_status == 1)
-                            <td><div class="badge badge-danger">{{trans('file.Pending')}}</div></td>
-                            @elseif($quotation->quotation_status == 2)
-                            <td><div class="badge badge-success">{{trans('file.Sent')}}</div></td>
-                            @endif
+                            <td><?php echo e($quotation->grand_total); ?></td>
+                            <?php if($quotation->quotation_status == 1): ?>
+                            <td><div class="badge badge-danger"><?php echo e(trans('file.Pending')); ?></div></td>
+                            <?php elseif($quotation->quotation_status == 2): ?>
+                            <td><div class="badge badge-success"><?php echo e(trans('file.Sent')); ?></div></td>
+                            <?php endif; ?>
                         </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                     <tfoot class="tfoot active">
                         <tr>
@@ -287,30 +209,32 @@
             </div>
         </div>
 
-        <div role="tabpanel" class="tab-pane fade" id="warehouse-return">
+        <div role="tabpanel" class="tab-pane fade" id="biller-return">
             <div class="table-responsive mb-4">
                 <table id="return-table" class="table table-hover">
                     <thead>
                         <tr>
                             <th class="not-exported-return"></th>
-                            <th>{{ucfirst(trans('file.Date'))}}</th>
-                            <th>{{ucfirst(trans('file.reference'))}}</th>
-                            <th>{{ucfirst(trans('file.customer'))}}</th>
-                            <th>{{ucfirst(trans('file.Biller'))}}</th>
-                            <th>{{ucfirst(trans('file.product'))}} ({{ucfirst(trans('file.qty'))}})</th>
-                            <th>{{ucfirst(trans('file.grand total'))}}</th>
+                            <th><?php echo e(ucfirst(trans('file.Date'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.reference'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Warehouse'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.customer'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Biller'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.product'))); ?> (<?php echo e(ucfirst(trans('file.qty'))); ?>)</th>
+                            <th><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($lims_return_data as $key=>$return)
+                        <?php $__currentLoopData = $lims_return_data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$return): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <td>{{$key}}</td>
-                            <td>{{ date($general_setting->date_format, strtotime($return->created_at->toDateString())) }}<br>{{ $return->created_at->toTimeString()}}</td>
-                            <td>{{$return->reference_no}}</td>
-                            <td>{{$return->customer->name}}</td>
-                            <td>{{$return->biller->name}}</td>
+                            <td><?php echo e($key); ?></td>
+                            <td><?php echo e(date($general_setting->date_format, strtotime($return->created_at->toDateString()))); ?><br><?php echo e($return->created_at->toTimeString()); ?></td>
+                            <td><?php echo e($return->reference_no); ?></td>
+                            <td><?php echo e($return->warehouse->name); ?></td>
+                            <td><?php echo e($return->customer->name); ?></td>
+                            <td><?php echo e($return->biller->name); ?></td>
                             <td>
-                                @foreach($lims_product_return_data[$key] as $product_return_data)
+                                <?php $__currentLoopData = $lims_product_return_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_return_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php 
                                     $product = App\Product::find($product_return_data->product_id);
                                     if($product_return_data->variant_id) {
@@ -319,57 +243,19 @@
                                     }
                                     $unit = App\Unit::find($product_return_data->sale_unit_id);
                                 ?>
-                                @if($unit)
-                                    {{$product->name.' ('.$product_return_data->qty.' '.$unit->unit_code.')'}}
-                                @else
-                                    {{$product->name.' ('.$product_return_data->qty.')'}}
-                                @endif
-                                <br>
-                                @endforeach
-                            </td>
-                            <td>{{number_format((float)($return->grand_total), 2, '.', '')}}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot class="tfoot active">
-                        <tr>
-                            <th></th>
-                            <th>Total:</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>0.00</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+                                <?php if($unit): ?>
+                                    <?php echo e($product->name.' ('.$product_return_data->qty.' '.$unit->unit_code.')'); ?>
 
-        <div role="tabpanel" class="tab-pane fade" id="warehouse-expense">
-            <div class="table-responsive mb-4">
-                <table id="expense-table" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th class="not-exported-expense"></th>
-                            <th>{{ucfirst(trans('file.Date'))}}</th>
-                            <th>{{ucfirst(trans('file.reference'))}}</th>
-                            <th>{{ucfirst(trans('file.category'))}}</th>
-                            <th>{{ucfirst(trans('file.Amount'))}}</th>
-                            <th>{{ucfirst(trans('file.Note'))}}</th>
+                                <?php else: ?>
+                                    <?php echo e($product->name.' ('.$product_return_data->qty.')'); ?>
+
+                                <?php endif; ?>
+                                <br>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </td>
+                            <td><?php echo e(number_format((float)($return->grand_total), 2, '.', '')); ?></td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($lims_expense_data as $key=>$expense)
-                        <tr>
-                            <td>{{$key}}</td>
-                            <td>{{ date($general_setting->date_format, strtotime($expense->created_at->toDateString())) }}<br>{{ $expense->created_at->toTimeString() }}</td>
-                            <td>{{$expense->reference_no}}</td>
-                            <td>{{$expense->expenseCategory->name}}</td>
-                            <td>{{$expense->amount}}</td>
-                            <td>{{$expense->note}}</td>     
-                        </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                     <tfoot class="tfoot active">
                         <tr>
@@ -377,8 +263,9 @@
                             <th>Total:</th>
                             <th></th>
                             <th></th>
-                            <th>0.00</th>
                             <th></th>
+                            <th></th>
+                            <th>0.00</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -390,9 +277,9 @@
 <script type="text/javascript">
     $("ul#report").siblings('a').attr('aria-expanded','true');
     $("ul#report").addClass("show");
-    $("ul#report #warehouse-report-menu").addClass("active");
+    $("ul#report #biller-report-menu").addClass("active");
 
-    $('#warehouse_id').val($('input[name="warehouse_id_hidden"]').val());
+    $('#biller_id').val($('input[name="biller_id_hidden"]').val());
     $('.selectpicker').selectpicker('refresh');
 
     $('#sale-table').DataTable( {
@@ -848,4 +735,5 @@
     }
     });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laravel project\posweb\resources\views/report/biller_report.blade.php ENDPATH**/ ?>

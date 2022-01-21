@@ -344,4 +344,41 @@
                 </div>
             </div>
         </div>
+      </div>
+
+      <!-- biller modal -->
+      <div id="biller-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="exampleModalLabel" class="modal-title"><?php echo e(ucwords(trans('file.Biller Report'))); ?></h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
+                </div>
+                <div class="modal-body">
+                  <p class="italic"><small><?php echo e(trans('file.The field labels marked with * are required input fields')); ?>.</small></p>
+                    <?php echo Form::open(['route' => 'report.biller', 'method' => 'post']); ?>
+
+                    <?php
+                      $lims_biller_list = DB::table('billers')->where('is_active', true)->get();
+                    ?>
+                      <div class="form-group">
+                          <label><?php echo e(ucwords(trans('file.Biller'))); ?> *</label>
+                          <select name="biller_id" class="selectpicker form-control" required data-live-search="true" id="biller-id" data-live-search-style="begins" title="Select Biller...">
+                              <?php $__currentLoopData = $lims_biller_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $biller): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                              <option value="<?php echo e($biller->id); ?>"><?php echo e($biller->name . ' (' . $biller->name. ')'); ?></option>
+                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                          </select>
+                      </div>
+
+                      <input type="hidden" name="start_date" value="1988-04-18" />
+                      <input type="hidden" name="end_date" value="<?php echo e(date('Y-m-d')); ?>" />
+
+                      <div class="form-group text-right">
+                          <button type="submit" class="btn btn-primary btn-md-block"><?php echo e(ucfirst(trans('file.submit'))); ?></button>
+                      </div>
+                    <?php echo e(Form::close()); ?>
+
+                </div>
+            </div>
+        </div>
       </div><?php /**PATH D:\Laravel project\posweb\resources\views/partials/modal.blade.php ENDPATH**/ ?>
