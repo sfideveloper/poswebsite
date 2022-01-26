@@ -13,11 +13,11 @@
 
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth'], function () {
 	Route::get('/dashboard', 'HomeController@dashboard');
 });
 
-Route::group(['middleware' => ['auth', 'active']], function() {
+Route::group(['middleware' => ['auth', 'active']], function () {
 
 	Route::get('/', 'HomeController@index');
 	Route::get('/dashboard-filter/{start_date}/{end_date}', 'HomeController@dashboardFilter');
@@ -67,8 +67,8 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::get('products/product_warehouse/{id}', 'ProductController@productWarehouseData');
 	Route::post('importproduct', 'ProductController@importProduct')->name('product.import');
 	Route::post('exportproduct', 'ProductController@exportProduct')->name('product.export');
-	Route::get('products/print_barcode','ProductController@printBarcode')->name('product.printBarcode');
-	
+	Route::get('products/print_barcode', 'ProductController@printBarcode')->name('product.printBarcode');
+
 	Route::get('products/lims_product_search', 'ProductController@limsProductSearch')->name('product.search');
 	Route::post('products/deletebyselection', 'ProductController@deleteBySelection');
 	Route::post('products/update', 'ProductController@updateProduct');
@@ -97,7 +97,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::post('sales/sale-data', 'SaleController@saleData');
 	Route::post('sales/sendmail', 'SaleController@sendMail')->name('sale.sendmail');
 	Route::get('sales/sale_by_csv', 'SaleController@saleByCsv');
-	Route::get('sales/product_sale/{id}','SaleController@productSaleData');
+	Route::get('sales/product_sale/{id}', 'SaleController@productSaleData');
 	Route::post('importsale', 'SaleController@importSale')->name('sale.import');
 	Route::get('pos', 'SaleController@posSale')->name('sale.pos');
 	Route::get('sales/lims_sale_search', 'SaleController@limsSaleSearch')->name('sale.search');
@@ -122,7 +122,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::resource('sales', 'SaleController');
 
 	Route::get('delivery', 'DeliveryController@index')->name('delivery.index');
-	Route::get('delivery/product_delivery/{id}','DeliveryController@productDeliveryData');
+	Route::get('delivery/product_delivery/{id}', 'DeliveryController@productDeliveryData');
 	Route::get('delivery/create/{id}', 'DeliveryController@create');
 	Route::post('delivery/store', 'DeliveryController@store')->name('delivery.store');
 	Route::post('delivery/sendmail', 'DeliveryController@sendMail')->name('delivery.sendMail');
@@ -131,7 +131,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::post('delivery/deletebyselection', 'DeliveryController@deleteBySelection');
 	Route::post('delivery/delete/{id}', 'DeliveryController@delete')->name('delivery.delete');
 
-	Route::get('quotations/product_quotation/{id}','QuotationController@productQuotationData');
+	Route::get('quotations/product_quotation/{id}', 'QuotationController@productQuotationData');
 	Route::get('quotations/lims_product_search', 'QuotationController@limsProductSearch')->name('product_quotation.search');
 	Route::get('quotations/getcustomergroup/{id}', 'QuotationController@getCustomerGroup')->name('quotation.getcustomergroup');
 	Route::get('quotations/getproduct/{id}', 'QuotationController@getProduct')->name('quotation.getproduct');
@@ -142,7 +142,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::resource('quotations', 'QuotationController');
 
 	Route::post('purchases/purchase-data', 'PurchaseController@purchaseData');
-	Route::get('purchases/product_purchase/{id}','PurchaseController@productPurchaseData');
+	Route::get('purchases/product_purchase/{id}', 'PurchaseController@productPurchaseData');
 	Route::get('purchases/lims_product_search', 'PurchaseController@limsProductSearch')->name('product_purchase.search');
 	Route::post('purchases/add_payment', 'PurchaseController@addPayment')->name('purchase.add-payment');
 	Route::get('purchases/getpayment/{id}', 'PurchaseController@getPayment')->name('purchase.get-payment');
@@ -153,7 +153,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::post('purchases/deletebyselection', 'PurchaseController@deleteBySelection');
 	Route::resource('purchases', 'PurchaseController');
 
-	Route::get('transfers/product_transfer/{id}','TransferController@productTransferData');
+	Route::get('transfers/product_transfer/{id}', 'TransferController@productTransferData');
 	Route::get('transfers/transfer_by_csv', 'TransferController@transferByCsv');
 	Route::post('importtransfer', 'TransferController@importTransfer')->name('transfer.import');
 	Route::get('transfers/getproduct/{id}', 'TransferController@getProduct')->name('transfer.getproduct');
@@ -170,7 +170,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::post('return-sale/sendmail', 'ReturnController@sendMail')->name('return-sale.sendmail');
 	Route::get('return-sale/getproduct/{id}', 'ReturnController@getProduct')->name('return-sale.getproduct');
 	Route::get('return-sale/lims_product_search', 'ReturnController@limsProductSearch')->name('product_return-sale.search');
-	Route::get('return-sale/product_return/{id}','ReturnController@productReturnData');
+	Route::get('return-sale/product_return/{id}', 'ReturnController@productReturnData');
 	Route::post('return-sale/deletebyselection', 'ReturnController@deleteBySelection');
 	Route::resource('return-sale', 'ReturnController');
 
@@ -178,7 +178,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::post('return-purchase/sendmail', 'ReturnPurchaseController@sendMail')->name('return-purchase.sendmail');
 	Route::get('return-purchase/getproduct/{id}', 'ReturnPurchaseController@getProduct')->name('return-purchase.getproduct');
 	Route::get('return-purchase/lims_product_search', 'ReturnPurchaseController@limsProductSearch')->name('product_return-purchase.search');
-	Route::get('return-purchase/product_return/{id}','ReturnPurchaseController@productReturnData');
+	Route::get('return-purchase/product_return/{id}', 'ReturnPurchaseController@productReturnData');
 	Route::post('return-purchase/deletebyselection', 'ReturnPurchaseController@deleteBySelection');
 	Route::resource('return-purchase', 'ReturnPurchaseController');
 
@@ -212,7 +212,7 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::put('user/changepass/{id}', 'UserController@changePassword')->name('user.password');
 	Route::get('user/genpass', 'UserController@generatePassword');
 	Route::post('user/deletebyselection', 'UserController@deleteBySelection');
-	Route::resource('user','UserController');
+	Route::resource('user', 'UserController');
 
 	Route::get('setting/general_setting', 'SettingController@generalSetting')->name('setting.general');
 	Route::post('setting/general_setting_store', 'SettingController@generalSettingStore')->name('setting.generalStore');
@@ -290,4 +290,3 @@ Route::group(['middleware' => ['auth', 'active']], function() {
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::get('my-transactions/{year}/{month}', 'HomeController@myTransaction');
 });
-

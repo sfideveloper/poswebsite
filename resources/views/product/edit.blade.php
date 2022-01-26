@@ -11,7 +11,7 @@
                     </div>
                     <div class="card-body">
                         <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
-                        <form method="POST" id="product-form" action="{{route('products.updateProduct', $lims_product_data->id)}}">
+                        <form method="POST" id="product-form" action="{{route('products.updateProduct', $lims_product_data->id)}}" enctype="multipart/form-data">
                             @csrf
                             @method("PATCH")
                             <input type="hidden" name="id" value="{{$lims_product_data->id}}" />
@@ -231,7 +231,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>{{ucwords(trans('file.Product Image'))}}</strong> </label> <i class="dripicons-question" data-toggle="tooltip" title="{{trans('file.You can upload multiple image. Only .jpeg, .jpg, .png, .gif file can be uploaded. First image will be base image.')}}"></i>
-                                        <div id="imageUpload" class="dropzone"></div>
+                                        {{-- <div id="imageUpload" class="dropzone"></div> --}}
+                                        <input type="file" name="update_img" id="update_img">
                                         <span class="validation-msg" id="image-error"></span>
                                     </div>
                                 </div>
@@ -351,6 +352,7 @@
                                     <input name="promotion" type="checkbox" id="promotion" value="1">&nbsp;
                                     <label><h5>{{trans('file.Add Promotional Price')}}</h5></label>
                                 </div>
+                                
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-4" id="promotion_price"><label>{{ucwords(trans('file.Promotional Price'))}}</label>
@@ -806,7 +808,7 @@
           myDropzone.files = newQueue;
         }
     });
-    
+
     myDropzone = new Dropzone('div#imageUpload', {
         addRemoveLinks: true,
         autoProcessQueue: false,
@@ -841,10 +843,11 @@
                             url:'../update',
                             data: $("#product-form").serialize(),
                             success:function(response){
-                                console.log(response);
+                                //console.log(response);
                                 location.href = '../';
                             },
                             error:function(response) {
+                                //console.log(response);
                               if(response.responseJSON.errors.name) {
                                   $("#name-error").text(response.responseJSON.errors.name);
                               }

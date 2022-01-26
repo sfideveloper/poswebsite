@@ -297,7 +297,7 @@
                                 </div> 
                             </div>
                             <div class="form-group text-right">
-                                <input type="button" value="{{ucfirst(trans('file.submit'))}}" id="submit-btn" class="btn btn-primary btn-md-block mt-3">
+                                <input type="submit" value="{{ucfirst(trans('file.submit'))}}" class="btn btn-primary btn-md-block mt-3" id="submit-btn">
                             </div>
                         </form>
                     </div>
