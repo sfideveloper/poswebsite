@@ -296,7 +296,7 @@
                                 </div> 
                             </div>
                             <div class="form-group text-right">
-                                <input type="submit" value="<?php echo e(ucfirst(trans('file.submit'))); ?>" class="btn btn-primary btn-md-block mt-3">
+                                <input type="submit" value="<?php echo e(ucfirst(trans('file.submit'))); ?>" class="btn btn-primary btn-md-block mt-3" id="submit-btn">
                             </div>
                         </form>
                     </div>

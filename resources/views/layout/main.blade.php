@@ -163,13 +163,15 @@
                         ['role_id', $role->id]
                     ])->first();
                   ?>
-                  @if($add_permission_active)
+                  <!--Menghilangkan menu add product-->
+                  <!--@if($add_permission_active)
                   <li id="product-create-menu"><a href="{{route('products.create')}}">{{__('file.add_product')}}</a></li>
+                  @endif-->
                   @endif
-                  @endif
-                  @if($print_barcode_active)
+                  <!--Menghilangkan menu barcode-->
+                  <!--@if($print_barcode_active)
                   <li id="printBarcode-menu"><a href="{{route('product.printBarcode')}}">{{__('file.print_barcode')}}</a></li>
-                  @endif
+                  @endif-->
                   @if($adjustment_active)
                     <li id="adjustment-list-menu"><a href="{{route('qty_adjustment.index')}}">{{trans('file.Adjustment List')}}</a></li>
                     <li id="adjustment-create-menu"><a href="{{route('qty_adjustment.create')}}">{{trans('file.Add Adjustment')}}</a></li>
@@ -242,10 +244,11 @@
                 <ul id="sale" class="collapse list-unstyled ">
                   @if($sale_index_permission_active)
                   <li id="sale-list-menu"><a href="{{route('sales.index')}}">{{trans('file.Sale List')}}</a></li>
-                    @if($sale_add_permission_active)
+                    <!--Menghilangkan menu add sale-->
+                    <!--@if($sale_add_permission_active)
                     <li id="sale-create-menu"><a href="{{route('sales.create')}}">{{trans('file.Add Sale')}}</a></li>
                     <li id="sale-import-menu"><a href="{{url('sales/sale_by_csv')}}">{{trans('file.Import Sale By CSV')}}</a></li>
-                    @endif
+                    @endif-->
                   @endif
 
                   @if($gift_card_permission_active)
@@ -254,9 +257,10 @@
                   @if($coupon_permission_active)
                   <li id="coupon-menu"><a href="{{route('coupons.index')}}">{{trans('file.Coupon List')}}</a> </li>
                   @endif
-                  @if($delivery_permission_active)
+                  <!--Menghilangkan menu delivery-->
+                  <!--@if($delivery_permission_active)
                   <li id="delivery-menu"><a href="{{route('delivery.index')}}">{{trans('file.Delivery List')}}</a></li>
-                  @endif
+                  @endif-->
                 </ul>
               </li>
               @endif
@@ -314,7 +318,8 @@
                         ['role_id', $role->id]
                     ])->first();
               ?>
-              @if($index_permission_active)
+              <!--Menghilangkan menu transfer-->
+              <!--@if($index_permission_active)
               <li><a href="#transfer" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-export"></i><span>{{trans('file.Transfer')}}</span></a>
                 <ul id="transfer" class="collapse list-unstyled ">
                   <li id="transfer-list-menu"><a href="{{route('transfers.index')}}">{{trans('file.Transfer List')}}</a></li>
@@ -331,7 +336,7 @@
                   @endif
                 </ul>
               </li>
-              @endif
+              @endif-->
               
               <?php 
                 $sale_return_index_permission = DB::table('permissions')->where('name', 'returns-index')->first();

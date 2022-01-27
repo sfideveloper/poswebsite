@@ -163,13 +163,15 @@
                         ['role_id', $role->id]
                     ])->first();
                   ?>
-                  <?php if($add_permission_active): ?>
+                  <!--Menghilangkan menu add product-->
+                  <!--<?php if($add_permission_active): ?>
                   <li id="product-create-menu"><a href="<?php echo e(route('products.create')); ?>"><?php echo e(__('file.add_product')); ?></a></li>
+                  <?php endif; ?>-->
                   <?php endif; ?>
-                  <?php endif; ?>
-                  <?php if($print_barcode_active): ?>
+                  <!--Menghilangkan menu barcode-->
+                  <!--<?php if($print_barcode_active): ?>
                   <li id="printBarcode-menu"><a href="<?php echo e(route('product.printBarcode')); ?>"><?php echo e(__('file.print_barcode')); ?></a></li>
-                  <?php endif; ?>
+                  <?php endif; ?>-->
                   <?php if($adjustment_active): ?>
                     <li id="adjustment-list-menu"><a href="<?php echo e(route('qty_adjustment.index')); ?>"><?php echo e(trans('file.Adjustment List')); ?></a></li>
                     <li id="adjustment-create-menu"><a href="<?php echo e(route('qty_adjustment.create')); ?>"><?php echo e(trans('file.Add Adjustment')); ?></a></li>
@@ -242,10 +244,11 @@
                 <ul id="sale" class="collapse list-unstyled ">
                   <?php if($sale_index_permission_active): ?>
                   <li id="sale-list-menu"><a href="<?php echo e(route('sales.index')); ?>"><?php echo e(trans('file.Sale List')); ?></a></li>
-                    <?php if($sale_add_permission_active): ?>
+                    <!--Menghilangkan menu add sale-->
+                    <!--<?php if($sale_add_permission_active): ?>
                     <li id="sale-create-menu"><a href="<?php echo e(route('sales.create')); ?>"><?php echo e(trans('file.Add Sale')); ?></a></li>
                     <li id="sale-import-menu"><a href="<?php echo e(url('sales/sale_by_csv')); ?>"><?php echo e(trans('file.Import Sale By CSV')); ?></a></li>
-                    <?php endif; ?>
+                    <?php endif; ?>-->
                   <?php endif; ?>
 
                   <?php if($gift_card_permission_active): ?>
@@ -254,9 +257,10 @@
                   <?php if($coupon_permission_active): ?>
                   <li id="coupon-menu"><a href="<?php echo e(route('coupons.index')); ?>"><?php echo e(trans('file.Coupon List')); ?></a> </li>
                   <?php endif; ?>
-                  <?php if($delivery_permission_active): ?>
+                  <!--Menghilangkan menu delivery-->
+                  <!--<?php if($delivery_permission_active): ?>
                   <li id="delivery-menu"><a href="<?php echo e(route('delivery.index')); ?>"><?php echo e(trans('file.Delivery List')); ?></a></li>
-                  <?php endif; ?>
+                  <?php endif; ?>-->
                 </ul>
               </li>
               <?php endif; ?>
@@ -314,7 +318,8 @@
                         ['role_id', $role->id]
                     ])->first();
               ?>
-              <?php if($index_permission_active): ?>
+              <!--Menghilangkan menu transfer-->
+              <!--<?php if($index_permission_active): ?>
               <li><a href="#transfer" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-export"></i><span><?php echo e(trans('file.Transfer')); ?></span></a>
                 <ul id="transfer" class="collapse list-unstyled ">
                   <li id="transfer-list-menu"><a href="<?php echo e(route('transfers.index')); ?>"><?php echo e(trans('file.Transfer List')); ?></a></li>
@@ -331,7 +336,7 @@
                   <?php endif; ?>
                 </ul>
               </li>
-              <?php endif; ?>
+              <?php endif; ?>-->
               
               <?php 
                 $sale_return_index_permission = DB::table('permissions')->where('name', 'returns-index')->first();
