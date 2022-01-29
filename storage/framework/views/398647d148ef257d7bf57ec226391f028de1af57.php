@@ -8,7 +8,7 @@
             <?php echo Form::open(['route' => 'report.biller', 'method' => 'post']); ?>
 
             <div class="row mb-3">
-                <div class="col-md-5 offset-md-1 mt-3">
+                <div class="col-md-4 offset-md-1 mt-3">
                     <div class="form-group row">
                         <label class="d-tc mt-2"><strong><?php echo e(ucwords(trans('file.Choose Your Date'))); ?></strong> &nbsp;</label>
                         <div class="d-tc">
@@ -20,7 +20,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mt-3">
+                <div class="col-md-2 mt-3">
                     <div class="form-group row">
                         <label class="d-tc mt-2"><strong><?php echo e(ucwords(trans('file.Choose Biller'))); ?></strong> &nbsp;</label>
                         <div class="d-tc">
@@ -34,12 +34,27 @@
                     </div>
                 </div>
                 <div class="col-md-2 mt-3">
+                    <div class="form-group row">
+                        <label class="d-tc mt-2"><strong><?php echo e(ucwords(trans('file.Choose Warehouse'))); ?></strong> &nbsp;</label>
+                        <div class="d-tc">
+                            <input type="hidden" name="warehouse_id_hidden" value="<?php echo e($warehouse_id); ?>" />
+                            <select id="warehouse_id" name="warehouse_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
+                                <option value="all">All Warehouse</option>
+                                <?php $__currentLoopData = $lims_warehouse_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $warehouse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($warehouse->id); ?>"><?php echo e($warehouse->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 mt-3">
                     <div class="form-group text-right">
                         <button class="btn btn-primary btn-md-block" type="submit"><?php echo e(ucfirst(trans('file.submit'))); ?></button>
                     </div>
                 </div>
             </div>
             <input type="hidden" name="biller_id_hidden" value="<?php echo e($biller_id); ?>" />
+            <input type="hidden" name="warehouse_id_hidden" value="<?php echo e($warehouse_id); ?>" />
             <?php echo Form::close(); ?>
 
 
@@ -280,6 +295,7 @@
     $("ul#report #biller-report-menu").addClass("active");
 
     $('#biller_id').val($('input[name="biller_id_hidden"]').val());
+    $('#warehouse_id').val($('input[name="warehouse_id_hidden"]').val());
     $('.selectpicker').selectpicker('refresh');
 
     $('#sale-table').DataTable( {

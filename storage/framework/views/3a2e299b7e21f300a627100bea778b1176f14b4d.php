@@ -22,23 +22,40 @@
                         <?php
                             if($general_setting->theme == 'default.css'){
                                 $color = '#964aad';
-                                $color_rgba = 'rgba(115, 54, 134, 0.8)';
+                                $color_rgba1 = 'rgba(115, 54, 134, 0.8)';
+                                $color_rgba2 = '#007bff';
+                                $color_rgba3 = '#6610f2';
+                                $color_rgba4 = '#e83e8c';
                             }
                             elseif($general_setting->theme == 'green.css'){
                                 $color = '#2ecc71';
-                                $color_rgba = 'rgba(46, 204, 113, 0.8)';
+                                $color_rgba1 = 'rgba(46, 204, 113, 0.8)';
+                                $color_rgba2 = '#28a745';
+                                $color_rgba3 = '#dc3545';
+                                $color_rgba4 = '#007bff';
                             }
                             elseif($general_setting->theme == 'blue.css'){
                                 $color = '#3498db';
-                                $color_rgba = 'rgba(52, 152, 219, 0.8)';
+                                $color_rgba1 = 'rgba(52, 152, 219, 0.8)';
+                                $color_rgba2 = '#17a2b8';
+                                $color_rgba3 = '#20c997';
+                                $color_rgba4 = '#6610f2';
                             }
                             elseif($general_setting->theme == 'dark.css'){
                                 $color = '#34495e';
-                                $color_rgba = 'rgba(52, 73, 94, 0.8)';
+                                $color_rgba1 = 'rgba(52, 73, 94, 0.8)';
+                                $color_rgba2 = '#28a745';
+                                $color_rgba3 = '#17a2b8';
+                                $color_rgba4 = '#fd7e14';
                             }
                         ?>
                     
-                        <canvas id="bestSeller" data-color="<?php echo e($color); ?>" data-color_rgba="<?php echo e($color_rgba); ?>" data-product = "<?php echo e(json_encode($product)); ?>" data-sold_qty="<?php echo e(json_encode($sold_qty)); ?>" ></canvas>
+                        <canvas id="bestSeller" data-color="<?php echo e($color); ?>" 
+                        data-color_rgba1="<?php echo e($color_rgba1); ?>"
+                        data-color_rgba2="<?php echo e($color_rgba2); ?>"
+                        data-color_rgba3="<?php echo e($color_rgba3); ?>"
+                        data-color_rgba4="<?php echo e($color_rgba4); ?>" 
+                        data-product = "<?php echo e(json_encode($product)); ?>" data-sold_qty="<?php echo e(json_encode($sold_qty)); ?>" ></canvas>
                     
                     </div>
                 </div>

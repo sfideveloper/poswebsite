@@ -1242,6 +1242,11 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
+                                        <div class="discount_type">
+                                            <input type="radio" name="test" value="none"/> None
+                                            <input type="radio" name="test" value="percentage"/> Percentage
+                                            <input type="radio" name="test" value="fixed"/> Fixed Amount
+                                        </div>
                                         <input type="text" name="order_discount" class="form-control numkey">
                                     </div>
                                     <div class="btn-md-block">
@@ -2886,9 +2891,13 @@ function couponDiscount() {
                 else if(todyDate > value['expired_date'])
                     alert('This Coupon has expired!');
                 else if(value['type'] == 'fixed'){
-                    if(parseFloat($('input[name="grand_total"]').val()) >= value['minimum_amount']) {
-                        $('input[name="grand_total"]').val($('input[name="grand_total"]').val() - value['amount']);
-                        $('#grand-total').text(parseFloat($('input[name="grand_total"]').val()).toFixed(2));
+                    if(parseFloat($('input[name="total_price"]').val()) >= value['minimum_amount']) {
+                        //Edit
+                        var total_price = $('input[name="total_price"]').val();
+                        var coupon_discount = value['amount'];
+                        grand_total = total_price - coupon_discount;
+                        $('input[name="grand_total"]').val(grand_total);
+                        $('#grand-total').text(parseFloat(grand_total).toFixed(2));
                         if(!$('input[name="coupon_active"]').val())
                             alert('Congratulation! You got '+value['amount']+' '+currency+' discount');
                         $(".coupon-check").prop("disabled",true);
@@ -2903,9 +2912,10 @@ function couponDiscount() {
                         alert('Grand Total is not sufficient for discount! Required '+value['minimum_amount']+' '+currency);
                 }
                 else{
-                    var grand_total = $('input[name="grand_total"]').val();
-                    var coupon_discount = grand_total * (value['amount'] / 100);
-                    grand_total = grand_total - coupon_discount;
+                    //edit
+                    var total_price = $('input[name="total_price"]').val();
+                    var coupon_discount = total_price * (value['amount'] / 100);
+                    grand_total = total_price - coupon_discount;
                     $('input[name="grand_total"]').val(grand_total);
                     $('#grand-total').text(parseFloat(grand_total).toFixed(2));
                     if(!$('input[name="coupon_active"]').val())
@@ -3071,17 +3081,42 @@ function calculateGrandTotal() {
     var subtotal = parseFloat($('input[name="total_price"]').val());
     var order_tax = parseFloat($('select[name="order_tax_rate_select"]').val());
     var order_discount = parseFloat($('input[name="order_discount"]').val());
+    console.log(order_discount);
+    var type = $("input[type='radio']:checked").val();
+
     if (!order_discount)
         order_discount = 0.00;
-    $("#discount").text(order_discount.toFixed(2));
 
     var shipping_cost = parseFloat($('input[name="shipping_cost"]').val());
     if (!shipping_cost)
         shipping_cost = 0.00;
-
+    
     item = ++item + '(' + total_qty + ')';
-    order_tax = (subtotal - order_discount) * (order_tax / 100);
-    var grand_total = (subtotal + order_tax + shipping_cost) - order_discount;
+    
+    //edit type discount
+    if (type == "none") {
+        console.log(type);
+        order_discount = 0.00;
+        order_tax = (subtotal - 0) * (order_tax / 100);
+        $("#discount").text(order_discount.toFixed(2));
+        var grand_total = (subtotal + order_tax + shipping_cost) - 0;
+        $('input[name="order_discount"]').val(0);
+    }else if (type == "percentage"){
+        console.log(type);
+        order_tax = (subtotal - (subtotal * order_discount / 100)) * (order_tax / 100);
+        $("#discount").text(order_discount.toFixed(2) + "% : " + (subtotal * order_discount / 100));
+        var grand_total = (subtotal + order_tax + shipping_cost) - (subtotal * order_discount / 100);
+    }else if (type == "fixed"){
+        console.log(type);
+        order_tax = (subtotal - order_discount) * (order_tax / 100);
+        $("#discount").text(order_discount.toFixed(2));
+        var grand_total = (subtotal + order_tax + shipping_cost) - order_discount;
+    }else{
+        order_tax = (subtotal - order_discount) * (order_tax / 100);
+        var grand_total = (subtotal + order_tax + shipping_cost) - order_discount;
+        $("#discount").text(order_discount.toFixed(2));
+    }
+
     $('input[name="grand_total"]').val(grand_total.toFixed(2));
 
     couponDiscount();

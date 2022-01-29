@@ -360,12 +360,20 @@
 
                     <?php
                       $lims_biller_list = DB::table('billers')->where('is_active', true)->get();
+                      $lims_warehouse_list = DB::table('warehouses')->where('is_active', true)->get();
                     ?>
                       <div class="form-group">
                           <label><?php echo e(ucwords(trans('file.Biller'))); ?> *</label>
                           <select name="biller_id" class="selectpicker form-control" required data-live-search="true" id="biller-id" data-live-search-style="begins" title="Select Biller...">
                               <?php $__currentLoopData = $lims_biller_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $biller): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                               <option value="<?php echo e($biller->id); ?>"><?php echo e($biller->name . ' (' . $biller->name. ')'); ?></option>
+                              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                          </select>
+                          <label><?php echo e(ucwords(trans('file.Warehouse'))); ?> *</label>
+                          <select name="warehouse_id" class="selectpicker form-control" required data-live-search="true" id="warehouse-id" data-live-search-style="begins" title="Select Warehouse...">
+                              <option value="all">All Warehouse</option>
+                              <?php $__currentLoopData = $lims_warehouse_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $warehouse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                              <option value="<?php echo e($warehouse->id); ?>"><?php echo e($warehouse->name); ?></option>
                               <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                           </select>
                       </div>
