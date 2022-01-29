@@ -413,7 +413,7 @@ class ReportController extends Controller
                 $start_date = date("Y-m", $start) . '-' . '01';
                 $end_date = date("Y-m", $start) . '-' . '31';
 
-                $best_selling_qty = Product_Sale::select(DB::raw('product_id, sum(qty) as sold_qty'))->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->groupBy('product_id')->orderBy('sold_qty', 'desc')->take(1)->get();
+                $best_selling_qty = Product_Sale::select(DB::raw('product_id, sum(qty) as sold_qty'))->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->groupBy('product_id')->orderBy('sold_qty', 'desc')->limit(4)->get();
                 if (!count($best_selling_qty)) {
                     $product[] = '';
                     $sold_qty[] = 0;
@@ -844,6 +844,7 @@ class ReportController extends Controller
     {
         $data = $request->all();
         $warehouse_id = $data['warehouse_id'];
+        $biller_id = $data['warehouse_id'];
         $start_date = $data['start_date'];
         $end_date = $data['end_date'];
 
@@ -998,14 +999,20 @@ class ReportController extends Controller
     public function billerReport(Request $request)
     {
         $data = $request->all();
+        // dd($data);
         $biller_id = $data['biller_id'];
+        $warehouse_id = $data['warehouse_id'];
         $start_date = $data['start_date'];
         $end_date = $data['end_date'];
-
-        $lims_sale_data = Sale::with('customer')->where('biller_id', $biller_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
-        $lims_quotation_data = Quotation::with('customer')->where('biller_id', $biller_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
-        $lims_return_data = Returns::with('customer', 'biller')->where('biller_id', $biller_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
-
+        if ($warehouse_id == "all") {
+            $lims_sale_data = Sale::with('customer')->where('biller_id', $biller_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_quotation_data = Quotation::with('customer')->where('biller_id', $biller_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_return_data = Returns::with('customer', 'biller')->where('biller_id', $biller_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+        }else {
+            $lims_sale_data = Sale::with('customer')->where('biller_id', $biller_id)->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_quotation_data = Quotation::with('customer')->where('biller_id', $biller_id)->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_return_data = Returns::with('customer', 'biller')->where('biller_id', $biller_id)->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();    
+        }
         $lims_product_sale_data = [];
         $lims_product_quotation_data = [];
         $lims_product_return_data = [];
@@ -1020,7 +1027,8 @@ class ReportController extends Controller
             $lims_product_return_data[$key] = ProductReturn::where('return_id', $return->id)->get();
         }
         $lims_biller_list = Biller::where('is_active', true)->get();
+        $lims_warehouse_list = Warehouse::where('is_active', true)->get();
         // dd($lims_product_sale_data, $lims_product_quotation_data, $lims_product_return_data);
-         return view('report.biller_report', compact('biller_id', 'start_date', 'end_date', 'lims_sale_data', 'lims_product_sale_data', 'lims_biller_list', 'lims_quotation_data', 'lims_product_quotation_data', 'lims_return_data', 'lims_product_return_data'));
+        return view('report.biller_report', compact('biller_id', 'warehouse_id', 'start_date', 'end_date', 'lims_sale_data', 'lims_product_sale_data', 'lims_biller_list', 'lims_warehouse_list', 'lims_quotation_data', 'lims_product_quotation_data', 'lims_return_data', 'lims_product_return_data'));
     }
 }

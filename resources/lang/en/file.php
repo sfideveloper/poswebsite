@@ -204,6 +204,7 @@ return [
 	'Choose Warehouse' => 'Choose Warehouse',
 	'Choose Supplier' => 'Choose Supplier',
 	'Choose Customer' => 'Choose Customer',
+	'Choose Biller' => 'Choose Biller',
 	'Touchscreen keybord' => 'Touchscreen keybord',
 	'Already have an account' => 'Already have an account',
 	'Currency' => 'Currency',

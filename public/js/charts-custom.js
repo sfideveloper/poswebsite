@@ -1,8 +1,12 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     'use strict';
     var brandPrimary;
     var brandPrimaryRgba;
+    var brandPrimaryRgba1;
+    var brandPrimaryRgba2;
+    var brandPrimaryRgba3;
+    var brandPrimaryRgba4;
 
     // ------------------------------------------------------- //
     // Line Chart
@@ -19,10 +23,10 @@ $(document).ready(function () {
         var cashFlow_chart = new Chart(CASHFLOW, {
             type: 'line',
             data: {
-                labels: [ month[0], month[1], month[2], month[3], month[4],
-                 month[5], month[6] ],
-                datasets: [
-                    {
+                labels: [month[0], month[1], month[2], month[3], month[4],
+                    month[5], month[6]
+                ],
+                datasets: [{
                         label: label1,
                         fill: true,
                         lineTension: 0.3,
@@ -43,7 +47,8 @@ $(document).ready(function () {
                         pointRadius: 1,
                         pointHitRadius: 10,
                         data: [recieved[0], recieved[1], recieved[2], recieved[3],
-                         recieved[4], recieved[5], recieved[6] ],
+                            recieved[4], recieved[5], recieved[6]
+                        ],
                         spanGaps: false
                     },
                     {
@@ -67,7 +72,8 @@ $(document).ready(function () {
                         pointRadius: 1,
                         pointHitRadius: 10,
                         data: [sent[0], sent[1], sent[2], sent[3],
-                         sent[4], sent[5], sent[6] ],
+                            sent[4], sent[5], sent[6]
+                        ],
                         spanGaps: false
                     }
                 ]
@@ -75,7 +81,7 @@ $(document).ready(function () {
         });
     };
 
-    var SALECHART    = $('#saleChart');
+    var SALECHART = $('#saleChart');
 
     if (SALECHART.length > 0) {
         var yearly_sale_amount = SALECHART.data('sale_chart_value');
@@ -86,8 +92,7 @@ $(document).ready(function () {
             type: 'bar',
             data: {
                 labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                datasets: [
-                    {
+                datasets: [{
                         label: label1,
                         backgroundColor: [
                             brandPrimaryRgba,
@@ -120,13 +125,14 @@ $(document).ready(function () {
                             brandPrimary
                         ],
                         borderWidth: 1,
-                        data: [ yearly_purchase_amount[0], yearly_purchase_amount[1],
-                                yearly_purchase_amount[2], yearly_purchase_amount[3],
-                                yearly_purchase_amount[4], yearly_purchase_amount[5],
-                                yearly_purchase_amount[6], yearly_purchase_amount[7],
-                                yearly_purchase_amount[8], yearly_purchase_amount[9],
-                                yearly_purchase_amount[10], yearly_purchase_amount[11],
-                                0],
+                        data: [yearly_purchase_amount[0], yearly_purchase_amount[1],
+                            yearly_purchase_amount[2], yearly_purchase_amount[3],
+                            yearly_purchase_amount[4], yearly_purchase_amount[5],
+                            yearly_purchase_amount[6], yearly_purchase_amount[7],
+                            yearly_purchase_amount[8], yearly_purchase_amount[9],
+                            yearly_purchase_amount[10], yearly_purchase_amount[11],
+                            0
+                        ],
                     },
                     {
                         label: label2,
@@ -161,51 +167,55 @@ $(document).ready(function () {
                             'rgba(255, 137, 82, 1)'
                         ],
                         borderWidth: 1,
-                        data: [ yearly_sale_amount[0], yearly_sale_amount[1],
-                                yearly_sale_amount[2], yearly_sale_amount[3],
-                                yearly_sale_amount[4], yearly_sale_amount[5],
-                                yearly_sale_amount[6], yearly_sale_amount[7],
-                                yearly_sale_amount[8], yearly_sale_amount[9],
-                                yearly_sale_amount[10], yearly_sale_amount[11],
-                                0],
+                        data: [yearly_sale_amount[0], yearly_sale_amount[1],
+                            yearly_sale_amount[2], yearly_sale_amount[3],
+                            yearly_sale_amount[4], yearly_sale_amount[5],
+                            yearly_sale_amount[6], yearly_sale_amount[7],
+                            yearly_sale_amount[8], yearly_sale_amount[9],
+                            yearly_sale_amount[10], yearly_sale_amount[11],
+                            0
+                        ],
                     },
                 ]
             }
         });
     };
 
-    var BESTSELLER    = $('#bestSeller');
+    var BESTSELLER = $('#bestSeller');
 
     if (BESTSELLER.length > 0) {
         var sold_qty = BESTSELLER.data('sold_qty');
         brandPrimary = BESTSELLER.data('color');
-        brandPrimaryRgba = BESTSELLER.data('color_rgba');
+        brandPrimaryRgba1 = BESTSELLER.data('color_rgba1');
+        brandPrimaryRgba2 = BESTSELLER.data('color_rgba2');
+        brandPrimaryRgba3 = BESTSELLER.data('color_rgba3');
+        brandPrimaryRgba4 = BESTSELLER.data('color_rgba4');
         var product_info = BESTSELLER.data('product');
+        console.log(sold_qty)
         var bestSeller = new Chart(BESTSELLER, {
             type: 'bar',
             data: {
-                labels: [ product_info[0], product_info[1], product_info[2]],
-                datasets: [
-                    {
-                        label: "Sale Qty",
-                        backgroundColor: [
-                            brandPrimaryRgba,
-                            brandPrimaryRgba,
-                            brandPrimaryRgba,
-                            brandPrimaryRgba
-                        ],
-                        borderColor: [
-                            brandPrimary,
-                            brandPrimary,
-                            brandPrimary,
-                            brandPrimary
-                        ],
-                        borderWidth: 1,
-                        data: [ 
-                                sold_qty[0], sold_qty[1],
-                                sold_qty[2], 0],
-                    }
-                ]
+                labels: [product_info[2], product_info[3], product_info[4], product_info[5]],
+                datasets: [{
+                    label: "Sale Qty",
+                    backgroundColor: [
+                        brandPrimaryRgba1,
+                        brandPrimaryRgba2,
+                        brandPrimaryRgba3,
+                        brandPrimaryRgba4
+                    ],
+                    borderColor: [
+                        brandPrimary,
+                        brandPrimary,
+                        brandPrimary,
+                        brandPrimary
+                    ],
+                    borderWidth: 1,
+                    data: [
+                        sold_qty[2], sold_qty[3],
+                        sold_qty[4], sold_qty[5]
+                    ],
+                }]
             }
         });
     };
@@ -227,28 +237,27 @@ $(document).ready(function () {
                     label2,
                     label3
                 ],
-                datasets: [
-                    {
-                        data: [price, cost, price-cost],
-                        borderWidth: [1, 1, 1],
-                        backgroundColor: [
-                            brandPrimary,
-                            "#EC992F",
-                            "#858c85"
-                        ],
-                        hoverBackgroundColor: [
-                            brandPrimaryRgba,
-                            "rgba(255, 137, 82, 0.8)",
-                            "rgb(133, 140, 133, 0.8)"
-                        ],
-                        hoverBorderWidth: [4, 4, 4],
-                        hoverBorderColor: [
-                            brandPrimaryRgba,
-                            "rgba(255, 137, 82, 0.8)",
-                            "rgb(133, 140, 133, 0.8)",
-                            
-                        ],
-                    }]
+                datasets: [{
+                    data: [price, cost, price - cost],
+                    borderWidth: [1, 1, 1],
+                    backgroundColor: [
+                        brandPrimary,
+                        "#EC992F",
+                        "#858c85"
+                    ],
+                    hoverBackgroundColor: [
+                        brandPrimaryRgba,
+                        "rgba(255, 137, 82, 0.8)",
+                        "rgb(133, 140, 133, 0.8)"
+                    ],
+                    hoverBorderWidth: [4, 4, 4],
+                    hoverBorderColor: [
+                        brandPrimaryRgba,
+                        "rgba(255, 137, 82, 0.8)",
+                        "rgb(133, 140, 133, 0.8)",
+
+                    ],
+                }]
             },
             options: {
                 //rotation: -0.7*Math.PI
@@ -274,30 +283,29 @@ $(document).ready(function () {
                     label2,
                     label3
                 ],
-                datasets: [
-                    {
-                        data: [purchase, revenue, expense],
-                        borderWidth: [1, 1, 1],
-                        backgroundColor: [
-                            brandPrimary,
-                            "#EC992F",
-                            "#858c85",
-                            
-                        ],
-                        hoverBackgroundColor: [
-                            brandPrimaryRgba,
-                            "rgba(255, 137, 82, 0.8)",
-                            "rgb(133, 140, 133, 0.8)",
-                            
-                        ],
-                       hoverBorderWidth: [4, 4, 4],
-                       hoverBorderColor: [
-                            brandPrimaryRgba,
-                            "rgba(255, 137, 82, 0.8)",
-                            "rgb(133, 140, 133, 0.8)",
-                            
-                        ],
-                    }]
+                datasets: [{
+                    data: [purchase, revenue, expense],
+                    borderWidth: [1, 1, 1],
+                    backgroundColor: [
+                        brandPrimary,
+                        "#EC992F",
+                        "#858c85",
+
+                    ],
+                    hoverBackgroundColor: [
+                        brandPrimaryRgba,
+                        "rgba(255, 137, 82, 0.8)",
+                        "rgb(133, 140, 133, 0.8)",
+
+                    ],
+                    hoverBorderWidth: [4, 4, 4],
+                    hoverBorderColor: [
+                        brandPrimaryRgba,
+                        "rgba(255, 137, 82, 0.8)",
+                        "rgb(133, 140, 133, 0.8)",
+
+                    ],
+                }]
             }
         });
     }

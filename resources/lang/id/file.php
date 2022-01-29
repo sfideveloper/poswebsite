@@ -204,6 +204,7 @@ return [
 	'Choose Warehouse' => 'Pilih Toko',
 	'Choose Supplier' => 'Pilih Pemasok',
 	'Choose Customer' => 'Pilih Pelanggan',
+	'Choose Biller' => 'Pilih Kasir',
 	'Touchscreen keybord' => 'Keybord layar sentuh',
 	'Already have an account' => 'Sudah punya akun',
 	'Currency' => 'Mata uang',
