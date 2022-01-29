@@ -343,12 +343,20 @@
                     {!! Form::open(['route' => 'report.biller', 'method' => 'post']) !!}
                     <?php
                       $lims_biller_list = DB::table('billers')->where('is_active', true)->get();
+                      $lims_warehouse_list = DB::table('warehouses')->where('is_active', true)->get();
                     ?>
                       <div class="form-group">
                           <label>{{ucwords(trans('file.Biller'))}} *</label>
                           <select name="biller_id" class="selectpicker form-control" required data-live-search="true" id="biller-id" data-live-search-style="begins" title="Select Biller...">
                               @foreach($lims_biller_list as $biller)
                               <option value="{{$biller->id}}">{{$biller->name . ' (' . $biller->name. ')'}}</option>
+                              @endforeach
+                          </select>
+                          <label>{{ucwords(trans('file.Warehouse'))}} *</label>
+                          <select name="warehouse_id" class="selectpicker form-control" required data-live-search="true" id="warehouse-id" data-live-search-style="begins" title="Select Warehouse...">
+                              <option value="all">All Warehouse</option>
+                              @foreach($lims_warehouse_list as $warehouse)
+                              <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
                               @endforeach
                           </select>
                       </div>
