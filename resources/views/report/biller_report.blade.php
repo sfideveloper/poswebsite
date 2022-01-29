@@ -7,7 +7,7 @@
             </div>
             {!! Form::open(['route' => 'report.biller', 'method' => 'post']) !!}
             <div class="row mb-3">
-                <div class="col-md-5 offset-md-1 mt-3">
+                <div class="col-md-4 offset-md-1 mt-3">
                     <div class="form-group row">
                         <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Your Date'))}}</strong> &nbsp;</label>
                         <div class="d-tc">
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mt-3">
+                <div class="col-md-2 mt-3">
                     <div class="form-group row">
                         <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Biller'))}}</strong> &nbsp;</label>
                         <div class="d-tc">
@@ -33,12 +33,27 @@
                     </div>
                 </div>
                 <div class="col-md-2 mt-3">
+                    <div class="form-group row">
+                        <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Warehouse'))}}</strong> &nbsp;</label>
+                        <div class="d-tc">
+                            <input type="hidden" name="warehouse_id_hidden" value="{{$warehouse_id}}" />
+                            <select id="warehouse_id" name="warehouse_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
+                                <option value="all">All Warehouse</option>
+                                @foreach($lims_warehouse_list as $warehouse)
+                                <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 mt-3">
                     <div class="form-group text-right">
                         <button class="btn btn-primary btn-md-block" type="submit">{{ucfirst(trans('file.submit'))}}</button>
                     </div>
                 </div>
             </div>
             <input type="hidden" name="biller_id_hidden" value="{{$biller_id}}" />
+            <input type="hidden" name="warehouse_id_hidden" value="{{$warehouse_id}}" />
             {!! Form::close() !!}
 
     
@@ -272,6 +287,7 @@
     $("ul#report #biller-report-menu").addClass("active");
 
     $('#biller_id').val($('input[name="biller_id_hidden"]').val());
+    $('#warehouse_id').val($('input[name="warehouse_id_hidden"]').val());
     $('.selectpicker').selectpicker('refresh');
 
     $('#sale-table').DataTable( {
