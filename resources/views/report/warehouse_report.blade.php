@@ -71,12 +71,12 @@
                             <th class="not-exported-sale"></th>
                             <th>{{ucfirst(trans('file.Date'))}}</th>
                             <th>{{ucfirst(trans('file.reference'))}} No</th>
-                            <th>{{ucfirst(trans('file.Biller'))}}</th>
                             <th>{{ucfirst(trans('file.customer'))}}</th>
                             <th>{{ucfirst(trans('file.product'))}} ({{ucfirst(trans('file.qty'))}})</th>
                             <th>{{ucfirst(trans('file.grand total'))}}</th>
                             <th>{{ucfirst(trans('file.Paid'))}}</th>
                             <th>{{ucfirst(trans('file.Due'))}}</th>
+                            <th>{{ucfirst(trans('file.Tax'))}}</th>
                             <th>{{ucfirst(trans('file.Status'))}}</th>
                         </tr>
                     </thead>
@@ -86,7 +86,6 @@
                             <td>{{$key}}</td>
                             <td>{{date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()}}</td>
                             <td>{{$sale->reference_no}}</td>
-                            <td>{{$sale->biller->name}}</td>
                             <td>{{$sale->customer->name}}</td>
                             <td>
                                 @foreach($lims_product_sale_data[$key] as $product_sale_data)
@@ -109,6 +108,7 @@
                             <td>{{$sale->grand_total}}</td>
                             <td>{{$sale->paid_amount}}</td>
                             <td>{{number_format((float)($sale->grand_total - $sale->paid_amount), 2, '.', '')}}</td>
+                            <td>{{$sale->order_tax}}</td>
                             @if($sale->sale_status == 1)
                             <td><div class="badge badge-success">{{trans('file.Completed')}}</div></td>
                             @else
@@ -147,6 +147,7 @@
                             <th>{{ucfirst(trans('file.grand total'))}}</th>
                             <th>{{ucfirst(trans('file.Paid'))}}</th>
                             <th>{{ucfirst(trans('file.Due'))}}</th>
+                            <th>{{ucfirst(trans('file.Tax'))}}</th>
                             <th>{{ucfirst(trans('file.Status'))}}</th>
                         </tr>
                     </thead>
@@ -185,6 +186,7 @@
                             <td>{{$purchase->grand_total}}</td>
                             <td>{{$purchase->paid_amount}}</td>
                             <td>{{number_format((float)($purchase->grand_total - $purchase->paid_amount), 2, '.', '')}}</td>
+                            <td>{{$purchase->order_tax}}</td>
                             @if($purchase->status == 1)
                             <td><div class="badge badge-success">{{trans('file.Completed')}}</div></td>
                             @elseif($purchase->status == 2)
@@ -296,7 +298,6 @@
                             <th>{{ucfirst(trans('file.Date'))}}</th>
                             <th>{{ucfirst(trans('file.reference'))}}</th>
                             <th>{{ucfirst(trans('file.customer'))}}</th>
-                            <th>{{ucfirst(trans('file.Biller'))}}</th>
                             <th>{{ucfirst(trans('file.product'))}} ({{ucfirst(trans('file.qty'))}})</th>
                             <th>{{ucfirst(trans('file.grand total'))}}</th>
                         </tr>
@@ -308,7 +309,6 @@
                             <td>{{ date($general_setting->date_format, strtotime($return->created_at->toDateString())) }}<br>{{ $return->created_at->toTimeString()}}</td>
                             <td>{{$return->reference_no}}</td>
                             <td>{{$return->customer->name}}</td>
-                            <td>{{$return->biller->name}}</td>
                             <td>
                                 @foreach($lims_product_return_data[$key] as $product_return_data)
                                 <?php 
@@ -478,11 +478,13 @@
             $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
         }
         else {
             $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.column( 8, {page:'current'} ).data().sum().toFixed(2));
         }
     }
 
@@ -569,11 +571,13 @@
             $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
         }
         else {
             $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.column( 8, {page:'current'} ).data().sum().toFixed(2));
         }
     }
 

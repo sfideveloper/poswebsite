@@ -73,12 +73,12 @@
                             <th class="not-exported-sale"></th>
                             <th><?php echo e(ucfirst(trans('file.Date'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.reference'))); ?> No</th>
-                            <th><?php echo e(ucfirst(trans('file.Biller'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.customer'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.product'))); ?> (<?php echo e(ucfirst(trans('file.qty'))); ?>)</th>
                             <th><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Paid'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Due'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Tax'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Status'))); ?></th>
                         </tr>
                     </thead>
@@ -88,7 +88,6 @@
                             <td><?php echo e($key); ?></td>
                             <td><?php echo e(date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()); ?></td>
                             <td><?php echo e($sale->reference_no); ?></td>
-                            <td><?php echo e($sale->biller->name); ?></td>
                             <td><?php echo e($sale->customer->name); ?></td>
                             <td>
                                 <?php $__currentLoopData = $lims_product_sale_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -113,6 +112,7 @@
                             <td><?php echo e($sale->grand_total); ?></td>
                             <td><?php echo e($sale->paid_amount); ?></td>
                             <td><?php echo e(number_format((float)($sale->grand_total - $sale->paid_amount), 2, '.', '')); ?></td>
+                            <td><?php echo e($sale->order_tax); ?></td>
                             <?php if($sale->sale_status == 1): ?>
                             <td><div class="badge badge-success"><?php echo e(trans('file.Completed')); ?></div></td>
                             <?php else: ?>
@@ -151,6 +151,7 @@
                             <th><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Paid'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Due'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Tax'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Status'))); ?></th>
                         </tr>
                     </thead>
@@ -191,6 +192,7 @@
                             <td><?php echo e($purchase->grand_total); ?></td>
                             <td><?php echo e($purchase->paid_amount); ?></td>
                             <td><?php echo e(number_format((float)($purchase->grand_total - $purchase->paid_amount), 2, '.', '')); ?></td>
+                            <td><?php echo e($purchase->order_tax); ?></td>
                             <?php if($purchase->status == 1): ?>
                             <td><div class="badge badge-success"><?php echo e(trans('file.Completed')); ?></div></td>
                             <?php elseif($purchase->status == 2): ?>
@@ -304,7 +306,6 @@
                             <th><?php echo e(ucfirst(trans('file.Date'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.reference'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.customer'))); ?></th>
-                            <th><?php echo e(ucfirst(trans('file.Biller'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.product'))); ?> (<?php echo e(ucfirst(trans('file.qty'))); ?>)</th>
                             <th><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
                         </tr>
@@ -316,7 +317,6 @@
                             <td><?php echo e(date($general_setting->date_format, strtotime($return->created_at->toDateString()))); ?><br><?php echo e($return->created_at->toTimeString()); ?></td>
                             <td><?php echo e($return->reference_no); ?></td>
                             <td><?php echo e($return->customer->name); ?></td>
-                            <td><?php echo e($return->biller->name); ?></td>
                             <td>
                                 <?php $__currentLoopData = $lims_product_return_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_return_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php 
@@ -395,7 +395,6 @@
             </div>
         </div>
     </div>
-    
 </section>
 
 <script type="text/javascript">
@@ -489,11 +488,13 @@
             $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
         }
         else {
             $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.column( 8, {page:'current'} ).data().sum().toFixed(2));
         }
     }
 
@@ -580,11 +581,13 @@
             $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
         }
         else {
             $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.column( 8, {page:'current'} ).data().sum().toFixed(2));
         }
     }
 

@@ -1255,15 +1255,22 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <div class="discount_type">
-                                            <input type="radio" name="test" value="none"/> None
-                                            <input type="radio" name="test" value="percentage"/> Percentage
-                                            <input type="radio" name="test" value="fixed"/> Fixed Amount
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="none">
+                                            <label class="form-check-label" for="inlineRadio1">None</label>
                                         </div>
-                                        <input type="text" name="order_discount" class="form-control numkey">
-                                    </div>
-                                    <div class="btn-md-block">
-                                    <button type="button" name="order_discount_btn" class="btn btn-primary btn-md-block" data-dismiss="modal"><?php echo e(ucfirst(trans('file.submit'))); ?></button>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="percentage">
+                                            <label class="form-check-label" for="inlineRadio1">Percentage</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="fixed">
+                                            <label class="form-check-label" for="inlineRadio2">Fixed Amount</label>
+                                        </div>
+                                        <input type="text" name="order_discount" class="form-control numkey mt-4">
+                                        <div class="text-right">
+                                            <button type="button" name="order_discount_btn" class="btn btn-primary btn-md-block" data-dismiss="modal"><?php echo e(ucfirst(trans('file.submit'))); ?></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
