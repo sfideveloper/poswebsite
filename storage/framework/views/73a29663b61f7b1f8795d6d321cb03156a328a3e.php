@@ -3115,6 +3115,8 @@ function calculateGrandTotal() {
         shipping_cost = 0.00;
     
     item = ++item + '(' + total_qty + ')';
+    
+    //edit type discount
     if (type == "none") {
         console.log(type);
         order_discount = 0.00;
@@ -3137,18 +3139,7 @@ function calculateGrandTotal() {
         var grand_total = (subtotal + order_tax + shipping_cost) - order_discount;
         $("#discount").text(order_discount.toFixed(2));
     }
-    // if (type == "percentage") {
-    //     console.log(type);
-    //     order_discount_count = (subtotal * order_discount / 100);
-    //     order_tax = (subtotal - order_discount_count) * (order_tax / 100);
-    //     $("#discount").text(order_discount.toFixed(2) + "% :");
-    //     var grand_total = (subtotal + order_tax + shipping_cost) - (subtotal * order_discount / 100);
-    // }
-    // if (type == "fixed") {
-    //     console.log(type);
-    //     order_tax = (subtotal - order_discount) * (order_tax / 100);
-    //     var grand_total = (subtotal + order_tax + shipping_cost) - order_discount;
-    // }
+
     $('input[name="grand_total"]').val(grand_total.toFixed(2));
 
     couponDiscount();
