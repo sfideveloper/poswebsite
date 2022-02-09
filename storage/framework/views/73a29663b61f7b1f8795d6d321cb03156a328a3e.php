@@ -3134,7 +3134,7 @@ function calculateGrandTotal() {
     }else if (type == "percentage"){
         console.log(type);
         order_tax = (subtotal - (subtotal * order_discount / 100)) * (order_tax / 100);
-        $("#discount").text(order_discount.toFixed(2) + "% : " + (subtotal * order_discount / 100));
+        $("#discount").text(order_discount + "% : " + (subtotal * order_discount / 100));
         var grand_total = (subtotal + order_tax + shipping_cost) - (subtotal * order_discount / 100);
     }else if (type == "fixed"){
         console.log(type);

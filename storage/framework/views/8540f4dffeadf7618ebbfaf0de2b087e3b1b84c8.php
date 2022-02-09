@@ -185,6 +185,9 @@
                                         <span class="validation-msg"></span>
                                     </div>
                                     <div class="form-group">
+                                        <input type="hidden" name="price_total" class="form-control">
+                                    </div>
+                                    <div class="form-group">
                                         <input type="hidden" name="qty" value="<?php echo e($lims_product_data->qty); ?>" class="form-control">
                                     </div>
                                 </div>
@@ -597,6 +600,7 @@
             price += quantity * unit_price;
         });
         $('input[name="price"]').val(price);
+        $('input[name="price_total"]').val(price);
     }
 
     function hide() {

@@ -203,6 +203,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $this->validate($request, [
             'code' => [
                 'max:255',
@@ -335,6 +336,7 @@ class ProductController extends Controller
                 $data['product_list'] = implode(",", $data['product_id']);
                 $data['qty_list'] = implode(",", $data['product_qty']);
                 $data['price_list'] = implode(",", $data['unit_price']);
+                $data['price'] = $data['price_total'];
                 $data['cost'] = $data['unit_id'] = $data['purchase_unit_id'] = $data['sale_unit_id'] = 0;
             } elseif ($data['type'] == 'digital')
                 $data['cost'] = $data['unit_id'] = $data['purchase_unit_id'] = $data['sale_unit_id'] = 0;
@@ -357,7 +359,7 @@ class ProductController extends Controller
                 $lims_product_data->image = implode(",", $request->prev_img);
                 $lims_product_data->save();
             }
-            
+
             //dealing with new images
             // $images = $request->image;
             // $image_names = [];
@@ -380,7 +382,7 @@ class ProductController extends Controller
                 $file = $request->file('update_img');
                 $file->move('images/product', $file->getClientOriginalName());
                 $data['image'] = $file->getClientOriginalName();
-            }else{
+            } else {
                 $data['image'] = $lims_product_data->image;
             }
 
