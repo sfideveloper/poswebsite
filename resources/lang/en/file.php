@@ -286,6 +286,7 @@ return [
 	'Supplier Report' => 'Supplier Report',
 	'Due Report' => 'Due Report',
 	'Biller Report' => 'Biller Report',
+	'Tax Report' => 'Tax Report',
 	'User Profile' => 'User Profile',
 	'Cash Flow' => 'Cash Flow',
 	'Add Category' => 'Add Category',
@@ -588,5 +589,8 @@ return [
 	"This product has different price for different warehouse" => "This product has different price for different warehouse",
 	"Backup Database" => "Backup Database",
 	"Invoice Format" => "Invoice Format",
+	"Total Payment" => "Total Payment",
+	"Product Tax" => "Product Tax",
+	"No Tax" => "No Tax",
 ];
 ?>

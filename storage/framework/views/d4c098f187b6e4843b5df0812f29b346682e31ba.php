@@ -1032,6 +1032,18 @@
 													</div>
 												</div>
 											</span>
+											<span>
+												<div aria-checked="false" aria-disabled="false">
+													<div class="checkbox">
+														<?php if(in_array("tax-report", $all_permission)): ?>
+														<input type="checkbox" value="1" id="tax-report" name="tax-report" checked>
+														<?php else: ?>
+														<input type="checkbox" value="1" id="tax-report" name="tax-report">
+														<?php endif; ?>
+														<label for="tax-report" class="padding05"><?php echo e(trans('file.Tax Report')); ?> &nbsp;&nbsp;</label>
+													</div>
+												</div>
+											</span>
 										</td>
 									</tr>
 									<tr>

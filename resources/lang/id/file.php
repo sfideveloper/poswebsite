@@ -285,6 +285,7 @@ return [
 	'Supplier Report' => 'Laporan Pemasok',
 	'Due Report' => 'Laporan Belum Lunas',
 	'Biller Report' => 'Laporan Kasir',
+	'Tax Report' => 'Laporan Pajak',
 	'User Profile' => 'Profil Pengguna',
 	'Cash Flow' => 'Grafik Kas',
 	'Add Category' => 'Tambahkan kategori',
@@ -587,5 +588,8 @@ return [
 	"This product has different price for different warehouse" => "Produk ini memiliki harga yang berbeda untuk toko yang berbeda",
 	"Backup Database" => "Backup Database",
 	"Invoice Format" => "Format Faktur",
+	"Total Payment" => "Jumlah Pembayaran",
+	"Product Tax" => "Pajak Produk",
+	"No Tax" => "Tanpa Pajak",
 ];
 ?>

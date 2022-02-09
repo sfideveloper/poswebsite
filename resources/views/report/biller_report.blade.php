@@ -19,7 +19,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2 mt-3">
+                <div class="col-md-3 mt-3">
                     <div class="form-group row">
                         <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Biller'))}}</strong> &nbsp;</label>
                         <div class="d-tc">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2 mt-3">
+                <div class="col-md-3 mt-3">
                     <div class="form-group row">
                         <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Warehouse'))}}</strong> &nbsp;</label>
                         <div class="d-tc">
@@ -46,9 +46,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2 mt-3">
+                <div class="col mt-3">
                     <div class="form-group text-right">
-                        <button class="btn btn-primary btn-md-block" type="submit">{{ucfirst(trans('file.submit'))}}</button>
+                        <button class="btn btn-primary" type="submit">{{ucfirst(trans('file.submit'))}}</button>
                     </div>
                 </div>
             </div>

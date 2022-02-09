@@ -103,7 +103,11 @@
         </p>
         <table>
             <tbody>
-                <?php $total_product_tax = 0;?>
+                <?php 
+                    $total_product_tax = 0;
+                    $total = 0;
+                    $grand_total = 0;
+                ?>
                 @foreach($lims_product_sale_data as $product_sale_data)
                 <?php 
                     $lims_product_data = \App\Product::find($product_sale_data->product_id);
@@ -113,26 +117,58 @@
                     }
                     else
                         $product_name = $lims_product_data->name;
-                ?>
+
+
+                    // hitung manual harga product
+                    $harga_product = number_format((float)($product_sale_data->total / $product_sale_data->qty), 2, '.', '');
+
+                    if ($product_sale_data->tax_rate) {
+                        $harga_product = $harga_product-($product_sale_data->tax / $product_sale_data->qty); 
+                    }
+                    $total_harga_perProduct = $harga_product*$product_sale_data->qty;
+
+                    $total += $total_harga_perProduct;
+
+
+                 ?>
                 <tr>
                     <td colspan="2">
                         {{$product_name}}
-                        <br>{{$product_sale_data->qty}} x {{number_format((float)($product_sale_data->total / $product_sale_data->qty), 2, '.', '')}}
 
-                        @if($product_sale_data->tax_rate)
+
+                        <!-- <br>{{$product_sale_data->qty}} x {{number_format((float)($product_sale_data->total / $product_sale_data->qty), 2, '.', '')}} -->
+
+                        <!-- harga per produk diganti -->
+                        <br>{{$product_sale_data->qty}} x {{$harga_product}}
+
+                        <!-- menghilangkan tax perProduct -->
+                        <!-- @if($product_sale_data->tax_rate)
                             <?php $total_product_tax += $product_sale_data->tax ?>
                             [{{trans('file.Tax')}} ({{$product_sale_data->tax_rate}}%): {{$product_sale_data->tax}}]
-                        @endif
+                        @endif -->
                     </td>
-                    <td style="text-align:right;vertical-align:bottom">{{number_format((float)$product_sale_data->total, 2, '.', '')}}</td>
+
+                    <!-- <td style="text-align:right;vertical-align:bottom">{{number_format((float)$product_sale_data->total, 2, '.', '')}}</td> -->
+
+                    <!-- total harga perProduct -->
+                    <td style="text-align:right;vertical-align:bottom">{{number_format((float)($total_harga_perProduct), 2, '.', '')}}</td>
                 </tr>
                 @endforeach
+
+
             </tbody>
             <tfoot>
+
+                <!-- <tr>
+                    <th colspan="2">{{ucfirst(trans('file.Total'))}}</th>
+                    <th style="text-align:right">{{number_format((float)($lims_sale_data->total_price), 2, '.', '')}}</th>
+                </tr> -->
+                <!-- total diganti -->
                 <tr>
                     <th colspan="2">{{ucfirst(trans('file.Total'))}}</th>
-                    <th style="text-align:right">{{number_format((float)$lims_sale_data->total_price, 2, '.', '')}}</th>
+                    <th style="text-align:right">{{number_format((float)($total), 2, '.', '')}}</th>
                 </tr>
+
                 @if($general_setting->invoice_format == 'gst' && $general_setting->state == 1)
                 <tr>
                     <td colspan="2">IGST</td>
@@ -149,11 +185,27 @@
                 </tr>
                 @endif
                 @if($lims_sale_data->order_tax)
-                <tr>
+                    <!-- tambah order tax manual -->
+                    <?php 
+                        $order_tax = $total/$lims_sale_data->order_tax_rate;
+                        $grand_total = $total+$order_tax;
+                     ?>
+                <!-- <tr>
                     <th colspan="2">{{ucfirst(trans('file.Order Tax'))}}</th>
                     <th style="text-align:right">{{number_format((float)$lims_sale_data->order_tax, 2, '.', '')}}</th>
-                </tr>
+                </tr> -->
+                <!-- order tax diganti -->
+                <!-- <tr>
+                    <th colspan="2">{{ucfirst(trans('file.Order Tax'))}}</th>
+                    <th style="text-align:right">{{number_format((float)($order_tax), 2, '.', '')}}</th>
+                </tr> -->
+
+                @else
+                    <?php 
+                        $grand_total = $total;
+                     ?>
                 @endif
+
                 @if($lims_sale_data->order_discount)
                 <tr>
                     <th colspan="2">{{ucfirst(trans('file.Order Discount'))}}</th>
@@ -172,27 +224,32 @@
                     <th style="text-align:right">{{number_format((float)$lims_sale_data->shipping_cost, 2, '.', '')}}</th>
                 </tr>
                 @endif
-                <tr>
+                <!-- <tr>
                     <th colspan="2">{{ucfirst(trans('file.grand total'))}}</th>
                     <th style="text-align:right">{{number_format((float)$lims_sale_data->grand_total, 2, '.', '')}}</th>
-                </tr>
-                <tr>
+                </tr> -->
+                <!-- grand total diganti -->
+                <!-- <tr>
+                    <th colspan="2">{{ucfirst(trans('file.grand total'))}}</th>
+                    <th style="text-align:right">{{number_format((float)($grand_total), 2, '.', '')}}</th>
+                </tr> -->
+                <!-- <tr>
                     @if($general_setting->currency_position == 'prefix')
                     <th class="centered" colspan="3">{{trans('file.In Words')}}: <span>{{$currency->code}}</span> <span>{{str_replace("-"," ",$numberInWords)}}</span></th>
                     @else
                     <th class="centered" colspan="3">{{trans('file.In Words')}}: <span>{{str_replace("-"," ",$numberInWords)}}</span> <span>{{$currency->code}}</span></th>
                     @endif
-                </tr>
+                </tr> -->
             </tfoot>
         </table>
         <table>
             <tbody>
                 @foreach($lims_payment_data as $payment_data)
-                <tr style="background-color:#ddd;">
+                <!-- <tr style="background-color:#ddd;">
                     <td style="padding: 5px;width:30%">{{trans('file.Paid By')}}: {{$payment_data->paying_method}}</td>
                     <td style="padding: 5px;width:40%">{{trans('file.Amount')}}: {{number_format((float)$payment_data->amount, 2, '.', '')}}</td>
                     <td style="padding: 5px;width:30%">{{trans('file.Change')}}: {{number_format((float)$payment_data->change, 2, '.', '')}}</td>
-                </tr>                
+                </tr>  -->               
                 @endforeach
                 <tr><td class="centered" colspan="3">{{trans('file.Thank you for shopping with us. Please come again')}}</td></tr>
                 <tr>

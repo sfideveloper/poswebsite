@@ -502,6 +502,11 @@
                       ->where([
                         ['permissions.name', 'biller-report'],
                         ['role_id', $role->id] ])->first();
+                $tax_report_active = DB::table('permissions')
+                      ->join('role_has_permissions', 'permissions.id', '=', 'role_has_permissions.permission_id')
+                      ->where([
+                        ['permissions.name', 'tax-report'],
+                        ['role_id', $role->id] ])->first();
               ?>
               <?php if($profit_loss_active || $best_seller_active || $warehouse_report_active || $warehouse_stock_report_active || $product_report_active || $daily_sale_active || $monthly_sale_active || $daily_purchase_active || $monthly_purchase_active || $purchase_report_active || $sale_report_active || $payment_report_active || $product_qty_alert_active || $user_report_active || $customer_report_active || $supplier_report_active || $due_report_active): ?>
               <li><a href="#report" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-document-remove"></i><span><?php echo e(trans('file.Reports')); ?></span></a>
@@ -633,6 +638,11 @@
                   <?php if($biller_report_active): ?>
                   <li id="biller-report-menu">
                     <a id="biller-report-menu" href=""><?php echo e(trans('file.Biller Report')); ?></a>
+                  </li>
+                  <?php endif; ?>
+                  <?php if($tax_report_active): ?>
+                  <li id="tax-report-menu">
+                    <a id="tax-report-menu" href=""><?php echo e(trans('file.Tax Report')); ?></a>
                   </li>
                   <?php endif; ?>
                 </ul>
@@ -1025,6 +1035,11 @@
       $("a#biller-report-menu").click(function(e){
         e.preventDefault();
         $('#biller-modal').modal();
+      });
+      
+      $("a#tax-report-menu").click(function(e){
+        e.preventDefault();
+        $('#tax-modal').modal();
       });
 
       $("a#due-report-link").click(function(e){

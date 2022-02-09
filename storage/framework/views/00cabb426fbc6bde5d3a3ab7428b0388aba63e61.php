@@ -106,7 +106,11 @@
         </p>
         <table>
             <tbody>
-                <?php $total_product_tax = 0;?>
+                <?php 
+                    $total_product_tax = 0;
+                    $total = 0;
+                    $grand_total = 0;
+                ?>
                 <?php $__currentLoopData = $lims_product_sale_data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php 
                     $lims_product_data = \App\Product::find($product_sale_data->product_id);
@@ -116,28 +120,60 @@
                     }
                     else
                         $product_name = $lims_product_data->name;
-                ?>
+
+
+                    // hitung manual harga product
+                    $harga_product = number_format((float)($product_sale_data->total / $product_sale_data->qty), 2, '.', '');
+
+                    if ($product_sale_data->tax_rate) {
+                        $harga_product = $harga_product-($product_sale_data->tax / $product_sale_data->qty); 
+                    }
+                    $total_harga_perProduct = $harga_product*$product_sale_data->qty;
+
+                    $total += $total_harga_perProduct;
+
+
+                 ?>
                 <tr>
                     <td colspan="2">
                         <?php echo e($product_name); ?>
 
-                        <br><?php echo e($product_sale_data->qty); ?> x <?php echo e(number_format((float)($product_sale_data->total / $product_sale_data->qty), 2, '.', '')); ?>
 
 
-                        <?php if($product_sale_data->tax_rate): ?>
+                        <!-- <br><?php echo e($product_sale_data->qty); ?> x <?php echo e(number_format((float)($product_sale_data->total / $product_sale_data->qty), 2, '.', '')); ?> -->
+
+                        <!-- harga per produk diganti -->
+                        <br><?php echo e($product_sale_data->qty); ?> x <?php echo e($harga_product); ?>
+
+
+                        <!-- menghilangkan tax perProduct -->
+                        <!-- <?php if($product_sale_data->tax_rate): ?>
                             <?php $total_product_tax += $product_sale_data->tax ?>
                             [<?php echo e(trans('file.Tax')); ?> (<?php echo e($product_sale_data->tax_rate); ?>%): <?php echo e($product_sale_data->tax); ?>]
-                        <?php endif; ?>
+                        <?php endif; ?> -->
                     </td>
-                    <td style="text-align:right;vertical-align:bottom"><?php echo e(number_format((float)$product_sale_data->total, 2, '.', '')); ?></td>
+
+                    <!-- <td style="text-align:right;vertical-align:bottom"><?php echo e(number_format((float)$product_sale_data->total, 2, '.', '')); ?></td> -->
+
+                    <!-- total harga perProduct -->
+                    <td style="text-align:right;vertical-align:bottom"><?php echo e(number_format((float)($total_harga_perProduct), 2, '.', '')); ?></td>
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+
             </tbody>
             <tfoot>
+
+                <!-- <tr>
+                    <th colspan="2"><?php echo e(ucfirst(trans('file.Total'))); ?></th>
+                    <th style="text-align:right"><?php echo e(number_format((float)($lims_sale_data->total_price), 2, '.', '')); ?></th>
+                </tr> -->
+                <!-- total diganti -->
                 <tr>
                     <th colspan="2"><?php echo e(ucfirst(trans('file.Total'))); ?></th>
-                    <th style="text-align:right"><?php echo e(number_format((float)$lims_sale_data->total_price, 2, '.', '')); ?></th>
+                    <th style="text-align:right"><?php echo e(number_format((float)($total), 2, '.', '')); ?></th>
                 </tr>
+
                 <?php if($general_setting->invoice_format == 'gst' && $general_setting->state == 1): ?>
                 <tr>
                     <td colspan="2">IGST</td>
@@ -154,11 +190,27 @@
                 </tr>
                 <?php endif; ?>
                 <?php if($lims_sale_data->order_tax): ?>
-                <tr>
+                    <!-- tambah order tax manual -->
+                    <?php 
+                        $order_tax = $total/$lims_sale_data->order_tax_rate;
+                        $grand_total = $total+$order_tax;
+                     ?>
+                <!-- <tr>
                     <th colspan="2"><?php echo e(ucfirst(trans('file.Order Tax'))); ?></th>
                     <th style="text-align:right"><?php echo e(number_format((float)$lims_sale_data->order_tax, 2, '.', '')); ?></th>
-                </tr>
+                </tr> -->
+                <!-- order tax diganti -->
+                <!-- <tr>
+                    <th colspan="2"><?php echo e(ucfirst(trans('file.Order Tax'))); ?></th>
+                    <th style="text-align:right"><?php echo e(number_format((float)($order_tax), 2, '.', '')); ?></th>
+                </tr> -->
+
+                <?php else: ?>
+                    <?php 
+                        $grand_total = $total;
+                     ?>
                 <?php endif; ?>
+
                 <?php if($lims_sale_data->order_discount): ?>
                 <tr>
                     <th colspan="2"><?php echo e(ucfirst(trans('file.Order Discount'))); ?></th>
@@ -177,27 +229,32 @@
                     <th style="text-align:right"><?php echo e(number_format((float)$lims_sale_data->shipping_cost, 2, '.', '')); ?></th>
                 </tr>
                 <?php endif; ?>
-                <tr>
+                <!-- <tr>
                     <th colspan="2"><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
                     <th style="text-align:right"><?php echo e(number_format((float)$lims_sale_data->grand_total, 2, '.', '')); ?></th>
-                </tr>
-                <tr>
+                </tr> -->
+                <!-- grand total diganti -->
+                <!-- <tr>
+                    <th colspan="2"><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
+                    <th style="text-align:right"><?php echo e(number_format((float)($grand_total), 2, '.', '')); ?></th>
+                </tr> -->
+                <!-- <tr>
                     <?php if($general_setting->currency_position == 'prefix'): ?>
                     <th class="centered" colspan="3"><?php echo e(trans('file.In Words')); ?>: <span><?php echo e($currency->code); ?></span> <span><?php echo e(str_replace("-"," ",$numberInWords)); ?></span></th>
                     <?php else: ?>
                     <th class="centered" colspan="3"><?php echo e(trans('file.In Words')); ?>: <span><?php echo e(str_replace("-"," ",$numberInWords)); ?></span> <span><?php echo e($currency->code); ?></span></th>
                     <?php endif; ?>
-                </tr>
+                </tr> -->
             </tfoot>
         </table>
         <table>
             <tbody>
                 <?php $__currentLoopData = $lims_payment_data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payment_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <tr style="background-color:#ddd;">
+                <!-- <tr style="background-color:#ddd;">
                     <td style="padding: 5px;width:30%"><?php echo e(trans('file.Paid By')); ?>: <?php echo e($payment_data->paying_method); ?></td>
                     <td style="padding: 5px;width:40%"><?php echo e(trans('file.Amount')); ?>: <?php echo e(number_format((float)$payment_data->amount, 2, '.', '')); ?></td>
                     <td style="padding: 5px;width:30%"><?php echo e(trans('file.Change')); ?>: <?php echo e(number_format((float)$payment_data->change, 2, '.', '')); ?></td>
-                </tr>                
+                </tr>  -->               
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 <tr><td class="centered" colspan="3"><?php echo e(trans('file.Thank you for shopping with us. Please come again')); ?></td></tr>
                 <tr>

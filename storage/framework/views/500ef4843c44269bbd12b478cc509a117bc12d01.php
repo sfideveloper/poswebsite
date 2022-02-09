@@ -20,12 +20,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mt-3">
+                <div class="col-md-3 mt-3">
                     <div class="form-group row">
                         <label class="d-tc mt-2"><strong><?php echo e(ucwords(trans('file.Choose Warehouse'))); ?></strong> &nbsp;</label>
                         <div class="d-tc">
                             <input type="hidden" name="warehouse_id_hidden" value="<?php echo e($warehouse_id); ?>" />
                             <select id="warehouse_id" name="warehouse_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
+                                <option value="all">All Warehouse</option>
                                 <?php $__currentLoopData = $lims_warehouse_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $warehouse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($warehouse->id); ?>"><?php echo e($warehouse->name); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -35,7 +36,7 @@
                 </div>
                 <div class="col-md-2 mt-3">
                     <div class="form-group text-right">
-                        <button class="btn btn-primary btn-md-block" type="submit"><?php echo e(ucfirst(trans('file.submit'))); ?></button>
+                        <button class="btn btn-primary" type="submit"><?php echo e(ucfirst(trans('file.submit'))); ?></button>
                     </div>
                 </div>
             </div>
@@ -79,6 +80,7 @@
                             <th><?php echo e(ucfirst(trans('file.Paid'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Due'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Tax'))); ?></th>
+                            <th>Pajak Produk</th>
                             <th><?php echo e(ucfirst(trans('file.Status'))); ?></th>
                         </tr>
                     </thead>
@@ -113,6 +115,7 @@
                             <td><?php echo e($sale->paid_amount); ?></td>
                             <td><?php echo e(number_format((float)($sale->grand_total - $sale->paid_amount), 2, '.', '')); ?></td>
                             <td><?php echo e($sale->order_tax); ?></td>
+                            <td><?php echo e($sale->total_tax); ?></td>
                             <?php if($sale->sale_status == 1): ?>
                             <td><div class="badge badge-success"><?php echo e(trans('file.Completed')); ?></div></td>
                             <?php else: ?>
@@ -128,6 +131,7 @@
                             <th></th>
                             <th></th>
                             <th></th>
+                            <th>0.00</th>
                             <th>0.00</th>
                             <th>0.00</th>
                             <th>0.00</th>
@@ -489,12 +493,14 @@
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 9 ).footer() ).html(dt_selector.cells( rows, 9, { page: 'current' } ).data().sum().toFixed(2));
         }
         else {
             $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 8 ).footer() ).html(dt_selector.column( 8, {page:'current'} ).data().sum().toFixed(2));
+            $( dt_selector.column( 9 ).footer() ).html(dt_selector.column( 9, {page:'current'} ).data().sum().toFixed(2));
         }
     }
 

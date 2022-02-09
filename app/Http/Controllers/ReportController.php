@@ -844,15 +844,23 @@ class ReportController extends Controller
     {
         $data = $request->all();
         $warehouse_id = $data['warehouse_id'];
-        $biller_id = $data['warehouse_id'];
         $start_date = $data['start_date'];
         $end_date = $data['end_date'];
 
-        $lims_purchase_data = Purchase::where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
-        $lims_sale_data = Sale::with('customer')->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
-        $lims_quotation_data = Quotation::with('customer')->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
-        $lims_return_data = Returns::with('customer', 'biller')->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
-        $lims_expense_data = Expense::with('expenseCategory')->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+        if ($warehouse_id == 'all') {
+            $lims_purchase_data = Purchase::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_sale_data = Sale::with('customer')->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_quotation_data = Quotation::with('customer')->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_return_data = Returns::with('customer', 'biller')->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_expense_data = Expense::with('expenseCategory')->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+        } else {
+            $lims_purchase_data = Purchase::where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_sale_data = Sale::with('customer')->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_quotation_data = Quotation::with('customer')->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_return_data = Returns::with('customer', 'biller')->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_expense_data = Expense::with('expenseCategory')->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+        }
+
 
         $lims_product_purchase_data = [];
         $lims_product_sale_data = [];
@@ -1008,10 +1016,10 @@ class ReportController extends Controller
             $lims_sale_data = Sale::with('customer')->where('biller_id', $biller_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
             $lims_quotation_data = Quotation::with('customer')->where('biller_id', $biller_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
             $lims_return_data = Returns::with('customer', 'biller')->where('biller_id', $biller_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
-        }else {
+        } else {
             $lims_sale_data = Sale::with('customer')->where('biller_id', $biller_id)->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
             $lims_quotation_data = Quotation::with('customer')->where('biller_id', $biller_id)->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
-            $lims_return_data = Returns::with('customer', 'biller')->where('biller_id', $biller_id)->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();    
+            $lims_return_data = Returns::with('customer', 'biller')->where('biller_id', $biller_id)->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
         }
         $lims_product_sale_data = [];
         $lims_product_quotation_data = [];
@@ -1030,5 +1038,38 @@ class ReportController extends Controller
         $lims_warehouse_list = Warehouse::where('is_active', true)->get();
         // dd($lims_product_sale_data, $lims_product_quotation_data, $lims_product_return_data);
         return view('report.biller_report', compact('biller_id', 'warehouse_id', 'start_date', 'end_date', 'lims_sale_data', 'lims_product_sale_data', 'lims_biller_list', 'lims_warehouse_list', 'lims_quotation_data', 'lims_product_quotation_data', 'lims_return_data', 'lims_product_return_data'));
+    }
+
+    public function taxReport(Request $request)
+    {
+        $data = $request->all();
+        $warehouse_id = $data['warehouse_id'];
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+
+        if ($warehouse_id == 'all') {
+            // $lims_sale_data_tax = Sale::with('customer')->where('total_tax', '!=', 0)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_sale_data_tax = Sale::with('customer')->join('product_sales', 'sales.id', '=', 'product_sales.sale_id')->where('product_sales.tax', '!=', 0)->whereDate('sales.created_at', '>=', $start_date)->whereDate('sales.created_at', '<=', $end_date)->orderBy('sales.created_at', 'desc')->get();
+            $lims_sale_data_notax = Sale::with('customer')->join('product_sales', 'sales.id', '=', 'product_sales.sale_id')->where('product_sales.tax', 0)->whereDate('sales.created_at', '>=', $start_date)->whereDate('sales.created_at', '<=', $end_date)->orderBy('sales.created_at', 'desc')->get();
+        } else {
+            $lims_sale_data_tax = Sale::with('customer')->join('product_sales', 'sales.id', '=', 'product_sales.sale_id')->where('sales.warehouse_id', $warehouse_id)->where('product_sales.tax', '!=', 0)->whereDate('sales.created_at', '>=', $start_date)->whereDate('sales.created_at', '<=', $end_date)->orderBy('sales.created_at', 'desc')->get();
+            // $lims_sale_data_tax = Sale::with('customer')->where('warehouse_id', $warehouse_id)->where('total_tax', '!=', 0)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+            $lims_sale_data_notax = Sale::with('customer')->join('product_sales', 'sales.id', '=', 'product_sales.sale_id')->where('sales.warehouse_id', $warehouse_id)->where('product_sales.tax', 0)->whereDate('sales.created_at', '>=', $start_date)->whereDate('sales.created_at', '<=', $end_date)->orderBy('sales.created_at', 'desc')->get();
+            // $lims_sale_data_notax = Sale::with('customer')->where('warehouse_id', $warehouse_id)->whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->orderBy('created_at', 'desc')->get();
+        }
+
+        $lims_product_sale_data_tax = [];
+        $lims_product_sale_data_notax = [];
+
+        foreach ($lims_sale_data_tax as $key => $sale) {
+            $lims_product_sale_data_tax[$key] = Product_Sale::where('sale_id', $sale->sale_id)->where('tax', '!=', 0)->get();
+        }
+
+        foreach ($lims_sale_data_notax as $key => $sale) {
+            $lims_product_sale_data_notax[$key] = Product_Sale::where('sale_id', $sale->sale_id)->where('tax', 0)->get();
+        }
+        $lims_warehouse_list = Warehouse::where('is_active', true)->get();
+        // dd($lims_product_sale_data_tax);
+        return view('report.tax_report', compact('warehouse_id', 'start_date', 'end_date', 'lims_sale_data_tax', 'lims_product_sale_data_tax', 'lims_sale_data_notax', 'lims_product_sale_data_notax', 'lims_warehouse_list'));
     }
 }

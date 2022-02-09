@@ -776,6 +776,24 @@ class RoleController extends Controller
         else
             $role->revokePermissionTo('due-report');
 
+        if($request->has('biller-report')){
+            $permission = Permission::firstOrCreate(['name' => 'biller-report']);
+            if(!$role->hasPermissionTo('biller-report')){
+                $role->givePermissionTo($permission);
+            }
+        }
+        else
+            $role->revokePermissionTo('biller-report');
+
+        if($request->has('tax-report')){
+            $permission = Permission::firstOrCreate(['name' => 'tax-report']);
+            if(!$role->hasPermissionTo('tax-report')){
+                $role->givePermissionTo($permission);
+            }
+        }
+        else
+            $role->revokePermissionTo('tax-report');
+
         if($request->has('backup_database')){
             $permission = Permission::firstOrCreate(['name' => 'backup_database']);
             if(!$role->hasPermissionTo('backup_database')){

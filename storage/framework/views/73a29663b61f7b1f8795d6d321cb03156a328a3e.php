@@ -1129,7 +1129,8 @@
                             </div>
                             <div class="payment-options">
                                 <div class="payment-amount">
-                                    <h2><?php echo e(ucwords(trans('file.grand total'))); ?>  <span class="ml-2"><?php echo e($currency->code); ?><span id="grand-total">0</span></span></h2>
+                                    <h2><?php echo e(ucwords(trans('file.grand total'))); ?>  <span class="ml-2" style="color: black !important; "><?php echo e($currency->code); ?>&nbsp;<span id="grand-total" style="color: black !important;">0</span></span></h2>
+                                    <h2><?php echo e(ucwords(trans('file.Total Payment'))); ?>  <span class="ml-2"><?php echo e($currency->code); ?>&nbsp;<span id="str_total_no_tax">0</span></span></h2>
                                 </div>
                                 <div class="column-5">
                                     <button style="background: #228520;" type="button" class="btn btn-custom payment-btn text-white" data-toggle="modal" data-target="#add-payment" id="credit-card-btn"><i class="mdi mdi-credit-card"></i> Card</button>   
@@ -1176,15 +1177,18 @@
                                             <div class="row">
                                                 <div class="col-md-6 mt-1">
                                                     <label><?php echo e(ucwords(trans('file.Recieved Amount'))); ?> *</label>
-                                                    <input type="text" name="paying_amount" class="form-control numkey" required step="any">
+                                                    <input type="text" name="paying_amount" class="form-control numkey" required step="any" hidden>
+                                                    <input type="text" name="paying_amount_no_tax" class="form-control numkey" required step="any">
                                                 </div>
                                                 <div class="col-md-6 mt-1">
                                                     <label><?php echo e(ucwords(trans('file.Paying Amount'))); ?> *</label>
-                                                    <input type="text" name="paid_amount" class="form-control numkey"  step="any">
+                                                    <input type="text" name="paid_amount" class="form-control numkey"  step="any" hidden>
+                                                    <input type="text" name="paid_amount_no_tax" class="form-control numkey"  step="any">
                                                 </div>
                                                 <div class="col-md-6 mt-1">
                                                     <label><?php echo e(ucwords(trans('file.Change'))); ?> : </label>
-                                                    <p id="change" class="ml-2">0</p>
+                                                    <p id="change" class="ml-2" hidden>0</p>
+                                                    <p id="change_no_tax" class="ml-2">0</p>
                                                 </div>
                                                 <div class="col-md-6 mt-1">
                                                     <input type="hidden" name="paid_by_id">
@@ -2612,6 +2616,8 @@ $(".payment-btn").on("click", function() {
     audio.play();
     $('input[name="paid_amount"]').val($("#grand-total").text());
     $('input[name="paying_amount"]').val($("#grand-total").text());
+    $('input[name="paid_amount_no_tax"]').val($("#str_total_no_tax").text());
+    $('input[name="paying_amount_no_tax"]').val($("#str_total_no_tax").text());
     $('.qc').data('initial', 1);
 });
 
@@ -2621,6 +2627,8 @@ $("#draft-btn").on("click",function(){
     $('input[name="sale_status"]').val(3);
     $('input[name="paying_amount"]').prop('required',false);
     $('input[name="paid_amount"]').prop('required',false);
+    $('input[name="paying_amount_no_tax"]').prop('required',false);
+    $('input[name="paid_amount_no_tax"]').prop('required',false);
     var rownumber = $('table.order-list tbody tr:last').index();
     if (rownumber < 0) {
         alert("Please insert product to order table!")
@@ -2747,6 +2755,34 @@ $('input[name="paid_amount"]').on("input", function() {
     }
 });
 
+// tambah input no tax
+$('#add-payment input[name="paying_amount_no_tax"]').on("input", function() {
+    change_no_tax($(this).val(), $('input[name="paid_amount_no_tax"]').val());
+});
+
+$('input[name="paid_amount_no_tax"]').on("input", function() {
+    if( $(this).val() > parseFloat($('input[name="paying_amount_no_tax"]').val()) ) {
+        alert('Paying amount cannot be bigger than recieved amount');
+        $(this).val('');
+    }
+    else if( $(this).val() > parseFloat($('#grand-total').text()) ){
+        alert('Paying amount cannot be bigger than grand total');
+        $(this).val('');
+    }
+
+    change_no_tax( $('input[name="paying_amount_no_tax"]').val(), $(this).val() );
+    var id = $('select[name="paid_by_id_select"]').val();
+    if(id == 2){
+        var balance = gift_card_amount[$("#gift_card_id_select").val()] - gift_card_expense[$("#gift_card_id_select").val()];
+        if($(this).val() > balance)
+            alert('Amount exceeds card balance! Gift Card balance: '+ balance);
+    }
+    else if(id == 6){
+        if( $('input[name="paid_amount_no_tax"]').val() > deposit[$('#customer_id').val()] )
+            alert('Amount exceeds customer deposit! Customer deposit : '+ deposit[$('#customer_id').val()]);
+    }
+});
+
 $('.transaction-btn-plus').on("click", function() {
     $(this).addClass('d-none');
     $('.transaction-btn-close').removeClass('d-none');
@@ -2771,19 +2807,28 @@ $(document).on('click', '.qc-btn', function(e) {
     if($(this).data('amount')) {
         if($('.qc').data('initial')) {
             $('input[name="paying_amount"]').val( $(this).data('amount').toFixed(2) );
+            $('input[name="paying_amount_no_tax"]').val( $(this).data('amount').toFixed(2) );
             $('.qc').data('initial', 0);
         }
         else {
             $('input[name="paying_amount"]').val( (parseFloat($('input[name="paying_amount"]').val()) + $(this).data('amount')).toFixed(2) );
+            $('input[name="paying_amount_no_tax"]').val( (parseFloat($('input[name="paying_amount_no_tax"]').val()) + $(this).data('amount')).toFixed(2) );
         }
     }
-    else
+    else{
         $('input[name="paying_amount"]').val('0.00');
+        $('input[name="paying_amount_no_tax"]').val('0.00');
+    }
     change( $('input[name="paying_amount"]').val(), $('input[name="paid_amount"]').val() );
+    change_no_tax( $('input[name="paying_amount_no_tax"]').val(), $('input[name="paid_amount_no_tax"]').val() );
 });
 
 function change(paying_amount, paid_amount) {
     $("#change").text( parseFloat(paying_amount - paid_amount).toFixed(2) );
+}
+
+function change_no_tax(paying_amount, paid_amount) {
+    $("#change_no_tax").text( parseFloat(paying_amount - paid_amount).toFixed(2) );
 }
 
 function confirmDelete() {
@@ -2979,7 +3024,8 @@ function checkQuantity(sale_qty, flag) {
         if (total_qty > parseFloat(product_qty[pos])) {
             alert('Quantity exceeds stock quantity!');
             if (flag) {
-                sale_qty = sale_qty.substring(0, sale_qty.length - 1);
+                // sale_qty = sale_qty.substring(0, sale_qty.length - 1);
+                sale_qty = total_qty - 1;
                 $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.qty').val(sale_qty);
                 checkQuantity(sale_qty, true);
             } else {
@@ -2996,7 +3042,8 @@ function checkQuantity(sale_qty, flag) {
             if( parseFloat(sale_qty * child_qty[index]) > product_qty[position] ) {
                 alert('Quantity exceeds stock quantity!');
                 if (flag) {
-                    sale_qty = sale_qty.substring(0, sale_qty.length - 1);
+                    // sale_qty = sale_qty.substring(0, sale_qty.length - 1);
+                    sale_qty = sale_qty - 1;
                     $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.qty').val(sale_qty);
                 }
                 else {
@@ -3102,6 +3149,13 @@ function calculateTotal() {
     });
     $('input[name="total_price"]').val(total.toFixed(2));
 
+    var total_no_tax = 0;
+    total_no_tax = total-total_tax;
+
+    $('#str_total_no_tax').text(total_no_tax.toFixed(2));
+
+    console.log(total_no_tax); 
+
     calculateGrandTotal();
 }
 
@@ -3111,7 +3165,6 @@ function calculateGrandTotal() {
     var subtotal = parseFloat($('input[name="total_price"]').val());
     var order_tax = parseFloat($('select[name="order_tax_rate_select"]').val());
     var order_discount = parseFloat($('input[name="order_discount"]').val());
-    console.log(order_discount);
     var type = $("input[type='radio']:checked").val();
 
     if (!order_discount)
@@ -3125,19 +3178,16 @@ function calculateGrandTotal() {
     
     //edit type discount
     if (type == "none") {
-        console.log(type);
         order_discount = 0.00;
         order_tax = (subtotal - 0) * (order_tax / 100);
         $("#discount").text(order_discount.toFixed(2));
         var grand_total = (subtotal + order_tax + shipping_cost) - 0;
         $('input[name="order_discount"]').val(0);
     }else if (type == "percentage"){
-        console.log(type);
         order_tax = (subtotal - (subtotal * order_discount / 100)) * (order_tax / 100);
         $("#discount").text(order_discount + "% : " + (subtotal * order_discount / 100));
         var grand_total = (subtotal + order_tax + shipping_cost) - (subtotal * order_discount / 100);
     }else if (type == "fixed"){
-        console.log(type);
         order_tax = (subtotal - order_discount) * (order_tax / 100);
         $("#discount").text(order_discount.toFixed(2));
         var grand_total = (subtotal + order_tax + shipping_cost) - order_discount;
@@ -3256,6 +3306,10 @@ $(document).on('submit', '.payment-form', function(e) {
         e.preventDefault();
     }
     else if( parseFloat( $('input[name="paying_amount"]').val() ) < parseFloat( $('input[name="paid_amount"]').val() ) ){
+        alert('Paying amount cannot be bigger than recieved amount');
+        e.preventDefault();
+    }
+    else if( parseFloat( $('input[name="paying_amount_no_tax"]').val() ) < parseFloat( $('input[name="paid_amount_no_tax"]').val() ) ){
         alert('Paying amount cannot be bigger than recieved amount');
         e.preventDefault();
     }
