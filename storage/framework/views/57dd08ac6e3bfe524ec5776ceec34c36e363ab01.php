@@ -175,7 +175,7 @@
             $('select[name="warehouse_id"]').prop('required',false);
             $('select[name="biller_id"]').prop('required',false);
         }
-        else if($(this).val() > 2 && $(this).val() != 5  && $(this).val() != 6) {
+        else if($(this).val() > 2 && $(this).val() != 5  && $(this).val() != 7) {
             $('select[name="warehouse_id"]').prop('required',true);
             $('select[name="biller_id"]').prop('required',true);
             $('#biller-id').show(300);
