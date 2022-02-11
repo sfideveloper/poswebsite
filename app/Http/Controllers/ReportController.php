@@ -1079,7 +1079,7 @@ class ReportController extends Controller
         }
 
         $lims_warehouse_list = Warehouse::where('is_active', true)->get();
-        dd($lims_sale_data_notax);
+        // dd($lims_sale_data_notax);
         return view('report.tax_report', compact('warehouse_id', 'start_date', 'end_date', 'lims_sale_data_tax', 'lims_product_sale_data_tax', 'lims_sale_data_notax', 'lims_product_sale_data_notax', 'lims_sale_data_taxall', 'lims_product_sale_data_taxall', 'lims_warehouse_list'));
     }
 }
