@@ -70,6 +70,7 @@
                             <th>{{ucfirst(trans('file.product'))}} ({{ucfirst(trans('file.qty'))}})</th>
                             <th>{{ucfirst(trans('file.Price'))}}</th>
                             <th>{{ucfirst(trans('file.Tax'))}}</th>
+                            <th>{{ucfirst(trans('file.Total'))}}</th>
                             <th>{{ucfirst(trans('file.grand total'))}}</th>
                             {{-- <th>{{ucfirst(trans('file.Paid'))}}</th>
                             <th>{{ucfirst(trans('file.Due'))}}</th> --}}
@@ -102,9 +103,63 @@
                                 <br>
                                 @endforeach
                             </td>
-                            <td>{{$sale->net_unit_price}}</td>
-                            <td>{{$sale->tax_rate}} %</td>
-                            <td>{{$sale->total}}</td>
+                            {{-- <td>{{$sale->net_unit_price}}</td> --}}
+                            <td>
+                                @foreach($lims_product_sale_data_tax[$key] as $product_sale_data)
+                                <?php 
+                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
+                                    if($product_sale_data->variant_id) {
+                                        $variant = App\Variant::find($product_sale_data->variant_id);
+                                        $product->name .= ' ['.$variant->name.']';
+                                    }
+                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
+                                ?>
+                                @if($unit)
+                                    {{$product_sale_data->net_unit_price}}
+                                @else
+                                    {{$product_sale_data->net_unit_price}}
+                                @endif
+                                <br>
+                                @endforeach
+                            </td>
+                            {{-- <td>{{$sale->tax_rate}} %</td> --}}
+                            <td>
+                                @foreach($lims_product_sale_data_tax[$key] as $product_sale_data)
+                                <?php 
+                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
+                                    if($product_sale_data->variant_id) {
+                                        $variant = App\Variant::find($product_sale_data->variant_id);
+                                        $product->name .= ' ['.$variant->name.']';
+                                    }
+                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
+                                ?>
+                                @if($unit)
+                                    {{$product_sale_data->tax_rate}} %
+                                @else
+                                    {{$product_sale_data->tax_rate}} %
+                                @endif
+                                <br>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach($lims_product_sale_data_tax[$key] as $product_sale_data)
+                                <?php 
+                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
+                                    if($product_sale_data->variant_id) {
+                                        $variant = App\Variant::find($product_sale_data->variant_id);
+                                        $product->name .= ' ['.$variant->name.']';
+                                    }
+                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
+                                ?>
+                                @if($unit)
+                                {{$product_sale_data->total}}
+                                @else
+                                {{$product_sale_data->total}}
+                                @endif
+                                <br>
+                                @endforeach
+                            </td>
+                            <td>{{$sale->grand_total}}</td>
                             {{-- <td>{{$sale->paid_amount}}</td>
                             <td>{{number_format((float)($sale->grand_total - $sale->paid_amount), 2, '.', '')}}</td> --}}
                             {{-- <td>{{$sale->order_tax}}</td> --}}
@@ -125,6 +180,7 @@
                             <th></th>
                             {{-- <th>0.00</th>
                             <th>0.00</th> --}}
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -437,19 +493,19 @@
         if (dt_selector.rows( '.selected' ).any() && is_calling_first) {
             var rows = dt_selector.rows( '.selected' ).indexes();
 
-            $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum().toFixed(2));
+            // $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum().toFixed(2));
             // $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
             // $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
             // $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
         }
         else {
-            $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
+            // $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
             // $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
             // $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
             // $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
             // $( dt_selector.column( 7 ).footer() ).html(dt_selector.column( 7, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
         }
     }
 
