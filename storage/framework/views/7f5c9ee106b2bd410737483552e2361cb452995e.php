@@ -1,4 +1,5 @@
- <?php $__env->startSection('content'); ?>
+ 
+<?php $__env->startSection('content'); ?>
 <section class="forms">
     <div class="container-fluid">
         <div class="card">

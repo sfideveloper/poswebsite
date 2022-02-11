@@ -201,12 +201,18 @@ Route::group(['middleware' => ['auth', 'active']], function () {
 	Route::post('report/sale_report', 'ReportController@saleReport')->name('report.sale');
 	Route::post('report/payment_report_by_date', 'ReportController@paymentReportByDate')->name('report.paymentByDate');
 	Route::post('report/warehouse_report', 'ReportController@warehouseReport')->name('report.warehouse');
+	Route::get('report/warehouse_report', 'ReportController@warehouseReportAll')->name('report.warehouse.all');
 	Route::post('report/user_report', 'ReportController@userReport')->name('report.user');
+	Route::get('report/user_report', 'ReportController@userReportAll')->name('report.user.all');
 	Route::post('report/customer_report', 'ReportController@customerReport')->name('report.customer');
+	Route::get('report/customer_report', 'ReportController@customerReportAll')->name('report.customer.all');
 	Route::post('report/supplier', 'ReportController@supplierReport')->name('report.supplier');
+	Route::get('report/supplier', 'ReportController@supplierReportAll')->name('report.supplier.all');
 	Route::post('report/due_report_by_date', 'ReportController@dueReportByDate')->name('report.dueByDate');
 	Route::post('report/biller', 'ReportController@billerReport')->name('report.biller');
+	Route::get('report/biller', 'ReportController@billerReportAll')->name('report.biller.all');
 	Route::post('report/tax', 'ReportController@taxReport')->name('report.tax');
+	Route::get('report/tax', 'ReportController@taxReportAll')->name('report.tax.all');
 
 	Route::get('user/profile/{id}', 'UserController@profile')->name('user.profile');
 	Route::put('user/update_profile/{id}', 'UserController@profileUpdate')->name('user.profileUpdate');

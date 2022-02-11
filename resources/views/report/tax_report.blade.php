@@ -1,4 +1,5 @@
-@extends('layout.main') @section('content')
+@extends('layout.main') 
+@section('content')
 <section class="forms">
     <div class="container-fluid">
         <div class="card">
