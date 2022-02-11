@@ -508,7 +508,7 @@
                         ['permissions.name', 'tax-report'],
                         ['role_id', $role->id] ])->first();
               ?>
-              <?php if($profit_loss_active || $best_seller_active || $warehouse_report_active || $warehouse_stock_report_active || $product_report_active || $daily_sale_active || $monthly_sale_active || $daily_purchase_active || $monthly_purchase_active || $purchase_report_active || $sale_report_active || $payment_report_active || $product_qty_alert_active || $user_report_active || $customer_report_active || $supplier_report_active || $due_report_active): ?>
+              <?php if($profit_loss_active || $best_seller_active || $warehouse_report_active || $warehouse_stock_report_active || $product_report_active || $daily_sale_active || $monthly_sale_active || $daily_purchase_active || $monthly_purchase_active || $purchase_report_active || $sale_report_active || $payment_report_active || $product_qty_alert_active || $user_report_active || $customer_report_active || $supplier_report_active || $due_report_active || $biller_report_active || $tax_report_active): ?>
               <li><a href="#report" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-document-remove"></i><span><?php echo e(trans('file.Reports')); ?></span></a>
                 <ul id="report" class="collapse list-unstyled ">
                   <?php if($profit_loss_active): ?>
@@ -648,8 +648,7 @@
                 </ul>
               </li>
               <?php endif; ?>
-
-              <li class="nav-category">SDM</li>
+              
               <?php 
                 $department = DB::table('permissions')->where('name', 'department')->first();
                 $department_active = DB::table('role_has_permissions')->where([
@@ -672,7 +671,8 @@
                         ['role_id', $role->id]
                     ])->first();
               ?>
-              <?php if(Auth::user()->role_id != 5): ?>
+              <?php if(Auth::user()->role_id != 5 && Auth::user()->role->name != 'Perpajakan'): ?>
+              <li class="nav-category">SDM</li>
               <li class=""><a href="#hrm" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-user-group"></i><span>HRM</span></a>
                 <ul id="hrm" class="collapse list-unstyled ">
                   <?php if($department_active): ?>

@@ -223,6 +223,7 @@
                             <th><?php echo e(ucfirst(trans('file.product'))); ?> (<?php echo e(ucfirst(trans('file.qty'))); ?>)</th>
                             <th><?php echo e(ucfirst(trans('file.Price'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Tax'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Total'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
                             
                             <th><?php echo e(ucfirst(trans('file.Status'))); ?></th>
@@ -295,6 +296,26 @@
                                 <br>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </td>
+                            <td>
+                                <?php $__currentLoopData = $lims_product_sale_data_taxall[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php 
+                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
+                                    if($product_sale_data->variant_id) {
+                                        $variant = App\Variant::find($product_sale_data->variant_id);
+                                        $product->name .= ' ['.$variant->name.']';
+                                    }
+                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
+                                ?>
+                                <?php if($unit): ?>
+                                <?php echo e($product_sale_data->total); ?>
+
+                                <?php else: ?>
+                                <?php echo e($product_sale_data->total); ?>
+
+                                <?php endif; ?>
+                                <br>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </td>
                             <td><?php echo e($sale->grand_total); ?></td>
                             
                             <?php if($sale->sale_status == 1): ?>
@@ -313,6 +334,7 @@
                             <th></th>
                             <th></th>
                             
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -609,14 +631,14 @@
             // $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
             // $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
             // $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
         }
         else {
             // $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
             // $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
             // $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
             // $( dt_selector.column( 8 ).footer() ).html(dt_selector.column( 8, {page:'current'} ).data().sum().toFixed(2));
-             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+             $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
         }
     }
 </script>

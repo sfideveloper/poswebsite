@@ -5,6 +5,9 @@
 <?php if(session()->has('message')): ?>
   <div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?php echo e(session()->get('message')); ?></div> 
 <?php endif; ?>
+      <?php if(Auth::user()->role->name == 'Perpajakan'): ?>
+        <h1>Perpajakan</h1>
+      <?php else: ?>
       <div class="row">
         <div class="container-fluid">
           <div class="col-md-12 border-bottom">
@@ -367,6 +370,7 @@
           </div>
         </div>
       </section>
+      <?php endif; ?>
       
 <script type="text/javascript">
     // Show and hide color-switcher
