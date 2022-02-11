@@ -6,7 +6,21 @@
   <div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?php echo e(session()->get('message')); ?></div> 
 <?php endif; ?>
       <?php if(Auth::user()->role->name == 'Perpajakan'): ?>
-        <h1>Perpajakan</h1>
+      <section class="dashboard-counts">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card greeting card-rounded">
+                <div class="card-body pb-0 pb-4 ">
+                  <h1 class="welcome text-white mb-4"><?php echo e(ucwords(trans('file.welcome'))); ?>, <span><?php echo e(Auth::user()->name); ?></span> </h1>
+                  <h4 class="date mb-2 text-white" id="myDate">18 Juli 2021</h4>
+                  <h1 class="time text-white" id="myTime">09.41</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <?php else: ?>
       <div class="row">
         <div class="container-fluid">
@@ -27,11 +41,11 @@
             <div class="col-md-12">
               <div class="card greeting card-rounded">
                 <div class="card-body pb-0 pb-4 ">
-                    <h1 class="welcome text-white mb-4"><?php echo e(ucwords(trans('file.welcome'))); ?>, <span><?php echo e(Auth::user()->name); ?></span> </h1>
-                    <h4 class="date mb-2 text-white" id="myDate">18 Juli 2021</h4>
-                    <h1 class="time text-white" id="myTime">09.41</h1>
+                  <h1 class="welcome text-white mb-4"><?php echo e(ucwords(trans('file.welcome'))); ?>, <span><?php echo e(Auth::user()->name); ?></span> </h1>
+                  <h4 class="date mb-2 text-white" id="myDate">18 Juli 2021</h4>
+                  <h1 class="time text-white" id="myTime">09.41</h1>
                 </div>
-            </div>
+              </div>
             </div>
             <div class="col-md-12 form-group">
               <div class="row">
