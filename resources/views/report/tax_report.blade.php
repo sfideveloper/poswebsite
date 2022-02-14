@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header mt-2">
-                <h3 class="text-center">{{ucwords(trans('file.Tax Report'))}}</h3>
+                <h3 class="text-center">{{ucwords(trans('file.Tax Report Pajak'))}}</h3>
             </div>
             {!! Form::open(['route' => 'report.tax', 'method' => 'post']) !!}
             <div class="row mb-3">
@@ -47,15 +47,25 @@
         </div>
     </div>
     <ul class="nav nav-tabs ml-4 mt-3" role="tablist">
+
+    @if(Auth::user()->role_id =='7')         
         <li class="nav-item">
-            <a class="nav-link active" href="#warehouse-tax" role="tab" data-toggle="tab">{{trans('file.Tax')}}</a>
+            <a class="nav-link active" href="#warehouse-tax" role="tab" data-toggle="tab">{{trans('file.Tax Pajak')}}</a>
         </li>
-        <li class="nav-item">
+    @else
+        <!-- <li class="nav-item">
             <a class="nav-link" href="#warehouse-notax" role="tab" data-toggle="tab">{{trans('file.No Tax')}}</a>
+        </li> -->
+        <li class="nav-item">
+            <a class="nav-link active" href="#warehouse-tax" role="tab" data-toggle="tab">{{trans('file.Tax Pajak')}}</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#warehouse-all" role="tab" data-toggle="tab">{{trans('file.All')}}</a>
-        </li>
+        </li>    
+    @endif
+
+        
+        
     </ul>
 
     <div class="tab-content">

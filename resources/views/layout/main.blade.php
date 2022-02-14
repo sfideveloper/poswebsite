@@ -630,7 +630,7 @@
                   @endif
                   @if($tax_report_active)
                   <li id="tax-report-menu">
-                    <a id="tax-report-menu" href="">{{trans('file.Tax Report')}}</a>
+                    <a id="tax-report-menu" href="">{{trans('file.Tax Report Pajak')}}</a>
                   </li>
                   @endif
                 </ul>

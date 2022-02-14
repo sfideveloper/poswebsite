@@ -110,7 +110,7 @@
     
 
     $('select[name=role_id]').val($("input[name='role_id_hidden']").val());
-    if($('select[name=role_id]').val() > 2){
+    if($('select[name=role_id]').val() > 2 && $('select[name=role_id]').val() != 7 ){
         $('#warehouseId').show();
         $('select[name=warehouse_id]').val($("input[name='warehouse_id_hidden']").val());
         $('#biller-id').show();
