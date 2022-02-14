@@ -160,7 +160,29 @@
                                 <br>
                                 @endforeach
                             </td>
-                            <td>{{$sale->grand_total}}</td>
+                            {{-- <td>{{$sale->grand_total}}</td> --}}
+                            <td>
+                                @php
+                                    $total = 0
+                                @endphp
+                                @foreach($lims_product_sale_data_tax[$key] as $product_sale_data)
+                                <?php 
+                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
+                                    if($product_sale_data->variant_id) {
+                                        $variant = App\Variant::find($product_sale_data->variant_id);
+                                        $product->name .= ' ['.$variant->name.']';
+                                    }
+                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
+                                    $total += $product_sale_data->total
+                                ?>
+                                {{-- @if($unit)
+                                {{$total += $product_sale_data->total}}
+                                @else
+                                {{$total += $product_sale_data->total}}
+                                @endif --}}
+                                @endforeach
+                                {{ $total }}
+                            </td>
                             {{-- <td>{{$sale->paid_amount}}</td>
                             <td>{{number_format((float)($sale->grand_total - $sale->paid_amount), 2, '.', '')}}</td> --}}
                             {{-- <td>{{$sale->order_tax}}</td> --}}
