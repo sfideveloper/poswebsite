@@ -1040,7 +1040,7 @@
 														@else
 														<input type="checkbox" value="1" id="tax-report" name="tax-report">
 														@endif
-														<label for="tax-report" class="padding05">{{trans('file.Tax Report')}} &nbsp;&nbsp;</label>
+														<label for="tax-report" class="padding05">{{trans('file.Tax Report Pajak')}} &nbsp;&nbsp;</label>
 													</div>
 												</div>
 											</span>
