@@ -1157,18 +1157,18 @@
                                     <h2><?php echo e(ucwords(trans('file.grand total'))); ?>  <span class="ml-2" style="color: black !important; "><?php echo e($currency->code); ?>&nbsp;<span id="grand-total" style="color: black !important;">0</span></span></h2>
                                     <h2><?php echo e(ucwords(trans('file.Total Payment'))); ?>  <span class="ml-2"><?php echo e($currency->code); ?>&nbsp;<span id="str_total_no_tax">0</span></span></h2>
                                 </div>
-                                <div class="column-5">
+                                <!-- <div class="column-5">
                                     <button style="background: #228520;" type="button" class="btn btn-custom payment-btn text-white" data-toggle="modal" data-target="#add-payment" id="credit-card-btn"><i class="mdi mdi-credit-card"></i> Card</button>   
-                                </div>
+                                </div> -->
                                 <div class="column-5">
                                     <button style="background: #1F3BB3;" type="button" class="btn btn-custom payment-btn text-white" data-toggle="modal" data-target="#add-payment" id="cash-btn"><i class="mdi mdi-cash"></i> Cash</button>
                                 </div>
-                                <div class="column-5">
+                                <!-- <div class="column-5">
                                     <button style="background-color: #f78b38" type="button" class="btn btn-custom payment-btn text-white" data-toggle="modal" data-target="#add-payment" id="paypal-btn"><i class="mdi mdi-qrcode"></i> E-Money</button>
-                                </div>
-                                <div class="column-5">
+                                </div> -->
+                                <!-- <div class="column-5">
                                     <button style="background-color: #b33771" type="button" class="btn btn-custom payment-btn text-white" data-toggle="modal" data-target="#add-payment" id="gift-card-btn"><i class="fa fa-university"></i> Voucher</button>
-                                </div>
+                                </div> -->
                                 <!-- <div class="column-5">
                                     <button style="background-color: #e28d02" type="button" class="btn btn-custom" id="draft-btn"><i class="dripicons-flag"></i> Draft</button>
                                 </div>
@@ -1220,9 +1220,9 @@
                                                     <label><?php echo e(ucwords(trans('file.Paid By'))); ?></label>
                                                     <select name="paid_by_id_select" class="form-control selectpicker">
                                                         <option value="1">Cash</option>
-                                                        <option value="3">Credit Card</option>
-                                                        <option value="5">Emoney</option>
-                                                        <option value="2">Voucher</option>
+                                                        <!-- <option value="3">Credit Card</option> -->
+                                                        <!-- <option value="5">Emoney</option>
+                                                        <option value="2">Voucher</option> -->
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-12 mt-3">
