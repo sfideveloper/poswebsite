@@ -1264,10 +1264,12 @@ class ReportController extends Controller
         foreach ($lims_sale_data_taxall as $key => $sale) {
             $lims_product_sale_data_taxall[$key] = Product_Sale::where('sale_id', $sale->id)->get();
         }
-
+        
+        $warehouse_id_tax = User::where('id', Auth::user()->id)->get('warehouse_id_tax')->first();
+        $warehouse_id_tax_get = explode(',', $warehouse_id_tax->warehouse_id_tax);
         $lims_warehouse_list = Warehouse::where('is_active', true)->get();
-        // dd($lims_sale_data_notax);
-        return view('report.tax_report', compact('warehouse_id', 'start_date', 'end_date', 'lims_sale_data_tax', 'lims_product_sale_data_tax', 'lims_sale_data_notax', 'lims_product_sale_data_notax', 'lims_sale_data_taxall', 'lims_product_sale_data_taxall', 'lims_warehouse_list'));
+        // dd($warehouse_id_tax_get);
+        return view('report.tax_report', compact('warehouse_id', 'start_date', 'end_date', 'lims_sale_data_tax', 'lims_product_sale_data_tax', 'lims_sale_data_notax', 'lims_product_sale_data_notax', 'lims_sale_data_taxall', 'lims_product_sale_data_taxall', 'lims_warehouse_list', 'warehouse_id_tax_get'));
     }
 
     public function taxReportAll()

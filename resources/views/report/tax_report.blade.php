@@ -26,10 +26,20 @@
                         <div class="d-tc">
                             <input type="hidden" name="warehouse_id_hidden" value="{{$warehouse_id}}" />
                             <select id="warehouse_id" name="warehouse_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
-                                <option value="all">All Warehouse</option>
-                                @foreach($lims_warehouse_list as $warehouse)
-                                <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
-                                @endforeach
+                                @if (Auth::user()->role->name == 'Perpajakan')
+                                    @foreach($lims_warehouse_list as $warehouse)
+                                        @foreach ($warehouse_id_tax_get as $item)
+                                            @if ($warehouse->id == $item)
+                                            <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                                            @endif
+                                        @endforeach
+                                    @endforeach
+                                    @else
+                                    <option value="all">All Warehouse</option>
+                                    @foreach($lims_warehouse_list as $warehouse)
+                                        <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                     </div>

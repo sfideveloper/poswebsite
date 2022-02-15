@@ -391,10 +391,24 @@
                       <div class="form-group">
                           <label>{{ucwords(trans('file.Warehouse'))}} *</label>
                           <select name="warehouse_id" class="selectpicker form-control" required data-live-search="true" id="warehouse-id" data-live-search-style="begins" title="Select warehouse...">
+                            @if (Auth::user()->role->name == 'Perpajakan')
+                              @foreach($lims_warehouse_list as $warehouse)
+                              @php
+                                $warehouse_id_tax = DB::table('users')->where('id', Auth::user()->id)->get('warehouse_id_tax')->first();
+                                $warehouse_id_tax_get = explode(',', $warehouse_id_tax->warehouse_id_tax);
+                              @endphp
+                                @foreach ($warehouse_id_tax_get as $item)
+                                    @if ($warehouse->id == $item)
+                                    <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                                    @endif
+                                @endforeach
+                              @endforeach
+                            @else
                             <option value="all">All Warehouse</option>
                               @foreach($lims_warehouse_list as $warehouse)
-                              <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                                <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
                               @endforeach
+                            @endif
                           </select>
                       </div>
 

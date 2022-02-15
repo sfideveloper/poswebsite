@@ -134,6 +134,16 @@
                                           @endforeach
                                         </select>
                                     </div>
+                                    <div class="form-group" id="warehouseIdTax">
+                                        <div aria-checked="false" aria-disabled="false">
+                                            @foreach($lims_warehouse_list as $key => $warehouse)
+                                            <div class="checkbox">
+                                                <input type="checkbox" value="{{$warehouse->id}}" id="{{$warehouse->name}}" name="warehouse_check[]}">
+                                                <label for="{{$warehouse->name}}" class="padding05">{{$warehouse->name}}</label>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 </div>                              
                             </div>
                         {!! Form::close() !!}
@@ -152,6 +162,7 @@
 
     $('#warehouseId').hide();
     $('#biller-id').hide();
+    $('#warehouseIdTax').hide();
     $('.customer-section').hide();
 
     $('.selectpicker').selectpicker({
@@ -168,24 +179,39 @@
         if($(this).val() == 5) {
             $('#biller-id').hide(300);
             $('#warehouseId').hide(300);
+            $('#warehouseIdTax').hide(300);
             $('.customer-section').show(300);
             $('.customer-input').prop('required',true);
             $('select[name="warehouse_id"]').prop('required',false);
             $('select[name="biller_id"]').prop('required',false);
         }
-        else if($(this).val() > 2 && $(this).val() != 5  && $(this).val() != 7) {
+        else if($(this).val() > 2 && $(this).val() != 5 && $(this).val() != 7) {
             $('select[name="warehouse_id"]').prop('required',true);
             $('select[name="biller_id"]').prop('required',true);
+            $('select[name="warehouseIdTax"]').prop('required',false);
             $('#biller-id').show(300);
             $('#warehouseId').show(300);
+            $('#warehouseIdTax').hide(300);
+            $('.customer-section').hide(300);
+            $('.customer-input').prop('required',false);
+        }
+        else if($(this).val() == 7) {
+            $('select[name="warehouseIdTax"]').prop('required',true);
+            $('#warehouseIdTax').show(300);
+            $('select[name="warehouse_id"]').prop('required',false);
+            $('select[name="biller_id"]').prop('required',false);
+            $('#biller-id').hide(300);
+            $('#warehouseId').hide(300);
             $('.customer-section').hide(300);
             $('.customer-input').prop('required',false);
         }
         else {
             $('select[name="warehouse_id"]').prop('required',false);
             $('select[name="biller_id"]').prop('required',false);
+            $('select[name="warehouseIdTax"]').prop('required',false);
             $('#biller-id').hide(300);
             $('#warehouseId').hide(300);
+            $('#warehouseIdTax').hide(300);
             $('.customer-section').hide(300);
             $('.customer-input').prop('required',false);
         }

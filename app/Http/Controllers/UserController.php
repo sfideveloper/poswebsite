@@ -57,6 +57,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $this->validate($request, [
             'name' => [
                 'max:255',
@@ -96,10 +97,20 @@ class UserController extends Controller
             $message = 'User created successfully. Please setup your <a href="setting/mail_setting">mail setting</a> to send mail.';
         }
         if(!isset($data['is_active']))
-            $data['is_active'] = false;
+        $data['is_active'] = false;
         $data['is_deleted'] = false;
         $data['password'] = bcrypt($data['password']);
         $data['phone'] = $data['phone_number'];
+        if ($data['role_id'] == 7) {
+            $warehouse_check_array = [];
+            foreach ($data['warehouse_check'] as $key => $value) {
+                $warehouse_check_array[$key] = $value;
+            }
+            $warehouse_check = implode(",", $warehouse_check_array);
+            // dd($warehouse_check);
+            $data['warehouse_id_tax'] = "$warehouse_check";
+        }
+        // dd($data);
         User::create($data);
         if($data['role_id'] == 5) {
             $data['name'] = $data['customer_name'];
@@ -118,7 +129,12 @@ class UserController extends Controller
             $lims_role_list = Roles::where('is_active', true)->get();
             $lims_biller_list = Biller::where('is_active', true)->get();
             $lims_warehouse_list = Warehouse::where('is_active', true)->get();
-            return view('user.edit', compact('lims_user_data', 'lims_role_list', 'lims_biller_list', 'lims_warehouse_list'));
+            $get_warehouse_list_tax = User::where('id', $id)->get('warehouse_id_tax')->first();
+            $warehouse_list_tax = explode(',', $get_warehouse_list_tax->warehouse_id_tax);
+            $lims_warehouse_list_tax_in = Warehouse::whereIn('id', $warehouse_list_tax)->get();
+            $lims_warehouse_list_tax_not = Warehouse::wherenotIn('id', $warehouse_list_tax)->get();
+            // dd($lims_warehouse_list_tax_not);
+            return view('user.edit', compact('lims_user_data', 'lims_role_list', 'lims_biller_list', 'lims_warehouse_list', 'lims_warehouse_list_tax_in', 'lims_warehouse_list_tax_not'));
         }
         else
             return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
@@ -151,6 +167,16 @@ class UserController extends Controller
         if(!empty($request['password']))
             $input['password'] = bcrypt($request['password']);
         $lims_user_data = User::find($id);
+        if ($input['role_id'] == 7) {
+            $warehouse_check_array = [];
+            foreach ($input['warehouse_check'] as $key => $value) {
+                $warehouse_check_array[$key] = $value;
+            }
+            $warehouse_check = implode(",", $warehouse_check_array);
+            // dd($warehouse_check);
+            $input['warehouse_id_tax'] = "$warehouse_check";
+        }
+        // dd($input);
         $lims_user_data->update($input);
         return redirect('user')->with('message2', 'Data updated successfullly');
     }

@@ -91,6 +91,22 @@
                                           @endforeach
                                         </select>
                                     </div>
+                                    <div class="form-group" id="warehouseIdTax">
+                                        <div aria-checked="false" aria-disabled="false">
+                                            @foreach($lims_warehouse_list_tax_in as $key => $warehouse)
+                                                <div class="checkbox">
+                                                    <input type="checkbox" value="{{$warehouse->id}}" id="{{$warehouse->name}}" name="warehouse_check[]}" checked>
+                                                    <label for="{{$warehouse->name}}" class="padding05">{{$warehouse->name}}</label>
+                                                </div>
+                                            @endforeach
+                                            @foreach($lims_warehouse_list_tax_not as $key => $warehouse)
+                                                <div class="checkbox">
+                                                    <input type="checkbox" value="{{$warehouse->id}}" id="{{$warehouse->name}}" name="warehouse_check[]}">
+                                                    <label for="{{$warehouse->name}}" class="padding05">{{$warehouse->name}}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 </div>                              
                             </div>
                         {!! Form::close() !!}
@@ -106,8 +122,7 @@
     $("ul#people").addClass("show");
     $('#biller-id').hide();
     $('#warehouseId').hide();
-    
-    
+    $('#warehouseIdTax').hide();
 
     $('select[name=role_id]').val($("input[name='role_id_hidden']").val());
     if($('select[name=role_id]').val() > 2 && $('select[name=role_id]').val() != 7 ){
@@ -115,6 +130,10 @@
         $('select[name=warehouse_id]').val($("input[name='warehouse_id_hidden']").val());
         $('#biller-id').show();
         $('select[name=biller_id]').val($("input[name='biller_id_hidden']").val());
+    }else if ($('select[name=role_id]').val() == 7) {
+        $('#warehouseId').hide();
+        $('#biller-id').hide();
+        $('#warehouseIdTax').show();
     }
     $('.selectpicker').selectpicker('refresh');
 
@@ -122,14 +141,26 @@
         if($(this).val() > 2 && $(this).val() != 7){
             $('select[name="warehouse_id"]').prop('required',true);
             $('select[name="biller_id"]').prop('required',true);
+            $('select[name="warehouseIdTax"]').prop('required',false);
             $('#biller-id').show();
             $('#warehouseId').show();
+            $('#warehouseIdTax').hide();
+        }
+        else if($(this).val() == 7){
+            $('select[name="warehouse_id"]').prop('required',false);
+            $('select[name="biller_id"]').prop('required',false);
+            $('select[name="warehouseIdTax"]').prop('required',true);
+            $('#biller-id').hide();
+            $('#warehouseId').hide();
+            $('#warehouseIdTax').show();
         }
         else{
             $('select[name="warehouse_id"]').prop('required',false);
             $('select[name="biller_id"]').prop('required',false);
+            $('select[name="warehouseIdTax"]').prop('required',false);
             $('#biller-id').hide();
             $('#warehouseId').hide();
+            $('#warehouseIdTax').hide();
         }
     });
 
