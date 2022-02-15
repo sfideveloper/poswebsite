@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header mt-2">
-                <h3 class="text-center"><?php echo e(ucwords(trans('file.Tax Report Pajak'))); ?></h3>
+                <h3 class="text-center"><?php echo e(ucwords(trans('file.Tax Report Sale'))); ?></h3>
             </div>
             <?php echo Form::open(['route' => 'report.tax', 'method' => 'post']); ?>
 
@@ -52,14 +52,14 @@
 
     <?php if(Auth::user()->role_id =='7'): ?>         
         <li class="nav-item">
-            <a class="nav-link active" href="#warehouse-tax" role="tab" data-toggle="tab"><?php echo e(trans('file.Tax Pajak')); ?></a>
+            <a class="nav-link active" href="#warehouse-tax" role="tab" data-toggle="tab"><?php echo e(trans('file.Sale')); ?></a>
         </li>
     <?php else: ?>
         <!-- <li class="nav-item">
             <a class="nav-link" href="#warehouse-notax" role="tab" data-toggle="tab"><?php echo e(trans('file.No Tax')); ?></a>
         </li> -->
         <li class="nav-item">
-            <a class="nav-link active" href="#warehouse-tax" role="tab" data-toggle="tab"><?php echo e(trans('file.Tax Pajak')); ?></a>
+            <a class="nav-link active" href="#warehouse-tax" role="tab" data-toggle="tab"><?php echo e(trans('file.Sale')); ?></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#warehouse-all" role="tab" data-toggle="tab"><?php echo e(trans('file.All')); ?></a>

@@ -287,7 +287,7 @@ return [
 	'Due Report' => 'Due Report',
 	'Biller Report' => 'Biller Report',
 	'Tax Report' => 'Tax Report',
-	'Tax Report Pajak' => 'Sale Report',
+	'Tax Report Sale' => 'Sale Report',
 	'User Profile' => 'User Profile',
 	'Cash Flow' => 'Cash Flow',
 	'Add Category' => 'Add Category',

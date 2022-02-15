@@ -698,7 +698,7 @@
                 <?php endif; ?>
                 <?php if($tax_report_active): ?>
                 <li id="tax-report-menu">
-                <a id="tax-report-menu" href="<?php echo e(route('report.tax.all')); ?>"><?php echo e(trans('file.Tax Report')); ?></a>
+                <a id="tax-report-menu" href="<?php echo e(route('report.tax.all')); ?>"><?php echo e(trans('file.Tax Report Sale')); ?></a>
                 </li>
                 <?php endif; ?>
             </ul>
