@@ -79,7 +79,8 @@
         <table>
             <tr>
                 <td><a href="{{$url}}" class="btn btn-info"><i class="fa fa-arrow-left"></i> {{ucfirst(trans('file.Back'))}}</a> </td>
-                <td><button onclick="window.print();" class="btn btn-primary"><i class="dripicons-print"></i> {{ucfirst(trans('file.Print'))}}</button></td>
+                <td><a href="my.bluetoothprint.scheme://{{url()->current()}}" class="btn btn-primary"><i class="dripicons-print"></i> {{ucfirst(trans('file.Print'))}}</a> </td>
+                {{-- <td><button onclick="window.print();" class="btn btn-primary"><i class="dripicons-print"></i> {{ucfirst(trans('file.Print'))}}</button></td> --}}
             </tr>
         </table>
         <br>
@@ -88,7 +89,7 @@
     <div id="receipt-data">
         <div class="centered">
             @if($general_setting->site_logo)
-                <img src="{{url('logo', $general_setting->site_logo)}}" height="42" width="42" style="margin:10px 0;filter: brightness(0);">
+                <img src="{{url('logo/chickmi_logo.svg')}}" height="150" width="150" style="margin:10px 0;filter: brightness(0);">
             @endif
             
             <h2>{{$lims_biller_data->company_name}}</h2>
@@ -253,11 +254,11 @@
                 @endforeach
                 <tr><td class="centered" colspan="3">{{trans('file.Thank you for shopping with us. Please come again')}}</td></tr>
                 <tr>
-                    <td class="centered" colspan="3">
-                    <?php echo '<img style="margin-top:10px;" src="data:image/png;base64,' . DNS1D::getBarcodePNG($lims_sale_data->reference_no, 'C128') . '" width="300" alt="barcode"   />';?>
+                    {{-- <td class="centered" colspan="3">
+                    <?php// echo '<img style="margin-top:10px;" src="data:image/png;base64,' . DNS1D::getBarcodePNG($lims_sale_data->reference_no, 'C128') . '" width="300" alt="barcode"   />';?>
                     <br>
-                    <?php echo '<img style="margin-top:10px;" src="data:image/png;base64,' . DNS2D::getBarcodePNG($lims_sale_data->reference_no, 'QRCODE') . '" alt="barcode"   />';?>    
-                    </td>
+                    <?php// echo '<img style="margin-top:10px;" src="data:image/png;base64,' . DNS2D::getBarcodePNG($lims_sale_data->reference_no, 'QRCODE') . '" alt="barcode"   />';?>    
+                    </td> --}}
                 </tr>
             </tbody>
         </table>
@@ -270,7 +271,7 @@
 
 <script type="text/javascript">
     function auto_print() {     
-        window.print()
+        // window.print()
     }
     setTimeout(auto_print, 1000);
 </script>

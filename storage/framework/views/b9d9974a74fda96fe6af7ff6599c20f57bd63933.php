@@ -1040,7 +1040,7 @@
 														<?php else: ?>
 														<input type="checkbox" value="1" id="tax-report" name="tax-report">
 														<?php endif; ?>
-														<label for="tax-report" class="padding05"><?php echo e(trans('file.Tax Report Pajak')); ?> &nbsp;&nbsp;</label>
+														<label for="tax-report" class="padding05"><?php echo e(trans('file.Tax Report')); ?> &nbsp;&nbsp;</label>
 													</div>
 												</div>
 											</span>
