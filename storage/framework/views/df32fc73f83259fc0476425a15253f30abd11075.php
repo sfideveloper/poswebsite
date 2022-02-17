@@ -1158,8 +1158,8 @@
                             </div>
                             <div class="payment-options">
                                 <div class="payment-amount">
-                                    <h2><?php echo e(ucwords(trans('file.grand total'))); ?>  <span class="ml-2" style="color: black !important; ">&nbsp;<span id="grand-total" style="color: black !important;">0</span></span></h2>
-                                    <h2><?php echo e(ucwords(trans('file.Total Payment'))); ?>  <span class="ml-2">&nbsp;<span id="str_total_no_tax">0</span></span></h2>
+                                    <h2><?php echo e(ucwords(trans('file.grand total'))); ?>  <span class="ml-2" style="color: black !important; "><?php echo e($currency->code); ?>&nbsp;<span id="grand-total" style="color: black !important;">0</span></span></h2>
+                                    <h2><?php echo e(ucwords(trans('file.Total Payment'))); ?>  <span class="ml-2"><?php echo e($currency->code); ?>&nbsp;<span id="str_total_no_tax">0</span></span></h2>
                                 </div>
                                 <!-- <div class="column-5">
                                     <button style="background: #228520;" type="button" class="btn btn-custom payment-btn text-white" data-toggle="modal" data-target="#add-payment" id="credit-card-btn"><i class="mdi mdi-credit-card"></i> Card</button>   
@@ -2643,8 +2643,8 @@ $(".payment-btn").on("click", function() {
     audio.play();
     $('input[name="paid_amount"]').val($("#grand-total").text());
     $('input[name="paying_amount"]').val($("#grand-total").text());
-    $('input[name="paid_amount_no_tax"]').val($('input[name="total_price"]').val());
-    $('input[name="paying_amount_no_tax"]').val($('input[name="total_price"]').val());
+    $('input[name="paid_amount_no_tax"]').val($("#str_total_no_tax").text());
+    $('input[name="paying_amount_no_tax"]').val($("#str_total_no_tax").text());
     $('.qc').data('initial', 1);
 });
 
@@ -3179,7 +3179,7 @@ function calculateTotal() {
     var total_no_tax = 0;
     total_no_tax = total-total_tax;
 
-    $('#str_total_no_tax').text(new Intl.NumberFormat("id-ID", {style: "currency", currency: "IDR"}).format(total_no_tax));
+    $('#str_total_no_tax').text(total_no_tax.toFixed(2));
 
     console.log(total_no_tax); 
 
@@ -3234,11 +3234,11 @@ function calculateGrandTotal() {
 
     $('#item').text(item);
     $('input[name="item"]').val($('table.order-list tbody tr:last').index() + 1);
-    $('#subtotal').text(new Intl.NumberFormat("id-ID", {style: "currency", currency: "IDR"}).format(subtotal));
+    $('#subtotal').text(subtotal.toFixed(2));
     $('#tax').text(order_tax.toFixed(2));
     $('input[name="order_tax"]').val(order_tax.toFixed(2));
     $('#shipping-cost').text(shipping_cost.toFixed(2));
-    $('#grand-total').text(new Intl.NumberFormat("id-ID", {style: "currency", currency: "IDR"}).format(grand_total));
+    $('#grand-total').text(grand_total.toFixed(2));
     $('input[name="grand_total"]').val(grand_total.toFixed(2));
 }
 
