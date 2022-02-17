@@ -144,7 +144,7 @@
                         <!-- <br><?php echo e($product_sale_data->qty); ?> x <?php echo e(number_format((float)($product_sale_data->total / $product_sale_data->qty), 2, '.', '')); ?> -->
 
                         <!-- harga per produk diganti -->
-                        <br><?php echo e($product_sale_data->qty); ?> x <?php echo e($harga_product); ?>
+                        <br><?php echo e($product_sale_data->qty); ?> x <?php echo e("Rp " . number_format($harga_product,2,',','.')); ?>
 
 
                         <!-- menghilangkan tax perProduct -->
@@ -157,7 +157,7 @@
                     <!-- <td style="text-align:right;vertical-align:bottom"><?php echo e(number_format((float)$product_sale_data->total, 2, '.', '')); ?></td> -->
 
                     <!-- total harga perProduct -->
-                    <td style="text-align:right;vertical-align:bottom"><?php echo e(number_format((float)($total_harga_perProduct), 2, '.', '')); ?></td>
+                    <td style="text-align:right;vertical-align:bottom"><?php echo e("Rp " . number_format((float)($total_harga_perProduct), 2, ',', '.')); ?></td>
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
@@ -172,7 +172,7 @@
                 <!-- total diganti -->
                 <tr>
                     <th colspan="2"><?php echo e(ucfirst(trans('file.Total'))); ?></th>
-                    <th style="text-align:right"><?php echo e(number_format((float)($total), 2, '.', '')); ?></th>
+                    <th style="text-align:right"><?php echo e("Rp " . number_format((float)($total), 2, ',', '.')); ?></th>
                 </tr>
 
                 <?php if($general_setting->invoice_format == 'gst' && $general_setting->state == 1): ?>

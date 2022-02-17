@@ -140,7 +140,7 @@
                         <!-- <br>{{$product_sale_data->qty}} x {{number_format((float)($product_sale_data->total / $product_sale_data->qty), 2, '.', '')}} -->
 
                         <!-- harga per produk diganti -->
-                        <br>{{$product_sale_data->qty}} x {{$harga_product}}
+                        <br>{{$product_sale_data->qty}} x {{"Rp " . number_format($harga_product,2,',','.')}}
 
                         <!-- menghilangkan tax perProduct -->
                         <!-- @if($product_sale_data->tax_rate)
@@ -152,7 +152,7 @@
                     <!-- <td style="text-align:right;vertical-align:bottom">{{number_format((float)$product_sale_data->total, 2, '.', '')}}</td> -->
 
                     <!-- total harga perProduct -->
-                    <td style="text-align:right;vertical-align:bottom">{{number_format((float)($total_harga_perProduct), 2, '.', '')}}</td>
+                    <td style="text-align:right;vertical-align:bottom">{{"Rp " . number_format((float)($total_harga_perProduct), 2, ',', '.')}}</td>
                 </tr>
                 @endforeach
 
@@ -167,7 +167,7 @@
                 <!-- total diganti -->
                 <tr>
                     <th colspan="2">{{ucfirst(trans('file.Total'))}}</th>
-                    <th style="text-align:right">{{number_format((float)($total), 2, '.', '')}}</th>
+                    <th style="text-align:right">{{"Rp " . number_format((float)($total), 2, ',', '.')}}</th>
                 </tr>
 
                 @if($general_setting->invoice_format == 'gst' && $general_setting->state == 1)
