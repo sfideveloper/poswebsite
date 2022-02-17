@@ -104,7 +104,7 @@
                             <td><?php echo e($key); ?></td>
                             <td><?php echo e(date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()); ?></td>
                             <td><?php echo e($sale->reference_no); ?></td>
-                            <td><?php echo e($sale->customer->name); ?></td>
+                            <td><?php echo e($sale->customer_name); ?></td>
                             <td>
                                 <?php $__currentLoopData = $lims_product_sale_data_tax[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php 
@@ -194,7 +194,7 @@
                             <td><?php echo e($key); ?></td>
                             <td><?php echo e(date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()); ?></td>
                             <td><?php echo e($sale->reference_no); ?></td>
-                            <td><?php echo e($sale->customer->name); ?></td>
+                            <td><?php echo e($sale->customer_name); ?></td>
                             <td>
                                 <?php $__currentLoopData = $lims_product_sale_data_notax[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php 
@@ -270,7 +270,7 @@
                             <td><?php echo e($key); ?></td>
                             <td><?php echo e(date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()); ?></td>
                             <td><?php echo e($sale->reference_no); ?></td>
-                            <td><?php echo e($sale->customer->name); ?></td>
+                            <td><?php echo e($sale->customer_name); ?></td>
                             <td>
                                 <?php $__currentLoopData = $lims_product_sale_data_taxall[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php 

@@ -105,7 +105,7 @@
                             <td>{{$key}}</td>
                             <td>{{date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()}}</td>
                             <td>{{$sale->reference_no}}</td>
-                            <td>{{$sale->customer->name}}</td>
+                            <td>{{$sale->customer_name}}</td>
                             <td>
                                 @foreach($lims_product_sale_data_tax[$key] as $product_sale_data)
                                 <?php 
@@ -196,7 +196,7 @@
                             <td>{{$key}}</td>
                             <td>{{date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()}}</td>
                             <td>{{$sale->reference_no}}</td>
-                            <td>{{$sale->customer->name}}</td>
+                            <td>{{$sale->customer_name}}</td>
                             <td>
                                 @foreach($lims_product_sale_data_notax[$key] as $product_sale_data)
                                 <?php 
@@ -276,7 +276,7 @@
                             <td>{{$key}}</td>
                             <td>{{date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()}}</td>
                             <td>{{$sale->reference_no}}</td>
-                            <td>{{$sale->customer->name}}</td>
+                            <td>{{$sale->customer_name}}</td>
                             <td>
                                 @foreach($lims_product_sale_data_taxall[$key] as $product_sale_data)
                                 <?php 
