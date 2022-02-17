@@ -135,14 +135,14 @@
                                           <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
+                                    
                                     <div class="form-group" id="warehouseIdTax">
                                         <div aria-checked="false" aria-disabled="false">
+                                            <select name="warehouse_check[]" required class="multipicker form-control" multiple="multiple" data-live-search="true" data-live-search-style="begins" title="Select Warehouse...">
                                             <?php $__currentLoopData = $lims_warehouse_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $warehouse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <div class="checkbox">
-                                                <input type="checkbox" value="<?php echo e($warehouse->id); ?>" id="<?php echo e($warehouse->name); ?>" name="warehouse_check[]}">
-                                                <label for="<?php echo e($warehouse->name); ?>" class="padding05"><?php echo e($warehouse->name); ?></label>
-                                            </div>
+                                                <option value="<?php echo e($warehouse->id); ?>"><?php echo e($warehouse->name); ?></option>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>                              
@@ -167,6 +167,10 @@
     $('#warehouseIdTax').hide();
     $('.customer-section').hide();
 
+    $(document).ready(function() {
+        $('.multipicker').multiselect();
+    });
+    
     $('.selectpicker').selectpicker({
       style: 'btn-link',
     });

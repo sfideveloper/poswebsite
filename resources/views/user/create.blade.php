@@ -134,14 +134,23 @@
                                           @endforeach
                                         </select>
                                     </div>
-                                    <div class="form-group" id="warehouseIdTax">
+                                    {{-- <div class="form-group" id="warehouseIdTax">
                                         <div aria-checked="false" aria-disabled="false">
                                             @foreach($lims_warehouse_list as $key => $warehouse)
                                             <div class="checkbox">
-                                                <input type="checkbox" value="{{$warehouse->id}}" id="{{$warehouse->name}}" name="warehouse_check[]}">
+                                                <input type="checkbox" value="{{$warehouse->id}}" id="{{$warehouse->name}}" name="warehouse_check[]">
                                                 <label for="{{$warehouse->name}}" class="padding05">{{$warehouse->name}}</label>
                                             </div>
                                             @endforeach
+                                        </div>
+                                    </div> --}}
+                                    <div class="form-group" id="warehouseIdTax">
+                                        <div aria-checked="false" aria-disabled="false">
+                                            <select name="warehouse_check[]" required class="multipicker form-control" multiple="multiple" data-live-search="true" data-live-search-style="begins" title="Select Warehouse...">
+                                            @foreach($lims_warehouse_list as $key => $warehouse)
+                                                <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
+                                            @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>                              
@@ -165,6 +174,10 @@
     $('#warehouseIdTax').hide();
     $('.customer-section').hide();
 
+    $(document).ready(function() {
+        $('.multipicker').multiselect();
+    });
+    
     $('.selectpicker').selectpicker({
       style: 'btn-link',
     });

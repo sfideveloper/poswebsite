@@ -133,7 +133,7 @@ class UserController extends Controller
             $warehouse_list_tax = explode(',', $get_warehouse_list_tax->warehouse_id_tax);
             $lims_warehouse_list_tax_in = Warehouse::whereIn('id', $warehouse_list_tax)->get();
             $lims_warehouse_list_tax_not = Warehouse::wherenotIn('id', $warehouse_list_tax)->get();
-            // dd($lims_warehouse_list_tax_not);
+            // dd($lims_warehouse_list_tax_in);
             return view('user.edit', compact('lims_user_data', 'lims_role_list', 'lims_biller_list', 'lims_warehouse_list', 'lims_warehouse_list_tax_in', 'lims_warehouse_list_tax_not'));
         }
         else

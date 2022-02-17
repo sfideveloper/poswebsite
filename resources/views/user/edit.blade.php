@@ -91,21 +91,32 @@
                                           @endforeach
                                         </select>
                                     </div>
+                                    {{-- <div class="form-group" id="warehouseIdTax">
+                                        @foreach($lims_warehouse_list_tax_in as $key => $warehouse)
+                                            <div class="checkbox">
+                                                <input type="checkbox" value="{{$warehouse->id}}" id="{{$warehouse->name}}" name="warehouse_check[]}" checked>
+                                                <label for="{{$warehouse->name}}" class="padding05">{{$warehouse->name}}</label>
+                                            </div>
+                                        @endforeach
+                                        @foreach($lims_warehouse_list_tax_not as $key => $warehouse)
+                                            <div class="checkbox">
+                                                <input type="checkbox" value="{{$warehouse->id}}" id="{{$warehouse->name}}" name="warehouse_check[]}">
+                                                <label for="{{$warehouse->name}}" class="padding05">{{$warehouse->name}}</label>
+                                            </div>
+                                        @endforeach
+                                    </div> --}}
                                     <div class="form-group" id="warehouseIdTax">
-                                        <div aria-checked="false" aria-disabled="false">
-                                            @foreach($lims_warehouse_list_tax_in as $key => $warehouse)
-                                                <div class="checkbox">
-                                                    <input type="checkbox" value="{{$warehouse->id}}" id="{{$warehouse->name}}" name="warehouse_check[]}" checked>
-                                                    <label for="{{$warehouse->name}}" class="padding05">{{$warehouse->name}}</label>
-                                                </div>
+                                        <label><strong>{{ucwords(trans('file.Warehouse'))}} *</strong></label>
+                                        <select name="warehouse_check[]" required class="selectpicker form-control" multiple="multiple" data-live-search="true" data-live-search-style="begins" title="Select Warehouse...">
+                                        {{-- @foreach($lims_warehouse_list as $key => $warehouse) --}}
+                                            @foreach ($lims_warehouse_list_tax_in as $key => $warehouse_in)
+                                                <option value="{{$warehouse_in->id}}" selected>{{$warehouse_in->name}}</option>
                                             @endforeach
-                                            @foreach($lims_warehouse_list_tax_not as $key => $warehouse)
-                                                <div class="checkbox">
-                                                    <input type="checkbox" value="{{$warehouse->id}}" id="{{$warehouse->name}}" name="warehouse_check[]}">
-                                                    <label for="{{$warehouse->name}}" class="padding05">{{$warehouse->name}}</label>
-                                                </div>
+                                            @foreach ($lims_warehouse_list_tax_not as $key => $warehouse_notin)
+                                                <option value="{{$warehouse_notin->id}}">{{$warehouse_notin->name}}</option>
                                             @endforeach
-                                        </div>
+                                        {{-- @endforeach --}}
+                                        </select>
                                     </div>
                                 </div>                              
                             </div>
