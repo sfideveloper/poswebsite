@@ -81,7 +81,7 @@
                             <th><?php echo e(ucfirst(trans('file.Paid'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Due'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Tax'))); ?></th>
-                            <th>Pajak Produk</th>
+                            <th><?php echo e(ucfirst(trans('file.Product Tax'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Status'))); ?></th>
                         </tr>
                     </thead>
@@ -115,21 +115,8 @@
                             </td>
                             <td>
                                 <?php $__currentLoopData = $lims_product_sale_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <?php 
-                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
-                                    if($product_sale_data->variant_id) {
-                                        $variant = App\Variant::find($product_sale_data->variant_id);
-                                        $product->name .= ' ['.$variant->name.']';
-                                    }
-                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
-                                ?>
-                                <?php if($unit): ?>
-                                    <?php echo e($product_sale_data->net_unit_price); ?>
+                                <?php echo e(App\Product::select('price')->find($product_sale_data->product_id)->price); ?>
 
-                                <?php else: ?>
-                                    <?php echo e($product_sale_data->net_unit_price); ?>
-
-                                <?php endif; ?>
                                 <br>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </td>

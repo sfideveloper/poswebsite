@@ -79,7 +79,7 @@
                             <th>{{ucfirst(trans('file.Paid'))}}</th>
                             <th>{{ucfirst(trans('file.Due'))}}</th>
                             <th>{{ucfirst(trans('file.Tax'))}}</th>
-                            <th>Pajak Produk</th>
+                            <th>{{ucfirst(trans('file.Product Tax'))}}</th>
                             <th>{{ucfirst(trans('file.Status'))}}</th>
                         </tr>
                     </thead>
@@ -111,19 +111,7 @@
                             </td>
                             <td>
                                 @foreach($lims_product_sale_data[$key] as $product_sale_data)
-                                <?php 
-                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
-                                    if($product_sale_data->variant_id) {
-                                        $variant = App\Variant::find($product_sale_data->variant_id);
-                                        $product->name .= ' ['.$variant->name.']';
-                                    }
-                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
-                                ?>
-                                @if($unit)
-                                    {{$product_sale_data->net_unit_price}}
-                                @else
-                                    {{$product_sale_data->net_unit_price}}
-                                @endif
+                                {{App\Product::select('price')->find($product_sale_data->product_id)->price}}
                                 <br>
                                 @endforeach
                             </td>
