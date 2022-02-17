@@ -100,7 +100,8 @@
         </div>
         <p>{{trans('file.Date')}}: {{$lims_sale_data->created_at}}<br>
             {{trans('file.reference')}}: {{$lims_sale_data->reference_no}}<br>
-            {{trans('file.customer')}}: {{$lims_customer_data->name}}
+            {{-- {{trans('file.customer')}}: {{$lims_customer_data->name}} --}}
+            {{trans('file.customer')}}: {{$lims_sale_data->customer_name}}
         </p>
         <table>
             <tbody>

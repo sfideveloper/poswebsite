@@ -76,6 +76,7 @@
                             <th><?php echo e(ucfirst(trans('file.reference'))); ?> No</th>
                             <th><?php echo e(ucfirst(trans('file.customer'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.product'))); ?> (<?php echo e(ucfirst(trans('file.qty'))); ?>)</th>
+                            <th><?php echo e(ucfirst(trans('file.Price'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Paid'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Due'))); ?></th>
@@ -90,7 +91,8 @@
                             <td><?php echo e($key); ?></td>
                             <td><?php echo e(date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()); ?></td>
                             <td><?php echo e($sale->reference_no); ?></td>
-                            <td><?php echo e($sale->customer->name); ?></td>
+                            
+                            <td><?php echo e($sale->customer_name); ?></td>
                             <td>
                                 <?php $__currentLoopData = $lims_product_sale_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php 
@@ -106,6 +108,26 @@
 
                                 <?php else: ?>
                                     <?php echo e($product->name.' ('.$product_sale_data->qty.')'); ?>
+
+                                <?php endif; ?>
+                                <br>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </td>
+                            <td>
+                                <?php $__currentLoopData = $lims_product_sale_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php 
+                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
+                                    if($product_sale_data->variant_id) {
+                                        $variant = App\Variant::find($product_sale_data->variant_id);
+                                        $product->name .= ' ['.$variant->name.']';
+                                    }
+                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
+                                ?>
+                                <?php if($unit): ?>
+                                    <?php echo e($product_sale_data->net_unit_price); ?>
+
+                                <?php else: ?>
+                                    <?php echo e($product_sale_data->net_unit_price); ?>
 
                                 <?php endif; ?>
                                 <br>
@@ -128,6 +150,7 @@
                         <tr>
                             <th></th>
                             <th>Total:</th>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -489,18 +512,20 @@
         if (dt_selector.rows( '.selected' ).any() && is_calling_first) {
             var rows = dt_selector.rows( '.selected' ).indexes();
 
-            $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum().toFixed(2));
+            // $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 9 ).footer() ).html(dt_selector.cells( rows, 9, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 10 ).footer() ).html(dt_selector.cells( rows, 9, { page: 'current' } ).data().sum().toFixed(2));
         }
         else {
-            $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
+            // $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 8 ).footer() ).html(dt_selector.column( 8, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 9 ).footer() ).html(dt_selector.column( 9, {page:'current'} ).data().sum().toFixed(2));
+            $( dt_selector.column( 7 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 9 ).footer() ).html(dt_selector.column( 8, {page:'current'} ).data().sum().toFixed(2));
+            $( dt_selector.column( 10 ).footer() ).html(dt_selector.column( 9, {page:'current'} ).data().sum().toFixed(2));
         }
     }
 
@@ -857,8 +882,9 @@
             $( dt_selector.column( 4 ).footer() ).html(dt_selector.column( 4, {page:'current'} ).data().sum().toFixed(2));
         }
     }
+
     $(".daterangepicker-field").daterangepicker({
-    callback: function(startDate, endDate, period){
+        callback: function(startDate, endDate, period){
         var start_date = startDate.format('YYYY-MM-DD');
         var end_date = endDate.format('YYYY-MM-DD');
         var title = start_date + ' To ' + end_date;

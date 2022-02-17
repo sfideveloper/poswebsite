@@ -138,7 +138,7 @@
                                     
                                     <div class="form-group" id="warehouseIdTax">
                                         <div aria-checked="false" aria-disabled="false">
-                                            <select name="warehouse_check[]" required class="multipicker form-control" multiple="multiple" data-live-search="true" data-live-search-style="begins" title="Select Warehouse...">
+                                            <select name="warehouse_check[]" required class="selectpicker form-control" multiple="multiple" data-live-search="true" data-live-search-style="begins" title="Select Warehouse...">
                                             <?php $__currentLoopData = $lims_warehouse_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $warehouse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <option value="<?php echo e($warehouse->id); ?>"><?php echo e($warehouse->name); ?></option>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -167,9 +167,9 @@
     $('#warehouseIdTax').hide();
     $('.customer-section').hide();
 
-    $(document).ready(function() {
-        $('.multipicker').multiselect();
-    });
+    // $(document).ready(function() {
+    //     $('.multipicker').multiselect();
+    // });
     
     $('.selectpicker').selectpicker({
       style: 'btn-link',

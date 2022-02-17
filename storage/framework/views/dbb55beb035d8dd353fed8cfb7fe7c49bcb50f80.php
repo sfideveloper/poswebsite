@@ -102,7 +102,8 @@
         </div>
         <p><?php echo e(trans('file.Date')); ?>: <?php echo e($lims_sale_data->created_at); ?><br>
             <?php echo e(trans('file.reference')); ?>: <?php echo e($lims_sale_data->reference_no); ?><br>
-            <?php echo e(trans('file.customer')); ?>: <?php echo e($lims_customer_data->name); ?>
+            
+            <?php echo e(trans('file.customer')); ?>: <?php echo e($lims_sale_data->customer_name); ?>
 
         </p>
         <table>

@@ -1042,7 +1042,7 @@
                                                     <?php if($lims_pos_setting_data): ?>
                                                     <input type="hidden" name="customer_id_hidden" value="<?php echo e($lims_pos_setting_data->customer_id); ?>">
                                                     <?php endif; ?>
-                                                    <div class="input-group pos">
+                                                    <div class="input-group pos" hidden>
                                                         <?php if($customer_active): ?>
                                                         <select required name="customer_id" id="customer_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 100px">
                                                         <?php $deposit = [] ?>
@@ -1061,6 +1061,10 @@
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         </select>
                                                         <?php endif; ?>
+                                                    </div>
+                                                    
+                                                    <div>
+                                                        <input type="text" name="customer_name" id="customer_name" class="form-control" placeholder="Input Customer Name" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1744,7 +1748,7 @@
                                             <tr>
                                               <td><?php echo e(date('d-m-Y', strtotime($sale->created_at))); ?></td>
                                               <td><?php echo e($sale->reference_no); ?></td>
-                                              <td><?php echo e($customer->name); ?></td>
+                                              <td><?php echo e($sale->customer_name); ?></td>
                                               <td><?php echo e($sale->grand_total); ?></td>
                                               <td>
                                                 <div class="btn-group">
@@ -1920,55 +1924,54 @@
                               <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
                             </div>
                             <div class="modal-body">
-                              <p><?php echo e(trans('file.Please review the transaction and payments.')); ?></p>
+                                <p><?php echo e(trans('file.Please review the transaction and payments.')); ?></p>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-hover">
                                             <tbody>
                                                 <tr>
-                                                  <td><?php echo e(trans('file.Total Sale Amount')); ?>:</td>
-                                                  <td class="total_sale_amount text-right"></td>
+                                                    <td><?php echo e(trans('file.Total Sale Amount')); ?>:</td>
+                                                    <td class="total_sale_amount text-right"></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><?php echo e(trans('file.Cash Payment')); ?>:</td>
-                                                  <td class="cash_payment text-right"></td>
+                                                    <td><?php echo e(trans('file.Cash Payment')); ?>:</td>
+                                                    <td class="cash_payment text-right"></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><?php echo e(trans('file.Credit Card Payment')); ?>:</td>
-                                                  <td class="credit_card_payment text-right"></td>
+                                                    <td><?php echo e(trans('file.Credit Card Payment')); ?>:</td>
+                                                    <td class="credit_card_payment text-right"></td>
                                                 </tr>
                                                 <!-- <tr>
-                                                  <td><?php echo e(trans('file.Cheque Payment')); ?>:</td>
-                                                  <td class="cheque_payment text-right"></td>
+                                                <td><?php echo e(trans('file.Cheque Payment')); ?>:</td>
+                                                <td class="cheque_payment text-right"></td>
                                                 </tr> -->
                                                 <!-- <tr>
-                                                  <td><?php echo e(trans('file.Gift Card Payment')); ?>:</td>
-                                                  <td class="gift_card_payment text-right"></td>
+                                                <td><?php echo e(trans('file.Gift Card Payment')); ?>:</td>
+                                                <td class="gift_card_payment text-right"></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><?php echo e(trans('file.Paypal Payment')); ?>:</td>
-                                                  <td class="paypal_payment text-right"></td>
+                                                <td><?php echo e(trans('file.Paypal Payment')); ?>:</td>
+                                                <td class="paypal_payment text-right"></td>
                                                 </tr> -->
                                                 <tr>
-                                                  <td><?php echo e(trans('file.Total Payment')); ?>:</td>
-                                                  <td class="total_payment text-right"></td>
+                                                    <td><?php echo e(trans('file.Total Payment')); ?>:</td>
+                                                    <td class="total_payment text-right"></td>
                                                 </tr>
                                                 <tr>
-                                                  <td><?php echo e(trans('file.Total Sale Return')); ?>:</td>
-
-    </div>
-                                              <td class="total_sale_return text-right"></td>
-                                            </tr>
-                                            <tr>
-                                              <td><?php echo e(trans('file.Total Expense')); ?>:</td>
-                                              <td class="total_expense text-right"></td>
-                                            </tr>
-                                            <tr>
-                                              <td><strong><?php echo e(trans('file.Total Cash')); ?>:</strong></td>
-                                              <td class="total_cash text-right"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                    <td><?php echo e(trans('file.Total Sale Return')); ?>:</td>
+                                                    <td class="total_sale_return text-right"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><?php echo e(trans('file.Total Expense')); ?>:</td>
+                                                    <td class="total_expense text-right"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong><?php echo e(trans('file.Total Cash')); ?>:</strong></td>
+                                                    <td class="total_cash text-right"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

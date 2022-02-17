@@ -1029,7 +1029,7 @@
                                                     @if($lims_pos_setting_data)
                                                     <input type="hidden" name="customer_id_hidden" value="{{$lims_pos_setting_data->customer_id}}">
                                                     @endif
-                                                    <div class="input-group pos">
+                                                    <div class="input-group pos" hidden>
                                                         @if($customer_active)
                                                         <select required name="customer_id" id="customer_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select customer..." style="width: 100px">
                                                         <?php $deposit = [] ?>
@@ -1048,6 +1048,10 @@
                                                         @endforeach
                                                         </select>
                                                         @endif
+                                                    </div>
+                                                    {{-- New Input Customer --}}
+                                                    <div>
+                                                        <input type="text" name="customer_name" id="customer_name" class="form-control" placeholder="Input Customer Name" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1727,7 +1731,7 @@
                                             <tr>
                                               <td>{{date('d-m-Y', strtotime($sale->created_at))}}</td>
                                               <td>{{$sale->reference_no}}</td>
-                                              <td>{{$customer->name}}</td>
+                                              <td>{{$sale->customer_name}}</td>
                                               <td>{{$sale->grand_total}}</td>
                                               <td>
                                                 <div class="btn-group">
@@ -1897,55 +1901,54 @@
                               <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
                             </div>
                             <div class="modal-body">
-                              <p>{{trans('file.Please review the transaction and payments.')}}</p>
+                                <p>{{trans('file.Please review the transaction and payments.')}}</p>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-hover">
                                             <tbody>
                                                 <tr>
-                                                  <td>{{trans('file.Total Sale Amount')}}:</td>
-                                                  <td class="total_sale_amount text-right"></td>
+                                                    <td>{{trans('file.Total Sale Amount')}}:</td>
+                                                    <td class="total_sale_amount text-right"></td>
                                                 </tr>
                                                 <tr>
-                                                  <td>{{trans('file.Cash Payment')}}:</td>
-                                                  <td class="cash_payment text-right"></td>
+                                                    <td>{{trans('file.Cash Payment')}}:</td>
+                                                    <td class="cash_payment text-right"></td>
                                                 </tr>
                                                 <tr>
-                                                  <td>{{trans('file.Credit Card Payment')}}:</td>
-                                                  <td class="credit_card_payment text-right"></td>
+                                                    <td>{{trans('file.Credit Card Payment')}}:</td>
+                                                    <td class="credit_card_payment text-right"></td>
                                                 </tr>
                                                 <!-- <tr>
-                                                  <td>{{trans('file.Cheque Payment')}}:</td>
-                                                  <td class="cheque_payment text-right"></td>
+                                                <td>{{trans('file.Cheque Payment')}}:</td>
+                                                <td class="cheque_payment text-right"></td>
                                                 </tr> -->
                                                 <!-- <tr>
-                                                  <td>{{trans('file.Gift Card Payment')}}:</td>
-                                                  <td class="gift_card_payment text-right"></td>
+                                                <td>{{trans('file.Gift Card Payment')}}:</td>
+                                                <td class="gift_card_payment text-right"></td>
                                                 </tr>
                                                 <tr>
-                                                  <td>{{trans('file.Paypal Payment')}}:</td>
-                                                  <td class="paypal_payment text-right"></td>
+                                                <td>{{trans('file.Paypal Payment')}}:</td>
+                                                <td class="paypal_payment text-right"></td>
                                                 </tr> -->
                                                 <tr>
-                                                  <td>{{trans('file.Total Payment')}}:</td>
-                                                  <td class="total_payment text-right"></td>
+                                                    <td>{{trans('file.Total Payment')}}:</td>
+                                                    <td class="total_payment text-right"></td>
                                                 </tr>
                                                 <tr>
-                                                  <td>{{trans('file.Total Sale Return')}}:</td>
-
-    </div>
-                                              <td class="total_sale_return text-right"></td>
-                                            </tr>
-                                            <tr>
-                                              <td>{{trans('file.Total Expense')}}:</td>
-                                              <td class="total_expense text-right"></td>
-                                            </tr>
-                                            <tr>
-                                              <td><strong>{{trans('file.Total Cash')}}:</strong></td>
-                                              <td class="total_cash text-right"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                    <td>{{trans('file.Total Sale Return')}}:</td>
+                                                    <td class="total_sale_return text-right"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{trans('file.Total Expense')}}:</td>
+                                                    <td class="total_expense text-right"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>{{trans('file.Total Cash')}}:</strong></td>
+                                                    <td class="total_cash text-right"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
