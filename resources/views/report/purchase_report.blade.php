@@ -126,20 +126,20 @@
                                                 }
                                             }
                                         ?>
-                                        <td>{{number_format((float)$purchased_cost, 2, '.', '')}}</td>
+                                        <td>{{"Rp " . number_format((float)$purchased_cost, 2, ',', '.')}}</td>
                                         <td>{{$purchased_qty}}</td>
                                         <td>{{$product_qty[$key]}}</td>
                                     </tr>
                                     @endforeach
                                     @endif
                                 </tbody>
-                                <tfoot>
+                                {{-- <tfoot>
                                     <th></th>
                                     <th>Total</th>
                                     <th>0.00</th>
                                     <th>0</th>
                                     <th>0</th>
-                                </tfoot>
+                                </tfoot> --}}
                             </table>
                         </div>
                     </div>

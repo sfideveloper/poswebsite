@@ -77,9 +77,9 @@
                             <th>{{ucfirst(trans('file.Price'))}}</th>
                             <th>{{ucfirst(trans('file.grand total'))}}</th>
                             <th>{{ucfirst(trans('file.Paid'))}}</th>
-                            <th>{{ucfirst(trans('file.Due'))}}</th>
+                            {{-- <th>{{ucfirst(trans('file.Due'))}}</th>
                             <th>{{ucfirst(trans('file.Tax'))}}</th>
-                            <th>{{ucfirst(trans('file.Product Tax'))}}</th>
+                            <th>{{ucfirst(trans('file.Product Tax'))}}</th> --}}
                             <th>{{ucfirst(trans('file.Status'))}}</th>
                         </tr>
                     </thead>
@@ -111,15 +111,15 @@
                             </td>
                             <td>
                                 @foreach($lims_product_sale_data[$key] as $product_sale_data)
-                                {{App\Product::select('price')->find($product_sale_data->product_id)->price}}
+                                {{"Rp " . number_format(App\Product::select('price')->find($product_sale_data->product_id)->price), 2, ',', '.'}}
                                 <br>
                                 @endforeach
                             </td>
-                            <td>{{$sale->grand_total}}</td>
-                            <td>{{$sale->paid_amount}}</td>
-                            <td>{{number_format((float)($sale->grand_total - $sale->paid_amount), 2, '.', '')}}</td>
+                            <td>{{"Rp " . number_format($sale->grand_total), 2, ',', '.'}}</td>
+                            <td>{{"Rp " . number_format($sale->paid_amount), 2, ',', '.'}}</td>
+                            {{-- <td>{{number_format((float)($sale->grand_total - $sale->paid_amount), 2, '.', '')}}</td>
                             <td>{{$sale->order_tax}}</td>
-                            <td>{{$sale->total_tax}}</td>
+                            <td>{{$sale->total_tax}}</td> --}}
                             @if($sale->sale_status == 1)
                             <td><div class="badge badge-success">{{trans('file.Completed')}}</div></td>
                             @else
@@ -134,12 +134,12 @@
                             <th>Total:</th>
                             <th></th>
                             <th></th>
+                            {{-- <th></th>
                             <th></th>
-                            <th></th>
+                            <th>0.00</th> --}}
+                            {{-- <th>0.00</th>
                             <th>0.00</th>
-                            <th>0.00</th>
-                            <th>0.00</th>
-                            <th>0.00</th>
+                            <th>0.00</th> --}}
                             <th></th>
                         </tr>
                     </tfoot>

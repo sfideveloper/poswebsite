@@ -79,9 +79,7 @@
                             <th><?php echo e(ucfirst(trans('file.Price'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.Paid'))); ?></th>
-                            <th><?php echo e(ucfirst(trans('file.Due'))); ?></th>
-                            <th><?php echo e(ucfirst(trans('file.Tax'))); ?></th>
-                            <th><?php echo e(ucfirst(trans('file.Product Tax'))); ?></th>
+                            
                             <th><?php echo e(ucfirst(trans('file.Status'))); ?></th>
                         </tr>
                     </thead>
@@ -115,16 +113,14 @@
                             </td>
                             <td>
                                 <?php $__currentLoopData = $lims_product_sale_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <?php echo e(App\Product::select('price')->find($product_sale_data->product_id)->price); ?>
+                                <?php echo e("Rp " . number_format(App\Product::select('price')->find($product_sale_data->product_id)->price), 2, ',', '.'); ?>
 
                                 <br>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </td>
-                            <td><?php echo e($sale->grand_total); ?></td>
-                            <td><?php echo e($sale->paid_amount); ?></td>
-                            <td><?php echo e(number_format((float)($sale->grand_total - $sale->paid_amount), 2, '.', '')); ?></td>
-                            <td><?php echo e($sale->order_tax); ?></td>
-                            <td><?php echo e($sale->total_tax); ?></td>
+                            <td><?php echo e("Rp " . number_format($sale->grand_total), 2, ',', '.'); ?></td>
+                            <td><?php echo e("Rp " . number_format($sale->paid_amount), 2, ',', '.'); ?></td>
+                            
                             <?php if($sale->sale_status == 1): ?>
                             <td><div class="badge badge-success"><?php echo e(trans('file.Completed')); ?></div></td>
                             <?php else: ?>
@@ -139,12 +135,8 @@
                             <th>Total:</th>
                             <th></th>
                             <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>0.00</th>
-                            <th>0.00</th>
-                            <th>0.00</th>
-                            <th>0.00</th>
+                            
+                            
                             <th></th>
                         </tr>
                     </tfoot>

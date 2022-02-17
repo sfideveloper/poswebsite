@@ -128,20 +128,14 @@
                                                 }
                                             }
                                         ?>
-                                        <td><?php echo e(number_format((float)$purchased_cost, 2, '.', '')); ?></td>
+                                        <td><?php echo e("Rp " . number_format((float)$purchased_cost, 2, ',', '.')); ?></td>
                                         <td><?php echo e($purchased_qty); ?></td>
                                         <td><?php echo e($product_qty[$key]); ?></td>
                                     </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     <?php endif; ?>
                                 </tbody>
-                                <tfoot>
-                                    <th></th>
-                                    <th>Total</th>
-                                    <th>0.00</th>
-                                    <th>0</th>
-                                    <th>0</th>
-                                </tfoot>
+                                
                             </table>
                         </div>
                     </div>

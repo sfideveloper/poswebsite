@@ -58,7 +58,6 @@
             <?php echo Form::close(); ?>
 
 
-    
         </div>
     </div>
     <ul class="nav nav-tabs ml-4 mt-3" role="tablist">

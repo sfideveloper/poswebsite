@@ -54,7 +54,7 @@
                                         <td>@if($sale){{$sale->reference_no}}@endif</td>
                                         <td>@if($purchase){{$purchase->reference_no}}@endif</td>
                                         <td>{{$payment->paying_method}}</td>
-                                        <td>{{$payment->amount}}</td>
+                                        <td>{{"Rp " . number_format((float)$payment->amount, 2, ',', '.')}}</td>
                                         <td>{{$user->name}}<br>{{$user->email}}</td>
                                     </tr>
                                     @endforeach

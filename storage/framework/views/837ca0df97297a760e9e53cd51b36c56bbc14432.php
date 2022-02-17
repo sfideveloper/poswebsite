@@ -56,7 +56,7 @@
                                         <td><?php if($sale): ?><?php echo e($sale->reference_no); ?><?php endif; ?></td>
                                         <td><?php if($purchase): ?><?php echo e($purchase->reference_no); ?><?php endif; ?></td>
                                         <td><?php echo e($payment->paying_method); ?></td>
-                                        <td><?php echo e($payment->amount); ?></td>
+                                        <td><?php echo e("Rp " . number_format((float)$payment->amount, 2, ',', '.')); ?></td>
                                         <td><?php echo e($user->name); ?><br><?php echo e($user->email); ?></td>
                                     </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

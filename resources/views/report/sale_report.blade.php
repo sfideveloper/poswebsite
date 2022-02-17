@@ -129,20 +129,20 @@
                                                     $sold_qty += $product_sale->qty;
                                             }
                                         ?>
-                                        <td>{{number_format((float)$sold_price, 2, '.', '')}}</td>
+                                        <td>{{"Rp " . number_format((float)$sold_price, 2, ',', '.')}}</td>
                                         <td>{{$sold_qty}}</td>
                                         <td>{{$product_qty[$key]}}</td>
                                     </tr>
                                     @endforeach
                                     @endif
                                 </tbody>
-                                <tfoot>
+                                {{-- <tfoot>
                                     <th></th>
                                     <th>Total</th>
                                     <th>0.00</th>
                                     <th>0</th>
                                     <th>0</th>
-                                </tfoot>
+                                </tfoot> --}}
                             </table>
                         </div>
                     </div>

@@ -196,17 +196,17 @@
                                             else
                                             $profit =  $sold_price;
                                         ?>
-                                        <td>{{number_format((float)$purchased_cost, 2, '.', '')}}</td>
+                                        <td>{{"Rp " . number_format((float)$purchased_cost, 2, ',', '.')}}</td>
                                         <td>{{$purchased_qty}}</td>
-                                        <td>{{number_format((float)$sold_price, 2, '.', '')}}</td>
+                                        <td>{{"Rp " . number_format((float)$sold_price, 2, ',', '.')}}</td>
                                         <td>{{$sold_qty}}</td>
-                                        <td>{{number_format((float)$profit, 2, '.', '')}}</td>
+                                        <td>{{"Rp " . number_format((float)$profit, 2, ',', '.')}}</td>
                                         <td>{{$product_qty[$key]}}</td>
                                     </tr>
                                     @endforeach
                                     @endif
                                 </tbody>
-                                <tfoot>
+                                {{-- <tfoot>
                                     <th></th>
                                     <th>Total</th>
                                     <th>0.00</th>
@@ -215,7 +215,7 @@
                                     <th>0.00</th>
                                     <th>0.00</th>
                                     <th>0.00</th>
-                                </tfoot>
+                                </tfoot> --}}
                             </table>
                         </div>
                     </div>
@@ -324,24 +324,24 @@
     } );
 
     function datatable_sum(dt_selector, is_calling_first) {
-        if (dt_selector.rows( '.selected' ).any() && is_calling_first) {
-            var rows = dt_selector.rows( '.selected' ).indexes();
+        // if (dt_selector.rows( '.selected' ).any() && is_calling_first) {
+        //     var rows = dt_selector.rows( '.selected' ).indexes();
 
-            $( dt_selector.column( 2 ).footer() ).html(dt_selector.cells( rows, 2, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 3 ).footer() ).html(dt_selector.cells( rows, 3, { page: 'current' } ).data().sum());
-            $( dt_selector.column( 4 ).footer() ).html(dt_selector.cells( rows, 4, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum());
-            $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum());
-        }
-        else {
-            $( dt_selector.column( 2 ).footer() ).html(dt_selector.column( 2, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 3 ).footer() ).html(dt_selector.column( 3, {page:'current'} ).data().sum());
-            $( dt_selector.column( 4 ).footer() ).html(dt_selector.column( 4, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum());
-            $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 7 ).footer() ).html(dt_selector.column( 7, {page:'current'} ).data().sum());
-        }
+        //     $( dt_selector.column( 2 ).footer() ).html(dt_selector.cells( rows, 2, { page: 'current' } ).data().sum().toFixed(2));
+        //     $( dt_selector.column( 3 ).footer() ).html(dt_selector.cells( rows, 3, { page: 'current' } ).data().sum());
+        //     $( dt_selector.column( 4 ).footer() ).html(dt_selector.cells( rows, 4, { page: 'current' } ).data().sum().toFixed(2));
+        //     $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum());
+        //     $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
+        //     $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum());
+        // }
+        // else {
+        //     $( dt_selector.column( 2 ).footer() ).html("Rp " + dt_selector.column( 2, {page:'current'} ).data().sum().toFixed(2));
+        //     $( dt_selector.column( 3 ).footer() ).html(dt_selector.column( 3, {page:'current'} ).data().sum());
+        //     $( dt_selector.column( 4 ).footer() ).html("Rp " + dt_selector.column( 4, {page:'current'} ).data().sum().toFixed(2));
+        //     $( dt_selector.column( 5 ).footer() ).html( dt_selector.column( 5, {page:'current'} ).data().sum());
+        //     $( dt_selector.column( 6 ).footer() ).html("Rp " + dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
+        //     $( dt_selector.column( 7 ).footer() ).html(dt_selector.column( 7, {page:'current'} ).data().sum());
+        // }
     }
 
 
