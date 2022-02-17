@@ -450,6 +450,7 @@ class SaleController extends Controller
             else
                 $mail_data['unit'][$i] = '';
 
+            $product_sale['indicator_tax'] = $lims_product_data->indicator_tax ;
             $product_sale['sale_id'] = $lims_sale_data->id ;
             $product_sale['product_id'] = $id;
             $product_sale['qty'] = $mail_data['qty'][$i] = $qty[$i];

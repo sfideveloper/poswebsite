@@ -56,7 +56,6 @@
             <input type="hidden" name="warehouse_id_hidden" value="{{$warehouse_id}}" />
             {!! Form::close() !!}
 
-    
         </div>
     </div>
     <ul class="nav nav-tabs ml-4 mt-3" role="tablist">

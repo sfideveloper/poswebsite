@@ -1,48 +1,42 @@
-@extends('layout.main')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <section class="forms">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header d-flex align-items-center">
-                        <h4>{{trans('file.Update Product')}}</h4>
+                        <h4><?php echo e(ucwords(trans('file.add_product'))); ?></h4>
                     </div>
                     <div class="card-body">
-                        <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
-                        <form method="POST" id="product-form" action="{{route('products.updateProduct', $lims_product_data->id)}}" enctype="multipart/form-data">
-                            @csrf
-                            @method("PATCH")
-                            <input type="hidden" name="id" value="{{$lims_product_data->id}}" />
+                        <p class="italic"><small><?php echo e(trans('file.The field labels marked with * are required input fields')); ?>.</small></p>
+                        <form id="product-form">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{ucwords(trans('file.Product Type'))}} *</strong> </label>
+                                        <label><?php echo e(ucwords(trans('file.Product Type'))); ?> *</strong> </label>
                                         <div class="input-group">
                                             <select name="type" required class="form-control selectpicker" id="type">
                                                 <option value="standard">Standard</option>
                                                 <option value="combo">Combo</option>
                                                 <option value="digital">Digital</option>
                                             </select>
-                                            <input type="hidden" name="type_hidden" value="{{$lims_product_data->type}}">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{ucwords(trans('file.Product Name'))}} *</strong> </label>
-                                        <input type="text" name="name" value="{{$lims_product_data->name}}" required class="form-control">
+                                        <label><?php echo e(ucwords(trans('file.Product Name'))); ?> *</strong> </label>
+                                        <input type="text" name="name" class="form-control" id="name" aria-describedby="name" required>
                                         <span class="validation-msg" id="name-error"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{ucwords(trans('file.Product Code'))}} *</strong> </label>
+                                        <label><?php echo e(ucwords(trans('file.Product Code'))); ?> *</strong> </label>
                                         <div class="input-group">
-                                            <input type="text" name="code" id="code" value="{{$lims_product_data->code}}" class="form-control" required>
+                                            <input type="text" name="code" class="form-control" id="code" aria-describedby="code" required>
                                             <div class="input-group-append">
-                                                <button id="genbutton" type="button" class="btn btn-sm btn-default" title="{{trans('file.Generate')}}"><i class="fa fa-refresh"></i></button>
+                                                <button id="genbutton" type="button" class="btn btn-sm btn-default" title="<?php echo e(trans('file.Generate')); ?>"><i class="fa fa-refresh"></i></button>
                                             </div>
                                         </div>
                                         <span class="validation-msg" id="code-error"></span>
@@ -50,9 +44,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{ucwords(trans('file.Barcode Symbology'))}} *</strong> </label>
+                                        <label><?php echo e(ucwords(trans('file.Barcode Symbology'))); ?> *</strong> </label>
                                         <div class="input-group">
-                                            <input type="hidden" name="barcode_symbology_hidden" value="{{$lims_product_data->barcode_symbology}}">
                                             <select name="barcode_symbology" required class="form-control selectpicker">
                                                 <option value="C128">Code 128</option>
                                                 <option value="C39">Code 39</option>
@@ -66,254 +59,185 @@
                                 </div>
                                 <div id="digital" class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{ucwords(trans('file.Attach File'))}}</strong> </label>
+                                        <label><?php echo e(ucwords(trans('file.Attach File'))); ?> *</strong> </label>
                                         <div class="input-group">
                                             <input type="file" name="file" class="form-control">
                                         </div>
                                         <span class="validation-msg"></span>
-                                    </div>
+                                    </div>                                
                                 </div>
                                 <div id="combo" class="col-md-9 mb-1">
-                                    <label>{{ucwords(trans('file.add_product'))}}</label>
+                                    <label><?php echo e(ucwords(trans('file.add_product'))); ?></label>
                                     <div class="search-box input-group mb-3">
                                         <button class="btn btn-secondary"><i class="fa fa-barcode"></i></button>
                                         <input type="text" name="product_code_name" id="lims_productcodeSearch" placeholder="Please type product code and select..." class="form-control" />
                                     </div>
-                                    <label>{{ucwords(trans('file.Combo Products'))}}</label>
+                                    <label><?php echo e(ucwords(trans('file.Combo Products'))); ?></label>
                                     <div class="table-responsive">
                                         <table id="myTable" class="table table-hover order-list">
                                             <thead>
                                                 <tr>
-                                                    <th>{{ucfirst(trans('file.product'))}}</th>
-                                                    <th>{{ucfirst(trans('file.Quantity'))}}</th>
-                                                    <th>{{ucfirst(trans('file.Unit Price'))}}</th>
+                                                    <th><?php echo e(trans('file.product')); ?></th>
+                                                    <th><?php echo e(trans('file.Quantity')); ?></th>
+                                                    <th><?php echo e(trans('file.Unit Price')); ?></th>
                                                     <th><i class="dripicons-trash"></i></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if($lims_product_data->type == 'combo')
-                                                @php
-                                                $product_list = explode(",", $lims_product_data->product_list);
-                                                $qty_list = explode(",", $lims_product_data->qty_list);
-                                                $price_list = explode(",", $lims_product_data->price_list);
-                                                @endphp
-                                                @foreach($product_list as $key=>$id)
-                                                <tr>
-                                                    @php $product = \App\Product::find($id); @endphp
-                                                    <td>{{$product->name}} [{{$product->code}}]</td>
-                                                    <td><input type="number" class="form-control qty" name="product_qty[]" value="{{$qty_list[$key]}}" step="any"></td>
-                                                    <td><input type="number" class="form-control unit_price" name="unit_price[]" value="{{$price_list[$key]}}" step="any"/></td>
-                                                    <td><button type="button" class="ibtnDel btn btn-danger btn-sm">X</button></td>
-                                                    <input type="hidden" class="product-id" name="product_id[]" value="{{$id}}"/>
-                                                </tr>
-                                                @endforeach
-                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{ucwords(trans('file.Brand'))}}</strong> </label>
+                                        <label><?php echo e(ucwords(trans('file.Brand'))); ?></strong> </label>
                                         <div class="input-group">
-                                            <input type="hidden" name="brand" value="{{ $lims_product_data->brand_id}}">
                                           <select name="brand_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
-                                            @foreach($lims_brand_list as $brand)
-                                                <option value="{{$brand->id}}">{{$brand->title}}</option>
-                                            @endforeach
+                                            <?php $__currentLoopData = $lims_brand_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($brand->id); ?>"><?php echo e($brand->title); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                           </select>
                                       </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <input type="hidden" name="category" value="{{$lims_product_data->category_id}}">
-                                        <label>{{ucwords(trans('file.category'))}} *</strong> </label>
+                                        <label><?php echo e(ucwords(trans('file.category'))); ?> *</strong> </label>
                                         <div class="input-group">
                                           <select name="category_id" required class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Category...">
-                                            @foreach($lims_category_list as $category)
-                                                <option value="{{$category->id}}">{{$category->name}}</option>
-                                            @endforeach
+                                            <?php $__currentLoopData = $lims_category_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($category->id); ?>"><?php echo e($category->name); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                           </select>
                                       </div>
+                                      <span class="validation-msg"></span>
                                     </div>
                                 </div>
                                 <div id="unit" class="col-md-12">
                                     <div class="row ">
-                                        <div class="col-md-4">
-                                                <label>{{ucwords(trans('file.Product Unit'))}} *</strong> </label>
+                                        <div class="col-md-4 form-group">
+                                                <label><?php echo e(ucwords(trans('file.Product Unit'))); ?> *</strong> </label>
                                                 <div class="input-group">
-                                                  <select required class="form-control selectpicker" data-live-search="true" data-live-search-style="begins" title="Select unit..." name="unit_id">
-                                                    @foreach($lims_unit_list as $unit)
-                                                        @if($unit->base_unit==null)
-                                                            <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
-                                                        @endif
-                                                    @endforeach
+                                                  <select required class="form-control selectpicker" name="unit_id">
+                                                    <option value="" disabled selected>Select Product Unit...</option>
+                                                    <?php $__currentLoopData = $lims_unit_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $unit): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php if($unit->base_unit==null): ?>
+                                                            <option value="<?php echo e($unit->id); ?>"><?php echo e($unit->unit_name); ?></option>
+                                                        <?php endif; ?>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                   </select>
-                                                  <input type="hidden" name="unit" value="{{ $lims_product_data->unit_id}}">
+                                              </div>
+                                              <span class="validation-msg"></span>
+                                        </div>
+                                        <div class="col-md-4">
+                                                <label><?php echo e(ucwords(trans('file.Sale Unit'))); ?></strong> </label>
+                                                <div class="input-group">
+                                                  <select class="form-control selectpicker" name="sale_unit_id"> 
+                                                  </select>
                                               </div>
                                         </div>
                                         <div class="col-md-4">
-                                                <label>{{ucwords(trans('file.Sale Unit'))}}</strong> </label>
-                                                <div class="input-group">
-                                                  <select class="form-control selectpicker" name="sale_unit_id" id="sale-unit"> 
-                                                  </select>
-                                                  <input type="hidden" name="sale_unit" value="{{ $lims_product_data->sale_unit_id}}">
-                                              </div>
-                                        </div>
-                                        <div class="col-md-4 mt-2">
                                                 <div class="form-group">
-                                                    <label>{{ucwords(trans('file.Purchase Unit'))}}</strong> </label>
+                                                    <label><?php echo e(ucwords(trans('file.Purchase Unit'))); ?></strong> </label>
                                                     <div class="input-group">
                                                       <select class="form-control selectpicker" name="purchase_unit_id"> 
                                                       </select>
-                                                      <input type="hidden" name="purchase_unit" value="{{ $lims_product_data->purchase_unit_id}}">
                                                   </div>
                                                 </div>
                                         </div>                                
                                     </div>                                
                                 </div>
                                 <div id="cost" class="col-md-4">
-                                    <div class="form-group">
-                                        <label>{{ucwords(trans('file.Product Cost'))}} *</strong> </label>
-                                        <input type="number" name="cost" value="{{$lims_product_data->cost}}" required class="form-control" step="any">
+                                     <div class="form-group">
+                                        <label><?php echo e(ucwords(trans('file.Product Cost'))); ?> *</strong> </label>
+                                        <input type="number" name="cost" required class="form-control" step="any">
                                         <span class="validation-msg"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{ucwords(trans('file.Product Price'))}} *</strong> </label>
-                                        <input type="number" name="price" value="{{$lims_product_data->price}}" required class="form-control" step="any">
+                                        <label><?php echo e(ucwords(trans('file.Product Price'))); ?> *</strong> </label>
+                                        <input type="number" name="price" required class="form-control" step="any">
                                         <span class="validation-msg"></span>
                                     </div>
                                     <div class="form-group">
-                                        <input type="hidden" name="price_total" class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="hidden" name="qty" value="{{ $lims_product_data->qty }}" class="form-control">
+                                        <input type="hidden" name="qty" value="0.00">
                                     </div>
                                 </div>
                                 <div id="alert-qty" class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{ucwords(trans('file.Alert Quantity'))}}</strong> </label>
-                                        <input type="number" name="alert_quantity" value="{{$lims_product_data->alert_quantity}}" class="form-control" step="any">
+                                        <label><?php echo e(ucwords(trans('file.Alert Quantity'))); ?></strong> </label>
+                                        <input type="number" name="alert_quantity" class="form-control" step="any">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <input type="hidden" name="tax" value="{{$lims_product_data->tax_id}}">
-                                        <label>{{ucwords(trans('file.product'))}} {{ucwords(trans('file.Tax'))}}</strong> </label>
+                                        <label><?php echo e(ucwords(trans('file.Product Tax'))); ?></strong> </label>
                                         <select name="tax_id" class="form-control selectpicker">
                                             <option value="">No Tax</option>
-                                            @foreach($lims_tax_list as $tax)
-                                                <option value="{{$tax->id}}">{{$tax->name}}</option>
-                                            @endforeach
+                                            <?php $__currentLoopData = $lims_tax_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tax): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($tax->id); ?>"><?php echo e($tax->name); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <input type="hidden" name="tax_method_id" value="{{$lims_product_data->tax_method}}">
-                                        <label>{{ucwords(trans('file.Tax Method'))}}</strong> </label>
+                                        <label><?php echo e(ucwords(trans('file.Tax Method'))); ?></strong> </label> <i class="dripicons-question" data-toggle="tooltip" title="<?php echo e(trans('file.Exclusive: Poduct price = Actual product price + Tax. Inclusive: Actual product price = Product price - Tax')); ?>"></i>
                                         <select name="tax_method" class="form-control selectpicker">
-                                            <option value="1">{{trans('file.Exclusive')}}</option>
-                                            <option value="2">{{trans('file.Inclusive')}}</option>
+                                            <option value="1"><?php echo e(trans('file.Exclusive')); ?></option>
+                                            <option value="2"><?php echo e(trans('file.Inclusive')); ?></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group mt-3">
-                                        @if($lims_product_data->featured)
-                                            <input type="checkbox" name="featured" value="1" checked>
-                                        @else
-                                            <input type="checkbox" name="featured" value="1">
-                                        @endif
-                                        <label>{{ucwords(trans('file.Featured'))}}</label>
-                                    </div>
-                                </div>
+                                        <input type="checkbox" name="featured" value="1">&nbsp;
+                                        <label><?php echo e(ucwords(trans('file.Featured'))); ?></label>
+                                        <p class="italic"><?php echo e(trans('file.Featured product will be displayed in POS')); ?></p>
+                                    </div> 
+                                </div>                        
                                 <div class="col-md-2">
                                     <div class="form-group mt-3">
-                                        @if($lims_product_data->indicator_tax)
-                                            <input type="checkbox" name="indicator_tax" value="1" checked>
-                                        @else
-                                            <input type="checkbox" name="indicator_tax" value="1">
-                                        @endif
-                                        <label>{{ucwords(trans('file.Product Tax'))}}</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
+                                        <input type="checkbox" name="indicator_tax" value="1">&nbsp;
+                                        <label><?php echo e(ucwords(trans('file.Product Tax'))); ?></label>
+                                        
+                                    </div> 
+                                </div>                        
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>{{ucwords(trans('file.Product Image'))}}</strong> </label> <i class="dripicons-question" data-toggle="tooltip" title="{{trans('file.You can upload multiple image. Only .jpeg, .jpg, .png, .gif file can be uploaded. First image will be base image.')}}"></i>
-                                        {{-- <div id="imageUpload" class="dropzone"></div> --}}
-                                        <input type="file" name="update_img" id="update_img">
+                                        <label><?php echo e(ucwords(trans('file.Product Image'))); ?></strong> </label> <i class="dripicons-question" data-toggle="tooltip" title="<?php echo e(trans('file.You can upload multiple image. Only .jpeg, .jpg, .png, .gif file can be uploaded. First image will be base image.')); ?>"></i>
+                                        <div id="imageUpload" class="dropzone"></div>
                                         <span class="validation-msg" id="image-error"></span>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
+                                </div>                            
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th><button type="button" class="btn btn-sm"><i class="fa fa-trash"></i></button></th>
-                                                    <th>Image</th>
-                                                    <th>Remove</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php $images = explode(",", $lims_product_data->image)?>
-                                                @foreach($images as $key => $image)
-                                                <tr>
-                                                    <td><button type="button" class="btn btn-sm"><i class="fa fa-trash"></i></button></i></td>
-                                                    <td>
-                                                        <img src="{{url('images/product', $image)}}" height="60" width="60">
-                                                        <input type="hidden" name="prev_img[]" value="{{$image}}">
-                                                    </td>
-                                                    <td><button type="button" class="btn btn-sm btn-danger remove-img">X</button></td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col-md-12"> 
-                                    <div class="form-group">
-                                        <label>{{ucwords(trans('file.Product Details'))}}</label>
-                                        <textarea name="product_details" class="form-control" rows="5">{{str_replace('@', '"', $lims_product_data->product_details)}}</textarea>
+                                        <label><?php echo e(ucwords(trans('file.Product Details'))); ?></label>
+                                        <textarea name="product_details" class="form-control" rows="3"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-2" id="diffPrice-option">
-                                    @if($lims_product_data->is_diffPrice)
-                                        <h5><input name="is_diffPrice" type="checkbox" id="is-diffPrice" value="1" checked>&nbsp; {{trans('file.This product has different price for different warehouse')}}</h5>
-                                    @else
-                                        <h5><input name="is_diffPrice" type="checkbox" id="is-diffPrice" value="1">&nbsp; {{trans('file.This product has different price for different warehouse')}}</h5>
-                                    @endif
+                                    <h5><input name="is_diffPrice" type="checkbox" id="is-diffPrice" value="1">&nbsp; <?php echo e(trans('file.This product has different price for different warehouse')); ?></h5>
                                 </div>
                                 <div class="col-md-6" id="diffPrice-section">
                                     <div class="table-responsive ml-2">
                                         <table id="diffPrice-table" class="table table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>{{ucfirst(trans('file.Warehouse'))}}</th>
-                                                    <th>{{ucfirst(trans('file.Price'))}}</th>
+                                                    <th><?php echo e(trans('file.Warehouse')); ?></th>
+                                                    <th><?php echo e(trans('file.Price')); ?></th>
                                                 </tr>
-                                                @foreach($lims_warehouse_list as $warehouse)
+                                                <?php $__currentLoopData = $lims_warehouse_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $warehouse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <tr>
                                                     <td>
-                                                        <input type="hidden" name="warehouse_id[]" value="{{$warehouse->id}}">
-                                                        {{$warehouse->name}}
+                                                        <input type="hidden" name="warehouse_id[]" value="<?php echo e($warehouse->id); ?>">
+                                                        <?php echo e($warehouse->name); ?>
+
                                                     </td>
-                                                    <td>
-                                                        <?php 
-                                                            $product_warehouse = \App\Product_Warehouse::FindProductWithoutVariant($lims_product_data->id, $warehouse->id)->first();
-                                                        ?>
-                                                        @if($product_warehouse)
-                                                            <input type="number" name="diff_price[]" class="form-control" value="{{$product_warehouse->price}}">
-                                                        @else
-                                                            <input type="number" name="diff_price[]" class="form-control">
-                                                        @endif
-                                                    </td>
+                                                    <td><input type="number" name="diff_price[]" class="form-control"></td>
                                                 </tr>
-                                                @endforeach
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </thead>
                                             <tbody>
                                             </tbody>
@@ -321,75 +245,65 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-3" id="variant-option">
-                                    @if($lims_product_data->is_variant)
-                                    <h5><input name="is_variant" type="checkbox" id="is-variant" value="1" checked>&nbsp; {{trans('file.This product has variant')}}</h5>
-                                    @else
-                                    <h5><input name="is_variant" type="checkbox" id="is-variant" value="1">&nbsp; {{trans('file.This product has variant')}}</h5>
-                                    @endif
+                                    <h5><input name="is_variant" type="checkbox" id="is-variant" value="1">&nbsp; <?php echo e(trans('file.This product has variant')); ?></h5>
                                 </div>
                                 <div class="col-md-12" id="variant-section">
                                     <div class="col-md-6 form-group mt-2">
-                                        <input type="text" name="variant" class="form-control" placeholder="{{trans('file.Enter variant seperated by comma')}}">
+                                        <input type="text" name="variant" class="form-control" placeholder="<?php echo e(trans('file.Enter variant seperated by comma')); ?>">
                                     </div>
                                     <div class="table-responsive ml-2">
                                         <table id="variant-table" class="table table-hover variant-list">
                                             <thead>
                                                 <tr>
                                                     <th><i class="dripicons-view-apps"></i></th>
-                                                    <th>{{ucfirst(trans('file.name'))}}</th>
-                                                    <th>{{ucfirst(trans('file.Item Code'))}}</th>
-                                                    <th>{{ucfirst(trans('file.Additional Price'))}}</th>
+                                                    <th><?php echo e(ucfirst(trans('file.name'))); ?></th>
+                                                    <th><?php echo e(ucfirst(trans('file.Item Code'))); ?></th>
+                                                    <th><?php echo e(ucfirst(trans('file.Additional Price'))); ?></th>
                                                     <th><i class="dripicons-trash"></i></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($lims_product_variant_data as $key=> $variant)
-                                                <tr>
-                                                    <td style="cursor:grab">
-                                                        <i class="dripicons-view-apps"></i>
-                                                        <input type="hidden" name="product_variant_id[]" value="{{$variant->pivot['id']}}">
-                                                        <input type="hidden" name="variant_id[]" value="{{$variant->pivot['variant_id']}}">
-                                                    </td>
-                                                    <td><input type="text" class="form-control" name="variant_name[]" value="{{$variant->name}}" /></td>
-                                                    <td><input type="text" class="form-control" name="item_code[]" value="{{$variant->pivot['item_code']}}" /></td>
-                                                    <td><input type="number" class="form-control" name="additional_price[]" value="{{$variant->pivot['additional_price']}}" step="any" /></td>
-                                                    <td><button type="button" class="vbtnDel btn btn-sm btn-danger">X</button></td>
-                                                </tr>
-                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                                 <div class="col-md-4 mt-3">
-                                    <input type="hidden" name="promotion_hidden" value="{{$lims_product_data->promotion}}">
                                     <input name="promotion" type="checkbox" id="promotion" value="1">&nbsp;
-                                    <label><h5>{{trans('file.Add Promotional Price')}}</h5></label>
+                                    <label><h5><?php echo e(ucwords(trans('file.Add Promotional Price'))); ?></h5></label>
                                 </div>
-                                
                                 <div class="col-md-12">
                                     <div class="row">
-                                        <div class="col-md-4" id="promotion_price"><label>{{ucwords(trans('file.Promotional Price'))}}</label>
-                                            <input type="number" name="promotion_price" value="{{$lims_product_data->promotion_price}}" class="form-control" step="any" />
+                                        <div class="col-md-4" id="promotion_price">
+                                            <label><?php echo e(ucwords(trans('file.Promotional Price'))); ?></label>
+                                            <input type="number" name="promotion_price" class="form-control" step="any" />
                                         </div>
-                                        <div id="start_date" class="col-md-4">
+                                        <div class="col-md-4" id="start_date">
                                             <div class="form-group">
-                                                <label>{{ucwords(trans('file.Promotion Starts'))}}</label>
-                                                <input type="text" name="starting_date" value="{{$lims_product_data->starting_date}}" id="starting_date" class="form-control" />
+                                                <label><?php echo e(ucwords(trans('file.Promotion Starts'))); ?></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text"><i class="dripicons-calendar"></i></div>
+                                                    </div>
+                                                    <input type="text" name="starting_date" id="starting_date" class="form-control" />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div id="last_date" class="col-md-4">
+                                        <div class="col-md-4" id="last_date">
                                             <div class="form-group">
-                                                <label>{{ucwords(trans('file.Promotion Ends'))}}</label>
-                                                <input type="text" name="last_date" value="{{$lims_product_data->last_date}}" id="ending_date" class="form-control" />
+                                                <label><?php echo e(ucwords(trans('file.Promotion Ends'))); ?></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text"><i class="dripicons-calendar"></i></div>
+                                                    </div>
+                                                    <input type="text" name="last_date" id="ending_date" class="form-control" />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group text-right">
-                                        <input type="submit" value="{{ucfirst(trans('file.submit'))}}" class="btn btn-primary btn-md-block">
-                                    </div>
-                                </div>
+                                    </div>  
+                                </div> 
+                            </div>
+                            <div class="form-group text-right">
+                                <input type="submit" value="<?php echo e(ucfirst(trans('file.submit'))); ?>" class="btn btn-primary btn-md-block mt-3" id="submit-btn">
                             </div>
                         </form>
                     </div>
@@ -403,45 +317,17 @@
 
     $("ul#product").siblings('a').attr('aria-expanded','true');
     $("ul#product").addClass("show");
-    var product_id = <?php echo json_encode($lims_product_data->id) ?>;
-    $('[data-toggle="tooltip"]').tooltip();
-
-    $(".remove-img").on("click", function () {
-        $(this).closest("tr").remove();
-    });
+    $("ul#product #product-create-menu").addClass("active");
 
     $("#digital").hide();
     $("#combo").hide();
-    $("select[name='type']").val($("input[name='type_hidden']").val());
-    variantShowHide();
-    diffPriceShowHide();
+    $("#variant-section").hide();
+    $("#diffPrice-section").hide();
+    $("#promotion_price").hide();
+    $("#start_date").hide();
+    $("#last_date").hide();
 
-    if($("input[name='type_hidden']").val() == "digital"){
-        $("input[name='cost']").prop('required',false);
-        $("select[name='unit_id']").prop('required',false);
-        hide();
-        $("#digital").show();
-    }
-    else if($("input[name='type_hidden']").val() == "combo"){
-        $("input[name='cost']").prop('required', false);
-        $("input[name='price']").prop('disabled', true);
-        $("select[name='unit_id']").prop('required', false);
-        hide();
-        $("#combo").show();
-    }
-
-    var promotion = $("input[name='promotion_hidden']").val();
-    if(promotion){
-        $("input[name='promotion']").prop('checked', true);
-        $("#promotion_price").show(300);
-        $("#start_date").show(300);
-        $("#last_date").show(300);
-    }
-    else {
-        $("#promotion_price").hide(300);
-        $("#start_date").hide(300);
-        $("#last_date").hide(300);
-    }
+    $('[data-toggle="tooltip"]').tooltip(); 
 
     $.ajaxSetup({
         headers: {
@@ -450,14 +336,12 @@
     });
 
     $('#genbutton').on("click", function(){
-      $.get('../gencode', function(data){
+      $.get('gencode', function(data){
         $("input[name='code']").val(data);
       });
     });
 
-    $('.selectpicker').selectpicker({
-      style: 'btn-link',
-    });
+    
 
     tinymce.init({
       selector: 'textarea',
@@ -471,80 +355,62 @@
       branding:false
     });
 
-    var barcode_symbology = $("input[name='barcode_symbology_hidden']").val();
-    $('select[name=barcode_symbology]').val(barcode_symbology);
-
-    var brand = $("input[name='brand']").val();
-    $('select[name=brand_id]').val(brand);
-
-    var cat = $("input[name='category']").val();
-    $('select[name=category_id]').val(cat);
-
-    if($("input[name='unit']").val()) {
-        $('select[name=unit_id]').val($("input[name='unit']").val());
-        populate_unit($("input[name='unit']").val());
-    }
-
-    var tax = $("input[name='tax']").val();
-    if(tax)
-        $('select[name=tax_id]').val(tax);
-
-    var tax_method = $("input[name='tax_method_id']").val();
-    $('select[name=tax_method]').val(tax_method);
-    $('.selectpicker').selectpicker('refresh');
-
     $('select[name="type"]').on('change', function() {
         if($(this).val() == 'combo'){
             $("input[name='cost']").prop('required',false);
             $("select[name='unit_id']").prop('required',false);
             hide();
-            $("#digital").hide();
-            $("#variant-section, #variant-option, #diffPrice-option, #diffPrice-section").hide(300);
-            $("#combo").show();
+            $("#combo").show(300);
             $("input[name='price']").prop('disabled',true);
+            $("#is-variant").prop("checked", false);
+            $("#is-diffPrice").prop("checked", false);
+            $("#variant-section, #variant-option, #diffPrice-option, #diffPrice-section").hide(300);
         }
         else if($(this).val() == 'digital'){
             $("input[name='cost']").prop('required',false);
             $("select[name='unit_id']").prop('required',false);
             $("input[name='file']").prop('required',true);
             hide();
-            $("#combo").hide();
-            $("#digital").show();
-            $("#variant-section, #variant-option, #diffPrice-option, #diffPrice-section").hide(300);
+            $("#digital").show(300);
+            $("#combo").hide(300);
             $("input[name='price']").prop('disabled',false);
+            $("#is-variant").prop("checked", false);
+            $("#is-diffPrice").prop("checked", false);
+            $("#variant-section, #variant-option, #diffPrice-option, #diffPrice-section").hide(300);
         }
         else if($(this).val() == 'standard'){
             $("input[name='cost']").prop('required',true);
             $("select[name='unit_id']").prop('required',true);
             $("input[name='file']").prop('required',false);
-            $("#cost").show();
-            $("#unit").show();
-            $("#alert-qty").show();
+            $("#cost").show(300);
+            $("#unit").show(300);
+            $("#alert-qty").show(300);
             $("#variant-option").show(300);
             $("#diffPrice-option").show(300);
-            $("#digital").hide();
-            $("#combo").hide();
+            $("#digital").hide(300);
+            $("#combo").hide(300);
             $("input[name='price']").prop('disabled',false);
         }
     });
 
     $('select[name="unit_id"]').on('change', function() {
+        
         unitID = $(this).val();
         if(unitID) {
-            populate_unit_second(unitID);
+            populate_category(unitID);
         }else{    
             $('select[name="sale_unit_id"]').empty();
             $('select[name="purchase_unit_id"]').empty();
         }                        
     });
-
-    var lims_product_code = [ @foreach($lims_product_list as $product)
+    <?php $productArray = []; ?>
+    var lims_product_code = [ <?php $__currentLoopData = $lims_product_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php
             $productArray[] = htmlspecialchars($product->code . ' [ ' . $product->name . ' ]');
         ?>
-         @endforeach
+         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             <?php
-            echo  '"'.implode('","', $productArray).'"';
+                echo  '"'.implode('","', $productArray).'"';
             ?> ];
 
     var lims_productcodeSearch = $('#lims_productcodeSearch');
@@ -560,7 +426,7 @@
             var data = ui.item.value;
             $.ajax({
                 type: 'GET',
-                url: '../search',
+                url: 'search',
                 data: {
                     data: data
                 },
@@ -602,6 +468,12 @@
         calculate_price();
     });
 
+    function hide() {
+        $("#cost").hide(300);
+        $("#unit").hide(300);
+        $("#alert-qty").hide(300);
+    }
+
     function calculate_price() {
         var price = 0;
         $(".qty").each(function() {
@@ -611,41 +483,11 @@
             price += quantity * unit_price;
         });
         $('input[name="price"]').val(price);
-        $('input[name="price_total"]').val(price);
     }
 
-    function hide() {
-        $("#cost").hide();
-        $("#unit").hide();
-        $("#alert-qty").hide();
-    }
-
-    function populate_unit(unitID){
+    function populate_category(unitID){
         $.ajax({
-            url: '../saleunit/'+unitID,
-            type: "GET",
-            dataType: "json",
-
-            success:function(data) {
-                  $('select[name="sale_unit_id"]').empty();
-                  $('select[name="purchase_unit_id"]').empty();
-                  $.each(data, function(key, value) {
-                      $('select[name="sale_unit_id"]').append('<option value="'+ key +'">'+ value +'</option>');
-                      $('select[name="purchase_unit_id"]').append('<option value="'+ key +'">'+ value +'</option>');
-                  });
-                  $('.selectpicker').selectpicker('refresh');
-                  var sale_unit = $("input[name='sale_unit']").val();
-                  var purchase_unit = $("input[name='purchase_unit']").val();
-                $('#sale-unit').val(sale_unit);
-                $('select[name=purchase_unit_id]').val(purchase_unit);
-                $('.selectpicker').selectpicker('refresh');
-            },
-        });
-    }
-
-    function populate_unit_second(unitID){
-        $.ajax({
-            url: '../saleunit/'+unitID,
+            url: 'saleunit/'+unitID,
             type: "GET",
             dataType: "json",
             success:function(data) {
@@ -658,14 +500,22 @@
                   $('.selectpicker').selectpicker('refresh');
             },
         });
-    };
+    }
 
     $("input[name='is_variant']").on("change", function () {
-        variantShowHide();
+        if ($(this).is(':checked')) {
+            $("#variant-section").show(300);
+        }
+        else
+            $("#variant-section").hide(300);
     });
 
     $("input[name='is_diffPrice']").on("change", function () {
-        diffPriceShowHide();
+        if ($(this).is(':checked')) {
+            $("#diffPrice-section").show(300);
+        }
+        else
+            $("#diffPrice-section").hide(300);
     });
 
     $("input[name='variant']").on("input", function () {
@@ -678,7 +528,7 @@
             var item_code = variant_name+'-'+$("#code").val();
             var newRow = $("<tr>");
             var cols = '';
-            cols += '<td style="cursor:grab"><i class="dripicons-view-apps"></i><input type="hidden" name="product_variant_id[]" value="0"></td>';
+            cols += '<td style="cursor:grab"><i class="dripicons-view-apps"></i></td>';
             cols += '<td><input type="text" class="form-control" name="variant_name[]" value="' + variant_name + '" /></td>';
             cols += '<td><input type="text" class="form-control" name="item_code[]" value="'+item_code+'" /></td>';
             cols += '<td><input type="number" class="form-control" name="additional_price[]" value="" step="any" /></td>';
@@ -695,34 +545,17 @@
         $(this).closest("tr").remove();
     });
 
-    function variantShowHide() {
-         if ($("#is-variant").is(':checked')) {
-            $("#variant-section").show(300);
-        }
-        else {
-            $("#variant-section").hide(300);
-        }
-    };
-
-    function diffPriceShowHide() {
-         if ($("#is-diffPrice").is(':checked')) {
-            $("#diffPrice-section").show(300);
-        }
-        else {
-            $("#diffPrice-section").hide(300);
-        }
-    };
-
     $( "#promotion" ).on( "change", function() {
         if ($(this).is(':checked')) {
-            $("#promotion_price").show();
-            $("#start_date").show();
-            $("#last_date").show();
+            $("#starting_date").val($.datepicker.formatDate('dd-mm-yy', new Date()));
+            $("#promotion_price").show(300);
+            $("#start_date").show(300);
+            $("#last_date").show(300);
         } 
         else {
-            $("#promotion_price").hide();
-            $("#start_date").hide();
-            $("#last_date").hide();
+            $("#promotion_price").hide(300);
+            $("#start_date").hide(300);
+            $("#last_date").hide(300);
         }
     });
 
@@ -742,6 +575,26 @@
      todayHighlight: true
      });
 
+    $(window).keydown(function(e){
+        if (e.which == 13) {
+            var $targ = $(e.target);
+
+            if (!$targ.is("textarea") && !$targ.is(":button,:submit")) {
+                var focusNext = false;
+                $(this).find(":input:visible:not([disabled],[readonly]), a").each(function(){
+                    if (this === e.target) {
+                        focusNext = true;
+                    }
+                    else if (focusNext){
+                        $(this).focus();
+                        return false;
+                    }
+                });
+
+                return false;
+            }
+        }
+    });
     //dropzone portion
     Dropzone.autoDiscover = false;
 
@@ -791,6 +644,13 @@
                 return false;
             }
         }
+        if($("#is-variant").is(":checked")) {
+            rowindex = $("table#variant-table tbody tr:last").index();
+            if (rowindex < 0) {
+                alert('This product has variant. Please insert variant to table');
+                return false;
+            }
+        }
         $("input[name='price']").prop('disabled',false);
         return true;
     }
@@ -832,7 +692,7 @@
         paramName: 'image',
         clickable: true,
         method: 'POST',
-        url:'../update',
+        url: '<?php echo e(route('products.store')); ?>',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -854,14 +714,13 @@
                     else {
                         $.ajax({
                             type:'POST',
-                            url:'../update',
+                            url:'<?php echo e(route('products.store')); ?>',
                             data: $("#product-form").serialize(),
                             success:function(response){
                                 //console.log(response);
-                                location.href = '../';
+                                location.href = '../products';
                             },
                             error:function(response) {
-                                //console.log(response);
                               if(response.responseJSON.errors.name) {
                                   $("#name-error").text(response.responseJSON.errors.name);
                               }
@@ -884,7 +743,7 @@
         },
         error: function (file, response) {
             console.log(response);
-            /*if(response.errors.name) {
+            if(response.errors.name) {
               $("#name-error").text(response.errors.name);
               this.removeAllFiles(true);
             }
@@ -916,11 +775,11 @@
               } catch (error) {
                   console.log(error);
               }
-            }*/
+            }
         },
         successmultiple: function (file, response) {
-            location.href = '../';
-            //console.log('sss: '+ response);
+            location.href = '../products';
+            //console.log(file, response);
         },
         completemultiple: function (file, response) {
             console.log(file, response, "completemultiple");
@@ -932,4 +791,6 @@
     });
 
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Laravel project\poswebsite\resources\views/product/create.blade.php ENDPATH**/ ?>

@@ -343,6 +343,9 @@ class ProductController extends Controller
 
             if (!isset($data['featured']))
                 $data['featured'] = 0;
+                
+            if (!isset($data['indicator_tax']))
+                $data['indicator_tax'] = 0;
 
             if (!isset($data['promotion']))
                 $data['promotion'] = null;

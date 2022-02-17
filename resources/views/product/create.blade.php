@@ -192,13 +192,20 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <div class="form-group mt-3">
                                         <input type="checkbox" name="featured" value="1">&nbsp;
                                         <label>{{ucwords(trans('file.Featured'))}}</label>
                                         <p class="italic">{{trans('file.Featured product will be displayed in POS')}}</p>
                                     </div> 
-                                </div>                             
+                                </div>                        
+                                <div class="col-md-2">
+                                    <div class="form-group mt-3">
+                                        <input type="checkbox" name="indicator_tax" value="1">&nbsp;
+                                        <label>{{ucwords(trans('file.Product Tax'))}}</label>
+                                        {{-- <p class="italic">{{trans('file.Featured product will be displayed in POS')}}</p> --}}
+                                    </div> 
+                                </div>                        
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>{{ucwords(trans('file.Product Image'))}}</strong> </label> <i class="dripicons-question" data-toggle="tooltip" title="{{trans('file.You can upload multiple image. Only .jpeg, .jpg, .png, .gif file can be uploaded. First image will be base image.')}}"></i>
