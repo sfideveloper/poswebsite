@@ -89,7 +89,7 @@
                             <th>{{ucfirst(trans('file.reference'))}} No</th>
                             <th>{{ucfirst(trans('file.customer'))}}</th>
                             <th>{{ucfirst(trans('file.product'))}} ({{ucfirst(trans('file.qty'))}})</th>
-                            <th>{{ucfirst(trans('file.Price'))}}</th>
+                            <th>{{ucfirst(trans('file.grand total'))}}</th>
                             {{-- <th>{{ucfirst(trans('file.Tax'))}}</th>
                             <th>{{ucfirst(trans('file.Total'))}}</th>
                             <th>{{ucfirst(trans('file.grand total'))}}</th> --}}
@@ -107,42 +107,22 @@
                             <td>{{$sale->reference_no}}</td>
                             <td>{{$sale->customer_name}}</td>
                             <td>
-                                @foreach($lims_product_sale_data_tax[$key] as $product_sale_data)
                                 <?php 
-                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
-                                    if($product_sale_data->variant_id) {
-                                        $variant = App\Variant::find($product_sale_data->variant_id);
+                                    $product = App\Product::select('name')->find($sale->product_id);
+                                    if($sale->variant_id) {
+                                        $variant = App\Variant::find($sale->variant_id);
                                         $product->name .= ' ['.$variant->name.']';
                                     }
-                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
+                                    $unit = App\Unit::find($sale->sale_unit_id);
                                 ?>
                                 @if($unit)
-                                    {{$product->name.' ('.$product_sale_data->qty.' '.$unit->unit_name.')'}}
+                                    {{$product->name.' ('.$sale->qty.' '.$unit->unit_name.')'}}
                                 @else
-                                    {{$product->name.' ('.$product_sale_data->qty.')'}}
+                                    {{$product->name.' ('.$sale->qty.')'}}
                                 @endif
                                 <br>
-                                @endforeach
                             </td>
-                            {{-- <td>{{$sale->net_unit_price}}</td> --}}
-                            <td>
-                                @foreach($lims_product_sale_data_tax[$key] as $product_sale_data)
-                                <?php 
-                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
-                                    if($product_sale_data->variant_id) {
-                                        $variant = App\Variant::find($product_sale_data->variant_id);
-                                        $product->name .= ' ['.$variant->name.']';
-                                    }
-                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
-                                ?>
-                                @if($unit)
-                                    {{$product_sale_data->net_unit_price}}
-                                @else
-                                    {{$product_sale_data->net_unit_price}}
-                                @endif
-                                <br>
-                                @endforeach
-                            </td>
+                            <td>{{$sale->total}}</td>
                             @if($sale->sale_status == 1)
                             <td><div class="badge badge-success">{{trans('file.Completed')}}</div></td>
                             @else

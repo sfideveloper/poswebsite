@@ -91,7 +91,7 @@
                             <th><?php echo e(ucfirst(trans('file.reference'))); ?> No</th>
                             <th><?php echo e(ucfirst(trans('file.customer'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.product'))); ?> (<?php echo e(ucfirst(trans('file.qty'))); ?>)</th>
-                            <th><?php echo e(ucfirst(trans('file.Price'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
                             
                             
                             
@@ -106,46 +106,24 @@
                             <td><?php echo e($sale->reference_no); ?></td>
                             <td><?php echo e($sale->customer_name); ?></td>
                             <td>
-                                <?php $__currentLoopData = $lims_product_sale_data_tax[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php 
-                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
-                                    if($product_sale_data->variant_id) {
-                                        $variant = App\Variant::find($product_sale_data->variant_id);
+                                    $product = App\Product::select('name')->find($sale->product_id);
+                                    if($sale->variant_id) {
+                                        $variant = App\Variant::find($sale->variant_id);
                                         $product->name .= ' ['.$variant->name.']';
                                     }
-                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
+                                    $unit = App\Unit::find($sale->sale_unit_id);
                                 ?>
                                 <?php if($unit): ?>
-                                    <?php echo e($product->name.' ('.$product_sale_data->qty.' '.$unit->unit_name.')'); ?>
+                                    <?php echo e($product->name.' ('.$sale->qty.' '.$unit->unit_name.')'); ?>
 
                                 <?php else: ?>
-                                    <?php echo e($product->name.' ('.$product_sale_data->qty.')'); ?>
+                                    <?php echo e($product->name.' ('.$sale->qty.')'); ?>
 
                                 <?php endif; ?>
                                 <br>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </td>
-                            
-                            <td>
-                                <?php $__currentLoopData = $lims_product_sale_data_tax[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <?php 
-                                    $product = App\Product::select('name')->find($product_sale_data->product_id);
-                                    if($product_sale_data->variant_id) {
-                                        $variant = App\Variant::find($product_sale_data->variant_id);
-                                        $product->name .= ' ['.$variant->name.']';
-                                    }
-                                    $unit = App\Unit::find($product_sale_data->sale_unit_id);
-                                ?>
-                                <?php if($unit): ?>
-                                    <?php echo e($product_sale_data->net_unit_price); ?>
-
-                                <?php else: ?>
-                                    <?php echo e($product_sale_data->net_unit_price); ?>
-
-                                <?php endif; ?>
-                                <br>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </td>
+                            <td><?php echo e($sale->total); ?></td>
                             <?php if($sale->sale_status == 1): ?>
                             <td><div class="badge badge-success"><?php echo e(trans('file.Completed')); ?></div></td>
                             <?php else: ?>

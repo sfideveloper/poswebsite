@@ -255,6 +255,8 @@ class ProductController extends Controller
             $file->move('product/files', $fileName);
             $data['file'] = $fileName;
         }
+        if (!isset($data['indicator_tax']))
+            $data['indicator_tax'] = 0;
         $lims_product_data = Product::create($data);
         //dealing with product variant
         if (isset($data['is_variant'])) {
