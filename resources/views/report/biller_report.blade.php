@@ -96,7 +96,7 @@
                             <td>{{date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()}}</td>
                             <td>{{$sale->reference_no}}</td>
                             <td>{{$sale->warehouse->name}}</td>
-                            <td>{{$sale->customer->name}}</td>
+                            <td>{{$sale->customer_name}}</td>
                             <td>
                                 @foreach($lims_product_sale_data[$key] as $product_sale_data)
                                 <?php 
@@ -169,7 +169,7 @@
                             <td>{{ date($general_setting->date_format, strtotime($quotation->created_at->toDateString())) }}<br>{{$quotation->created_at->toTimeString()}}</td>
                             <td>{{$quotation->reference_no}}</td>
                             <td>{{$quotation->warehouse->name}}</td>
-                            <td>{{$quotation->customer->name}}</td>
+                            <td>{{$quotation->customer_name}}</td>
                             @if($supplier)
                                 <td>{{$supplier->name}}</td>
                             @else
@@ -240,7 +240,7 @@
                             <td>{{ date($general_setting->date_format, strtotime($return->created_at->toDateString())) }}<br>{{ $return->created_at->toTimeString()}}</td>
                             <td>{{$return->reference_no}}</td>
                             <td>{{$return->warehouse->name}}</td>
-                            <td>{{$return->customer->name}}</td>
+                            <td>{{$return->customer_name}}</td>
                             <td>{{$return->biller->name}}</td>
                             <td>
                                 @foreach($lims_product_return_data[$key] as $product_return_data)

@@ -98,7 +98,7 @@
                             <td><?php echo e(date($general_setting->date_format, strtotime($sale->created_at->toDateString())) . ' '. $sale->created_at->toTimeString()); ?></td>
                             <td><?php echo e($sale->reference_no); ?></td>
                             <td><?php echo e($sale->warehouse->name); ?></td>
-                            <td><?php echo e($sale->customer->name); ?></td>
+                            <td><?php echo e($sale->customer_name); ?></td>
                             <td>
                                 <?php $__currentLoopData = $lims_product_sale_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_sale_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php 
@@ -173,7 +173,7 @@
                             <td><?php echo e(date($general_setting->date_format, strtotime($quotation->created_at->toDateString()))); ?><br><?php echo e($quotation->created_at->toTimeString()); ?></td>
                             <td><?php echo e($quotation->reference_no); ?></td>
                             <td><?php echo e($quotation->warehouse->name); ?></td>
-                            <td><?php echo e($quotation->customer->name); ?></td>
+                            <td><?php echo e($quotation->customer_name); ?></td>
                             <?php if($supplier): ?>
                                 <td><?php echo e($supplier->name); ?></td>
                             <?php else: ?>
@@ -246,7 +246,7 @@
                             <td><?php echo e(date($general_setting->date_format, strtotime($return->created_at->toDateString()))); ?><br><?php echo e($return->created_at->toTimeString()); ?></td>
                             <td><?php echo e($return->reference_no); ?></td>
                             <td><?php echo e($return->warehouse->name); ?></td>
-                            <td><?php echo e($return->customer->name); ?></td>
+                            <td><?php echo e($return->customer_name); ?></td>
                             <td><?php echo e($return->biller->name); ?></td>
                             <td>
                                 <?php $__currentLoopData = $lims_product_return_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_return_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
