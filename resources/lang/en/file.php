@@ -546,7 +546,7 @@ return [
 	"Variant" => "Variant",
 	"Warehouse Quantity" => "Warehouse Quantity",
 	"Warehouse quantity of product variants" => "Warehouse quantity of product variants",
-	"Thank you for shopping with us. Please come again" => "Thank you for shopping with us. Please come again",
+	"Thank you for shopping with us. Please come again" => "Thank you for shopping at Chickmi. Please come again",
 	"Money Transfer" => "Money Transfer",
 	"Add Money Transfer" => "Add Money Transfer",
 	"From Account" => "From Account",

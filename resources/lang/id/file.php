@@ -545,7 +545,7 @@ return [
 	"Variant" => "Varian",
 	"Warehouse Quantity" => "Kuantitas Toko",
 	"Warehouse quantity of product variants" => "Jumlah variasi produk toko",
-	"Thank you for shopping with us. Please come again" => "Terima kasih telah berbelanja dengan kami. Silakan datang lagi",
+	"Thank you for shopping with us. Please come again" => "Terima kasih telah berbelanja di Chickmi. Silakan datang lagi",
 	"Money Transfer" => "Transfer uang",
 	"Add Money Transfer" => "Tambahkan Transfer Uang",
 	"From Account" => "Dari akun",
