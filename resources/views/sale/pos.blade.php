@@ -2673,12 +2673,16 @@ $("#cheque-btn").on("click",function() {
 });
 
 $("#cash-btn").on("click",function() {
-    $('select[name="paid_by_id_select"]').val(1);
-    $('.selectpicker').selectpicker('refresh');
-    $('div.qc').show();
-    $('#finalize-amount').removeClass("col-md-12")
-    $('#finalize-amount').addClass("col-md-10")
-    hide();
+    if ($('#customer_name').val() == 0) {
+        alert("Insert Name Customer");
+    }else{
+        $('select[name="paid_by_id_select"]').val(1);
+        $('.selectpicker').selectpicker('refresh');
+        $('div.qc').show();
+        $('#finalize-amount').removeClass("col-md-12")
+        $('#finalize-amount').addClass("col-md-10")
+        hide();
+    }
 });
 
 $("#paypal-btn").on("click",function() {

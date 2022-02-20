@@ -79,8 +79,8 @@
         <table>
             <tr>
                 <td><a href="{{$url}}" class="btn btn-info"><i class="fa fa-arrow-left"></i> {{ucfirst(trans('file.Back'))}}</a> </td>
-                <td><a href="my.bluetoothprint.scheme://{{url()->current()}}" class="btn btn-primary"><i class="dripicons-print"></i> {{ucfirst(trans('file.Print'))}}</a> </td>
-                {{-- <td><button onclick="window.print();" class="btn btn-primary"><i class="dripicons-print"></i> {{ucfirst(trans('file.Print'))}}</button></td> --}}
+                <td><button onclick="window.print();" class="btn btn-primary"><i class="dripicons-print"></i> {{ucfirst(trans('file.Print'))}}</button></td>
+                {{-- <td><a href="my.bluetoothprint.scheme://{{url()->current()}}" class="btn btn-primary"><i class="dripicons-print"></i> {{ucfirst(trans('file.Print'))}}</a> </td> --}}
             </tr>
         </table>
         <br>
@@ -272,7 +272,7 @@
 
 <script type="text/javascript">
     function auto_print() {     
-        // window.print()
+        window.print()
     }
     setTimeout(auto_print, 1000);
 </script>

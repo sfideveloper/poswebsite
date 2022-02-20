@@ -79,7 +79,7 @@
         <table>
             <tr>
                 <td><a href="<?php echo e($url); ?>" class="btn btn-info"><i class="fa fa-arrow-left"></i> <?php echo e(ucfirst(trans('file.Back'))); ?></a> </td>
-                <td><a href="my.bluetoothprint.scheme://<?php echo e(url()->current()); ?>" class="btn btn-primary"><i class="dripicons-print"></i> <?php echo e(ucfirst(trans('file.Print'))); ?></a> </td>
+                <td><button onclick="window.print();" class="btn btn-primary"><i class="dripicons-print"></i> <?php echo e(ucfirst(trans('file.Print'))); ?></button></td>
                 
             </tr>
         </table>
@@ -273,7 +273,7 @@
 
 <script type="text/javascript">
     function auto_print() {     
-        // window.print()
+        window.print()
     }
     setTimeout(auto_print, 1000);
 </script>
