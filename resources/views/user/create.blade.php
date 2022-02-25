@@ -145,13 +145,12 @@
                                         </div>
                                     </div> --}}
                                     <div class="form-group" id="warehouseIdTax">
-                                        <div aria-checked="false" aria-disabled="false">
-                                            <select name="warehouse_check[]" required class="multipicker form-control" multiple="multiple" data-live-search="true" data-live-search-style="begins" title="Select Warehouse...">
-                                            @foreach($lims_warehouse_list as $key => $warehouse)
-                                                <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
-                                            @endforeach
-                                            </select>
-                                        </div>
+                                        <label><strong>{{ucwords(trans('file.Warehouse'))}} *</strong></label>
+                                        <select name="warehouse_check[]" required class="selectpicker form-control" multiple="multiple" data-live-search="true" data-live-search-style="begins" title="Select Warehouse...">
+                                        @foreach($lims_warehouse_list as $key => $warehouse)
+                                            <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
+                                        @endforeach
+                                        </select>
                                     </div>
                                 </div>                              
                             </div>
@@ -173,10 +172,6 @@
     $('#biller-id').hide();
     $('#warehouseIdTax').hide();
     $('.customer-section').hide();
-
-    $(document).ready(function() {
-        $('.multipicker').multiselect();
-    });
     
     $('.selectpicker').selectpicker({
       style: 'btn-link',
@@ -197,36 +192,37 @@
             $('.customer-input').prop('required',true);
             $('select[name="warehouse_id"]').prop('required',false);
             $('select[name="biller_id"]').prop('required',false);
+            $('select[name="warehouse_check[]"]').prop('required',false);
         }
         else if($(this).val() > 2 && $(this).val() != 5 && $(this).val() != 7) {
-            $('select[name="warehouse_id"]').prop('required',true);
             $('select[name="biller_id"]').prop('required',true);
-            $('select[name="warehouseIdTax"]').prop('required',false);
+            $('select[name="warehouse_id"]').prop('required',true);
+            $('select[name="warehouse_check[]"]').prop('required',false);
+            $('.customer-input').prop('required',false);
             $('#biller-id').show(300);
             $('#warehouseId').show(300);
             $('#warehouseIdTax').hide(300);
             $('.customer-section').hide(300);
-            $('.customer-input').prop('required',false);
         }
         else if($(this).val() == 7) {
-            $('select[name="warehouseIdTax"]').prop('required',true);
-            $('#warehouseIdTax').show(300);
+            $('select[name="warehouse_check[]"]').prop('required',true);
             $('select[name="warehouse_id"]').prop('required',false);
             $('select[name="biller_id"]').prop('required',false);
+            $('.customer-input').prop('required',false);
+            $('#warehouseIdTax').show(300);
             $('#biller-id').hide(300);
             $('#warehouseId').hide(300);
             $('.customer-section').hide(300);
-            $('.customer-input').prop('required',false);
         }
         else {
             $('select[name="warehouse_id"]').prop('required',false);
             $('select[name="biller_id"]').prop('required',false);
-            $('select[name="warehouseIdTax"]').prop('required',false);
+            $('select[name="warehouse_check[]"]').prop('required',false);
+            $('.customer-input').prop('required',false);
             $('#biller-id').hide(300);
             $('#warehouseId').hide(300);
             $('#warehouseIdTax').hide(300);
             $('.customer-section').hide(300);
-            $('.customer-input').prop('required',false);
         }
     });
 </script>

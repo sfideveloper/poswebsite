@@ -130,6 +130,7 @@
         $('select[name=warehouse_id]').val($("input[name='warehouse_id_hidden']").val());
         $('#biller-id').show();
         $('select[name=biller_id]').val($("input[name='biller_id_hidden']").val());
+        $('select[name="warehouse_check[]"]').prop('required',false);
     }else if ($('select[name=role_id]').val() == 7) {
         $('#warehouseId').hide();
         $('#biller-id').hide();
@@ -138,10 +139,10 @@
     $('.selectpicker').selectpicker('refresh');
 
     $('select[name="role_id"]').on('change', function() {
-        if($(this).val() > 2 && $(this).val() != 7){
+        if($(this).val() > 2 && $(this).val() != 5 && $(this).val() != 7){
             $('select[name="warehouse_id"]').prop('required',true);
             $('select[name="biller_id"]').prop('required',true);
-            $('select[name="warehouseIdTax"]').prop('required',false);
+            $('select[name="warehouse_check[]"]').prop('required',false);
             $('#biller-id').show();
             $('#warehouseId').show();
             $('#warehouseIdTax').hide();
@@ -149,7 +150,7 @@
         else if($(this).val() == 7){
             $('select[name="warehouse_id"]').prop('required',false);
             $('select[name="biller_id"]').prop('required',false);
-            $('select[name="warehouseIdTax"]').prop('required',true);
+            $('select[name="warehouse_check[]"]').prop('required',true);
             $('#biller-id').hide();
             $('#warehouseId').hide();
             $('#warehouseIdTax').show();
@@ -157,7 +158,7 @@
         else{
             $('select[name="warehouse_id"]').prop('required',false);
             $('select[name="biller_id"]').prop('required',false);
-            $('select[name="warehouseIdTax"]').prop('required',false);
+            $('select[name="warehouse_check[]"]').prop('required',false);
             $('#biller-id').hide();
             $('#warehouseId').hide();
             $('#warehouseIdTax').hide();

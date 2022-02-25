@@ -164,7 +164,7 @@ class AccountsController extends Controller
 
     public function destroy($id)
     {
-        if(!env('USER_VERIFIED'))
+        if(!empty(env('USER_VERIFIED')))
             return redirect()->back()->with('not_permitted', 'This feature is disable for demo!');
         $lims_account_data = Account::find($id);
         if(!$lims_account_data->is_default){

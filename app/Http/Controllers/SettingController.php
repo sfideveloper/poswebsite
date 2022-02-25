@@ -22,7 +22,7 @@ class SettingController extends Controller
 {
     public function emptyDatabase()
     {
-        if(!env('USER_VERIFIED'))
+        if(!empty(env('USER_VERIFIED')))
             return redirect()->back()->with('not_permitted', 'This feature is disable for demo!');
         $tables = DB::select('SHOW TABLES');
         $str = 'Tables_in_' . env('DB_DATABASE');
@@ -50,7 +50,7 @@ class SettingController extends Controller
 
     public function generalSettingStore(Request $request)
     {
-        if(!env('USER_VERIFIED'))
+        if(!empty(env('USER_VERIFIED')))
             return redirect()->back()->with('not_permitted', 'This feature is disable for demo!');
 
         $this->validate($request, [
@@ -88,7 +88,7 @@ class SettingController extends Controller
 
     public function backup()
     {
-        if(!env('USER_VERIFIED'))
+        if(!empty(env('USER_VERIFIED')))
             return redirect()->back()->with('not_permitted', 'This feature is disable for demo!');
 
         // Database configuration
@@ -196,7 +196,7 @@ class SettingController extends Controller
 
     public function mailSettingStore(Request $request)
     {
-        if(!env('USER_VERIFIED'))
+        if(!empty(env('USER_VERIFIED')))
             return redirect()->back()->with('not_permitted', 'This feature is disable for demo!');
 
         $data = $request->all();
@@ -219,7 +219,7 @@ class SettingController extends Controller
 
     public function smsSettingStore(Request $request)
     {
-        if(!env('USER_VERIFIED'))
+        if(!empty(env('USER_VERIFIED')))
             return redirect()->back()->with('not_permitted', 'This feature is disable for demo!');
         
         $data = $request->all();
@@ -316,7 +316,7 @@ class SettingController extends Controller
 
     public function posSettingStore(Request $request)
     {
-        if(!env('USER_VERIFIED'))
+        if(!empty(env('USER_VERIFIED')))
             return redirect()->back()->with('not_permitted', 'This feature is disable for demo!');
 
     	$data = $request->all();

@@ -311,7 +311,7 @@ class ProductController extends Controller
     {
         // dd($request->all());
         // return response()->json($request, 200);
-        if (!env('USER_VERIFIED')) {
+        if (!empty(env('USER_VERIFIED'))) {
             \Session::flash('not_permitted', 'This feature is disable for demo!');
         } else {
             $this->validate($request, [
