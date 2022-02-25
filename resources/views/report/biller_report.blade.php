@@ -19,6 +19,35 @@
                         </div>
                     </div>
                 </div>
+                @if (Auth::user()->role->name == 'Staff')
+                <div class="col-md-3 mt-3" hidden>
+                    <div class="form-group row">
+                        <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Biller'))}}</strong> &nbsp;</label>
+                        <div class="d-tc">
+                            <input type="hidden" name="biller_id_hidden" value="{{$biller_id}}" />
+                            <select id="biller_id" name="biller_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
+                                @foreach($lims_biller_list as $biller)
+                                <option value="{{$biller->id}}">{{$biller->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mt-3" hidden>
+                    <div class="form-group row">
+                        <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Warehouse'))}}</strong> &nbsp;</label>
+                        <div class="d-tc">
+                            <input type="hidden" name="warehouse_id_hidden" value="{{$warehouse_id}}" />
+                            <select id="warehouse_id" name="warehouse_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
+                                <option value="all">All Warehouse</option>
+                                @foreach($lims_warehouse_list as $warehouse)
+                                <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                @else
                 <div class="col-md-3 mt-3">
                     <div class="form-group row">
                         <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Biller'))}}</strong> &nbsp;</label>
@@ -46,6 +75,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 <div class="col mt-3">
                     <div class="form-group text-right">
                         <button class="btn btn-primary" type="submit">{{ucfirst(trans('file.submit'))}}</button>

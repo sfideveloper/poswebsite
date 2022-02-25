@@ -20,6 +20,35 @@
                         </div>
                     </div>
                 </div>
+                <?php if(Auth::user()->role->name == 'Staff'): ?>
+                <div class="col-md-3 mt-3" hidden>
+                    <div class="form-group row">
+                        <label class="d-tc mt-2"><strong><?php echo e(ucwords(trans('file.Choose Biller'))); ?></strong> &nbsp;</label>
+                        <div class="d-tc">
+                            <input type="hidden" name="biller_id_hidden" value="<?php echo e($biller_id); ?>" />
+                            <select id="biller_id" name="biller_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
+                                <?php $__currentLoopData = $lims_biller_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $biller): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($biller->id); ?>"><?php echo e($biller->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mt-3" hidden>
+                    <div class="form-group row">
+                        <label class="d-tc mt-2"><strong><?php echo e(ucwords(trans('file.Choose Warehouse'))); ?></strong> &nbsp;</label>
+                        <div class="d-tc">
+                            <input type="hidden" name="warehouse_id_hidden" value="<?php echo e($warehouse_id); ?>" />
+                            <select id="warehouse_id" name="warehouse_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins">
+                                <option value="all">All Warehouse</option>
+                                <?php $__currentLoopData = $lims_warehouse_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $warehouse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($warehouse->id); ?>"><?php echo e($warehouse->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <?php else: ?>
                 <div class="col-md-3 mt-3">
                     <div class="form-group row">
                         <label class="d-tc mt-2"><strong><?php echo e(ucwords(trans('file.Choose Biller'))); ?></strong> &nbsp;</label>
@@ -47,6 +76,7 @@
                         </div>
                     </div>
                 </div>
+                <?php endif; ?>
                 <div class="col mt-3">
                     <div class="form-group text-right">
                         <button class="btn btn-primary" type="submit"><?php echo e(ucfirst(trans('file.submit'))); ?></button>

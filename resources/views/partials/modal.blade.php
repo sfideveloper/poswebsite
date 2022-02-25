@@ -343,8 +343,13 @@
                   <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
                     {!! Form::open(['route' => 'report.biller', 'method' => 'post']) !!}
                     <?php
+                    if (Auth::user()->role->name == 'Staff') {
+                      $lims_biller_list = DB::table('billers')->whereIn('id', [Auth::user()->biller_id])->get();
+                      $lims_warehouse_list = DB::table('warehouses')->whereIn('id', [Auth::user()->warehouse_id])->get();
+                    }else {
                       $lims_biller_list = DB::table('billers')->where('is_active', true)->get();
                       $lims_warehouse_list = DB::table('warehouses')->where('is_active', true)->get();
+                    }
                     ?>
                       <div class="form-group">
                           <label>{{ucwords(trans('file.Biller'))}} *</label>
@@ -355,7 +360,9 @@
                           </select>
                           <label>{{ucwords(trans('file.Warehouse'))}} *</label>
                           <select name="warehouse_id" class="selectpicker form-control" required data-live-search="true" id="warehouse-id" data-live-search-style="begins" title="Select Warehouse...">
+                            @if (Auth::user()->role->name != 'Staff')
                               <option value="all">All Warehouse</option>
+                            @endif  
                               @foreach($lims_warehouse_list as $warehouse)
                               <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
                               @endforeach
