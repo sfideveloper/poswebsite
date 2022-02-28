@@ -156,7 +156,7 @@
                         @endforeach
                     </tbody>
                     <tfoot class="tfoot active">
-                        <tr>
+                        {{-- <tr>
                             <th></th>
                             <th>Total:</th>
                             <th></th>
@@ -166,7 +166,7 @@
                             <th>0.00</th>
                             <th>0.00</th>
                             <th></th>
-                        </tr>
+                        </tr> --}}
                     </tfoot>
                 </table>
             </div>

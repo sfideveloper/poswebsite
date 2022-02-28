@@ -160,17 +160,7 @@
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                     <tfoot class="tfoot active">
-                        <tr>
-                            <th></th>
-                            <th>Total:</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>0.00</th>
-                            <th>0.00</th>
-                            <th>0.00</th>
-                            <th></th>
-                        </tr>
+                        
                     </tfoot>
                 </table>
             </div>
