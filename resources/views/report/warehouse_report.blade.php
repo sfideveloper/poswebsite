@@ -128,21 +128,21 @@
                         </tr>
                         @endforeach
                     </tbody>
-                    <tfoot class="tfoot active">
+                    {{-- <tfoot class="tfoot active">
                         <tr>
                             <th></th>
                             <th>Total:</th>
                             <th></th>
                             <th></th>
-                            {{-- <th></th>
                             <th></th>
-                            <th>0.00</th> --}}
-                            {{-- <th>0.00</th>
+                            <th></th>
                             <th>0.00</th>
-                            <th>0.00</th> --}}
+                            <th>0.00</th>
+                            <th>0.00</th>
+                            <th>0.00</th>
                             <th></th>
                         </tr>
-                    </tfoot>
+                    </tfoot> --}}
                 </table>
             </div>
         </div>
@@ -212,7 +212,7 @@
                         </tr>
                         @endforeach
                     </tbody>
-                    <tfoot class="tfoot active">
+                    {{-- <tfoot class="tfoot active">
                         <tr>
                             <th></th>
                             <th>Total:</th>
@@ -224,7 +224,7 @@
                             <th>0.00</th>
                             <th></th>
                         </tr>
-                    </tfoot>
+                    </tfoot> --}}
                 </table>
             </div>
         </div>
@@ -286,7 +286,7 @@
                         </tr>
                         @endforeach
                     </tbody>
-                    <tfoot class="tfoot active">
+                    {{-- <tfoot class="tfoot active">
                         <tr>
                             <th></th>
                             <th>Total:</th>
@@ -297,7 +297,7 @@
                             <th>0.00</th>
                             <th></th>
                         </tr>
-                    </tfoot>
+                    </tfoot> --}}
                 </table>
             </div>
         </div>
@@ -310,7 +310,9 @@
                             <th class="not-exported-return"></th>
                             <th>{{ucfirst(trans('file.Date'))}}</th>
                             <th>{{ucfirst(trans('file.reference'))}}</th>
+                            {{-- <th>{{ucfirst(trans('file.Warehouse'))}}</th> --}}
                             <th>{{ucfirst(trans('file.customer'))}}</th>
+                            <th>{{ucfirst(trans('file.Biller'))}}</th>
                             <th>{{ucfirst(trans('file.product'))}} ({{ucfirst(trans('file.qty'))}})</th>
                             <th>{{ucfirst(trans('file.grand total'))}}</th>
                         </tr>
@@ -321,7 +323,9 @@
                             <td>{{$key}}</td>
                             <td>{{ date($general_setting->date_format, strtotime($return->created_at->toDateString())) }}<br>{{ $return->created_at->toTimeString()}}</td>
                             <td>{{$return->reference_no}}</td>
-                            <td>{{$return->customer->name}}</td>
+                            {{-- <td>{{$return->warehouse->name}}</td> --}}
+                            <td>{{$return->customer_name}}</td>
+                            <td>{{$return->biller->name}}</td>
                             <td>
                                 @foreach($lims_product_return_data[$key] as $product_return_data)
                                 <?php 
@@ -344,7 +348,7 @@
                         </tr>
                         @endforeach
                     </tbody>
-                    <tfoot class="tfoot active">
+                    {{-- <tfoot class="tfoot active">
                         <tr>
                             <th></th>
                             <th>Total:</th>
@@ -354,7 +358,7 @@
                             <th></th>
                             <th>0.00</th>
                         </tr>
-                    </tfoot>
+                    </tfoot> --}}
                 </table>
             </div>
         </div>
@@ -384,7 +388,7 @@
                         </tr>
                         @endforeach
                     </tbody>
-                    <tfoot class="tfoot active">
+                    {{-- <tfoot class="tfoot active">
                         <tr>
                             <th></th>
                             <th>Total:</th>
@@ -393,7 +397,7 @@
                             <th>0.00</th>
                             <th></th>
                         </tr>
-                    </tfoot>
+                    </tfoot> --}}
                 </table>
             </div>
         </div>
@@ -488,20 +492,15 @@
         if (dt_selector.rows( '.selected' ).any() && is_calling_first) {
             var rows = dt_selector.rows( '.selected' ).indexes();
 
-            // $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 9 ).footer() ).html(dt_selector.cells( rows, 9, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 10 ).footer() ).html(dt_selector.cells( rows, 9, { page: 'current' } ).data().sum().toFixed(2));
         }
         else {
-            // $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
+            
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 7 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 9 ).footer() ).html(dt_selector.column( 8, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 10 ).footer() ).html(dt_selector.column( 9, {page:'current'} ).data().sum().toFixed(2));
+            $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
         }
     }
 

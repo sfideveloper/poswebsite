@@ -129,17 +129,7 @@
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
-                    <tfoot class="tfoot active">
-                        <tr>
-                            <th></th>
-                            <th>Total:</th>
-                            <th></th>
-                            <th></th>
-                            
-                            
-                            <th></th>
-                        </tr>
-                    </tfoot>
+                    
                 </table>
             </div>
         </div>
@@ -211,19 +201,7 @@
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
-                    <tfoot class="tfoot active">
-                        <tr>
-                            <th></th>
-                            <th>Total:</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>0.00</th>
-                            <th>0.00</th>
-                            <th>0.00</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
+                    
                 </table>
             </div>
         </div>
@@ -287,18 +265,7 @@
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
-                    <tfoot class="tfoot active">
-                        <tr>
-                            <th></th>
-                            <th>Total:</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>0.00</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
+                    
                 </table>
             </div>
         </div>
@@ -311,7 +278,9 @@
                             <th class="not-exported-return"></th>
                             <th><?php echo e(ucfirst(trans('file.Date'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.reference'))); ?></th>
+                            
                             <th><?php echo e(ucfirst(trans('file.customer'))); ?></th>
+                            <th><?php echo e(ucfirst(trans('file.Biller'))); ?></th>
                             <th><?php echo e(ucfirst(trans('file.product'))); ?> (<?php echo e(ucfirst(trans('file.qty'))); ?>)</th>
                             <th><?php echo e(ucfirst(trans('file.grand total'))); ?></th>
                         </tr>
@@ -322,7 +291,9 @@
                             <td><?php echo e($key); ?></td>
                             <td><?php echo e(date($general_setting->date_format, strtotime($return->created_at->toDateString()))); ?><br><?php echo e($return->created_at->toTimeString()); ?></td>
                             <td><?php echo e($return->reference_no); ?></td>
-                            <td><?php echo e($return->customer->name); ?></td>
+                            
+                            <td><?php echo e($return->customer_name); ?></td>
+                            <td><?php echo e($return->biller->name); ?></td>
                             <td>
                                 <?php $__currentLoopData = $lims_product_return_data[$key]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product_return_data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php 
@@ -347,17 +318,7 @@
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
-                    <tfoot class="tfoot active">
-                        <tr>
-                            <th></th>
-                            <th>Total:</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>0.00</th>
-                        </tr>
-                    </tfoot>
+                    
                 </table>
             </div>
         </div>
@@ -387,16 +348,7 @@
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
-                    <tfoot class="tfoot active">
-                        <tr>
-                            <th></th>
-                            <th>Total:</th>
-                            <th></th>
-                            <th></th>
-                            <th>0.00</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
+                    
                 </table>
             </div>
         </div>
@@ -491,20 +443,15 @@
         if (dt_selector.rows( '.selected' ).any() && is_calling_first) {
             var rows = dt_selector.rows( '.selected' ).indexes();
 
-            // $( dt_selector.column( 5 ).footer() ).html(dt_selector.cells( rows, 5, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.cells( rows, 6, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
             $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 9 ).footer() ).html(dt_selector.cells( rows, 9, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 10 ).footer() ).html(dt_selector.cells( rows, 9, { page: 'current' } ).data().sum().toFixed(2));
         }
         else {
-            // $( dt_selector.column( 5 ).footer() ).html(dt_selector.column( 5, {page:'current'} ).data().sum().toFixed(2));
+            
             $( dt_selector.column( 6 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 7 ).footer() ).html(dt_selector.column( 6, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
-            $( dt_selector.column( 9 ).footer() ).html(dt_selector.column( 8, {page:'current'} ).data().sum().toFixed(2));
-            $( dt_selector.column( 10 ).footer() ).html(dt_selector.column( 9, {page:'current'} ).data().sum().toFixed(2));
+            $( dt_selector.column( 7 ).footer() ).html(dt_selector.cells( rows, 7, { page: 'current' } ).data().sum().toFixed(2));
+            $( dt_selector.column( 8 ).footer() ).html(dt_selector.cells( rows, 8, { page: 'current' } ).data().sum().toFixed(2));
         }
     }
 
