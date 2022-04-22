@@ -299,7 +299,7 @@ class SaleController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        //return dd($data);
+        return dd($data);
         $data['user_id'] = Auth::id();
         $cash_register_data = CashRegister::where([
             ['user_id', $data['user_id']],
