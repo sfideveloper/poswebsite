@@ -16,4 +16,9 @@ class Warehouse extends Model
     	return $this->hasMany('App\Product');
     	
     }
+
+    public function pengeluaran()
+    {
+        return $this->hasMany('App\Pengeluaran', 'warehouse', 'id');
+    }
 }

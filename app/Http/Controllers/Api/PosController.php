@@ -28,7 +28,11 @@ class PosController extends Controller
     public function getWarehouse()
     {
         try {
-            $lims_warehouse_list = Warehouse::where('is_active', true)->get();
+            if (Auth::user()->role_id > 2 && config('staff_access') == 'own') {
+                $lims_warehouse_list = Warehouse::where('is_active', true)->where('id', Auth::user()->warehouse_id)->get();
+            } else {
+                $lims_warehouse_list = Warehouse::where('is_active', true)->get();
+            }
             return response()->json([
                 'body' => [
                     'message' => 'Get List Warehouse Active'
@@ -48,7 +52,11 @@ class PosController extends Controller
     public function getBiller()
     {
         try {
-            $lims_biller_list = Biller::where('is_active', true)->get();
+            if (Auth::user()->role_id > 2 && config('staff_access') == 'own') {
+                $lims_biller_list = Biller::where('is_active', true)->where('id', Auth::user()->biller_id)->get();
+            } else {
+                $lims_biller_list = Biller::where('is_active', true)->get();
+            }
             return response()->json([
                 'body' => [
                     'message' => 'Get List Biller Active'
@@ -571,41 +579,43 @@ class PosController extends Controller
     public function getHistory()
     {
         try {
-            $lims_sale_data = Sale::with('biller', 'warehouse')
-                ->get()
-                
-                ->map(function ($lims_sale_data) {
-                    $lims_product_sale = Product_Sale::join('products', 'product_sales.product_id', '=', 'products.id')->where('sale_id', $lims_sale_data->id)
+            if (Auth::user()->role_id > 2 && config('staff_access') == 'own') {
+                $lims_sale_data = Sale::orderBy('id', 'desc')->where('user_id', Auth::id())->with('biller', 'warehouse')->get();
+            } else {
+                $lims_sale_data = Sale::orderBy('id', 'desc')->with('biller', 'warehouse')->get();
+            }
+            $lims_sale_data->map(function ($lims_sale_data) {
+                $lims_product_sale = Product_Sale::join('products', 'product_sales.product_id', '=', 'products.id')->where('sale_id', $lims_sale_data->id)
                     // ->select('products.name as nama')
                     ->get();
-                    if ($lims_sale_data->order_discount > 0 && $lims_sale_data->order_discount <= 100) {
-                        $total_diskon = $lims_sale_data->total_price - ($lims_sale_data->total_price * $lims_sale_data->order_discount / 100);
-                    } else {
-                        $total_diskon = $lims_sale_data->total_price - $lims_sale_data->order_discount;
-                    }
-                    if ($lims_sale_data->order_tax_rate) {
-                        $total_diskon += $total_diskon * $lims_sale_data->order_tax_rate / 100;
-                    }
-                    if ($lims_sale_data->shipping_cost) {
-                        $total_diskon += $lims_sale_data->shipping_cost;
-                    }
-                    return [
-                        'id' => $lims_sale_data->id,
-                        'kode' => $lims_sale_data->reference_no,
-                        'kasir' => $lims_sale_data->biller->name,
-                        'warehouse' => $lims_sale_data->warehouse->name,
-                        'customer' => $lims_sale_data->customer_name,
-                        'ppn' => $lims_sale_data->order_tax,
-                        'diskon' => $lims_sale_data->order_discount,
-                        'sub' => $lims_sale_data->total_price,
-                        'total' => $total_diskon,
-                        'bayar' => $lims_sale_data->paid_amount,
-                        'kembalian' => $lims_sale_data->paid_amount - $total_diskon,
-                        'ongkir' => $lims_sale_data->shipping_cost,
-                        'tgl' => date('d M Y H:i:s', strtotime($lims_sale_data->created_at)),
-                        'produk' => $lims_product_sale
-                    ];
-                });
+                if ($lims_sale_data->order_discount > 0 && $lims_sale_data->order_discount <= 100) {
+                    $total_diskon = $lims_sale_data->total_price - ($lims_sale_data->total_price * $lims_sale_data->order_discount / 100);
+                } else {
+                    $total_diskon = $lims_sale_data->total_price - $lims_sale_data->order_discount;
+                }
+                if ($lims_sale_data->order_tax_rate) {
+                    $total_diskon += $total_diskon * $lims_sale_data->order_tax_rate / 100;
+                }
+                if ($lims_sale_data->shipping_cost) {
+                    $total_diskon += $lims_sale_data->shipping_cost;
+                }
+                return [
+                    'id' => $lims_sale_data->id,
+                    'kode' => $lims_sale_data->reference_no,
+                    'kasir' => $lims_sale_data->biller->name,
+                    'warehouse' => $lims_sale_data->warehouse->name,
+                    'customer' => $lims_sale_data->customer_name,
+                    'ppn' => $lims_sale_data->order_tax,
+                    'diskon' => $lims_sale_data->order_discount,
+                    'sub' => $lims_sale_data->total_price,
+                    'total' => $total_diskon,
+                    'bayar' => $lims_sale_data->paid_amount,
+                    'kembalian' => $lims_sale_data->paid_amount - $total_diskon,
+                    'ongkir' => $lims_sale_data->shipping_cost,
+                    'tgl' => date('d M Y H:i:s', strtotime($lims_sale_data->created_at)),
+                    'produk' => $lims_product_sale
+                ];
+            });
             return response()->json([
                 'body' => [
                     'message' => 'Get All History'
@@ -627,20 +637,27 @@ class PosController extends Controller
         try {
             $data = $request->only(["id"]);
             $validator = Validator::make($data, [
-                "id"=>"required|exists:sales,id"
+                "id" => "required|exists:sales,id"
             ]);
 
-            if($validator->fails()){
+            if ($validator->fails()) {
                 throw new InvalidArgumentException($validator->errors()->first());
             }
-
-            $lims_sale_data = Sale::with('biller', 'warehouse')
+            if (Auth::user()->role_id > 2 && config('staff_access') == 'own') {
+                $lims_sale_data = Sale::with('biller', 'warehouse')
+                ->where('sales.user_id', Auth::id())
                 ->where("sales.id", $data["id"])
-                ->get()
-                ->map(function ($lims_sale_data) {
+                ->get();
+            } else {
+                $lims_sale_data = Sale::orderBy('id', 'desc')->with('biller', 'warehouse')->get();
+                $lims_sale_data = Sale::with('biller', 'warehouse')
+                ->where("sales.id", $data["id"])
+                ->get();
+            }
+            $lims_sale_data->map(function ($lims_sale_data) {
                     $lims_product_sale = Product_Sale::join('products', 'product_sales.product_id', '=', 'products.id')->where('sale_id', $lims_sale_data->id)
-                    // ->select('products.name as nama')
-                    ->get();
+                        // ->select('products.name as nama')
+                        ->get();
                     if ($lims_sale_data->order_discount > 0 && $lims_sale_data->order_discount <= 100) {
                         $total_diskon = $lims_sale_data->total_price - ($lims_sale_data->total_price * $lims_sale_data->order_discount / 100);
                     } else {
@@ -671,7 +688,7 @@ class PosController extends Controller
                 });
             return response()->json([
                 'body' => [
-                    'message' => 'Get Data Sale at id='.$data['id']
+                    'message' => 'Get Data Sale at id=' . $data['id']
                 ],
                 'data' => $lims_sale_data,
             ], 200);

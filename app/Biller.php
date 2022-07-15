@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Biller extends Model
 {
-    protected $fillable =[
+    protected $fillable = [
         "name", "image", "company_name", "vat_number",
         "email", "phone_number", "address", "city",
         "state", "postal_code", "country", "is_active"
@@ -14,6 +14,11 @@ class Biller extends Model
 
     public function sale()
     {
-    	return $this->hasMany('App\Sale');
+        return $this->hasMany('App\Sale');
+    }
+
+    public function pengeluaran()
+    {
+        return $this->hasMany('App\Pengeluaran', 'kasir', 'id');
     }
 }

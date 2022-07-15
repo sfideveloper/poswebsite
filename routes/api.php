@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MemberStore;
+use App\Http\Controllers\Api\PengeluaranController;
 use App\Http\Controllers\Api\PosController;
 use App\Http\Controllers\Api\WifiController;
 use App\Http\Middleware\Api_Middleware;
+use App\Pengeluaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,4 +44,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/bayarnew', [PosController::class, 'postPos']);
     Route::delete('/hapusTransaksi', [PosController::class, 'deletePos']);
     Route::get('/getwifi', [WifiController::class, 'readwifi']);
+    Route::post('/inputWifi', [WifiController::class, 'storeWifi']);
+    Route::put('/updateWifi', [WifiController::class, 'updateWifi']);
+    Route::delete('/deleteWifi', [WifiController::class, 'destroyWifi']);
+    Route::post('/inputpengeluaran', [PengeluaranController::class, 'postPengeluaran']);
+    Route::get('/getpengeluaran', [PengeluaranController::class, 'getPengeluaran']);
 });
