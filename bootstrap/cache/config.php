@@ -10,7 +10,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:UrI+wnxgu1hCwfQcYjVYQC69xAtk/MrvqxeIRiO3Zxc=',
+    'key' => 'base64:ZSGKy4mYzZRfHD+fef2dRk/Dmu4GHX3une7EBP9cv2o=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -100,6 +100,11 @@
         'driver' => 'token',
         'provider' => 'users',
         'hash' => false,
+      ),
+      'sanctum' => 
+      array (
+        'driver' => 'sanctum',
+        'provider' => NULL,
       ),
     ),
     'providers' => 
@@ -498,6 +503,28 @@
       'driver' => 'database',
       'database' => 'mysql',
       'table' => 'failed_jobs',
+    ),
+  ),
+  'sanctum' => 
+  array (
+    'stateful' => 
+    array (
+      0 => 'localhost',
+      1 => 'localhost:3000',
+      2 => '127.0.0.1',
+      3 => '127.0.0.1:8000',
+      4 => '::1',
+      5 => 'pos.halalexportindonesia.com',
+    ),
+    'guard' => 
+    array (
+      0 => 'web',
+    ),
+    'expiration' => NULL,
+    'middleware' => 
+    array (
+      'verify_csrf_token' => 'App\\Http\\Middleware\\VerifyCsrfToken',
+      'encrypt_cookies' => 'App\\Http\\Middleware\\EncryptCookies',
     ),
   ),
   'services' => 

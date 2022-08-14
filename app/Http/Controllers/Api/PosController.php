@@ -97,11 +97,27 @@ class PosController extends Controller
     {
         try {
             $lims_product_list = Product::join('categories', 'categories.id', '=', 'products.category_id')
-                ->leftJoin('taxes', 'taxes.id', '=', 'products.tax_id')
-                ->leftJoin('units', 'units.id', '=', 'products.unit_id')
-                ->select('products.id', 'products.name as nama', 'products.code', 'categories.name as jenis', 'products.price as harga', 'products.image as foto', 'taxes.rate as diskon_item', 'products.qty as stok', 'units.unit_name as satuan', 'products.product_details as resep')
-                ->where('products.is_active', true)
-                ->get();
+            ->leftJoin('taxes', 'taxes.id', '=', 'products.tax_id')
+            ->leftJoin('units', 'units.id', '=', 'products.unit_id')
+            ->select('products.id', 'products.name as nama', 'products.code', 'categories.name as jenis', 'products.price as harga', 'products.image as foto', 'taxes.rate as diskon_item', 'products.qty as stok', 'units.unit_name as satuan', 'products.product_details as resep')
+            ->where('products.is_active', true)
+            ->get()
+            ->map(function ($lims_product_list) {
+                return [
+                    'id' => "$lims_product_list->id",
+                    'nama' => $lims_product_list->nama,
+                    'code' => $lims_product_list->code,
+                    'jenis' => $lims_product_list->jenis,
+                    'harga' => $lims_product_list->harga,
+                    'foto' => url($lims_product_list->foto),
+                    'colorTemp' => "geen",
+                    'jmlTemp' => "null",
+                    'diskon_item' => "$lims_product_list->diskon_item",
+                    'stok' => "$lims_product_list->stok",
+                    'satuan' => $lims_product_list->satuan,
+                    'resep' => $lims_product_list->resep,
+                ];
+            });
             return response()->json([
                 'body' => [
                     'message' => 'Get List Product Active'
@@ -138,15 +154,31 @@ class PosController extends Controller
         }
     }
 
-    public function getCategory()
+    public function getProductMenu()
     {
         try {
-            $lims_category_list = Category::where('is_active', true)->select('id', 'name as nama', 'image as foto')->get();
+            $lims_product_menu = Product::join('categories', 'categories.id', '=', 'products.category_id')
+            ->leftJoin('taxes', 'taxes.id', '=', 'products.tax_id')
+            ->leftJoin('units', 'units.id', '=', 'products.unit_id')
+            ->select('products.id', 'products.name as nama', 'products.code', 'categories.name as jenis', 'products.price as harga', 'products.image as foto', 'taxes.rate as diskon_item', 'products.qty as stok', 'units.unit_name as satuan', 'products.product_details as resep')
+            ->where('products.is_active', true)
+            ->get()
+            ->map(function ($lims_product_list) {
+                return [
+                    'id' => "$lims_product_list->id",
+                    'nama' => $lims_product_list->nama,
+                    'jenis' => $lims_product_list->jenis,
+                    'harga' => $lims_product_list->harga,
+                    'foto' => url($lims_product_list->foto),
+                    'colorTemp' => "geen",
+                    'jmlTemp' => "null",
+                ];
+            });
             return response()->json([
                 'body' => [
-                    'message' => 'Get List Category Active'
+                    'message' => 'Get List Product Menu'
                 ],
-                'data' => $lims_category_list
+                'data' => $lims_product_menu
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -473,6 +505,7 @@ class PosController extends Controller
                 }
 
                 return response()->json([
+                    'bayar' => true,
                     'body' => [
                         'message' => 'Store Pos'
                     ],
@@ -560,6 +593,7 @@ class PosController extends Controller
                 $lims_sale_data->delete();
 
                 return response()->json([
+                    'status' => true,
                     'body' => [
                         'message' => 'Delete Pos'
                     ],
@@ -580,42 +614,105 @@ class PosController extends Controller
     {
         try {
             if (Auth::user()->role_id > 2 && config('staff_access') == 'own') {
-                $lims_sale_data = Sale::orderBy('id', 'desc')->where('user_id', Auth::id())->with('biller', 'warehouse')->get();
+                $lims_sale_data = Sale::orderBy('id', 'desc')->where('user_id', Auth::id())->with('biller', 'warehouse')
+                ->get()
+                ->map(function ($lims_sale_data) {
+                    $lims_product_sale = Product_Sale::join('products', 'product_sales.product_id', '=', 'products.id')->join('units', 'product_sales.sale_unit_id', '=', 'units.id')->join('categories', 'products.category_id', '=', 'categories.id')->where('sale_id', $lims_sale_data->id)
+                        ->select('product_sales.id as id', 'products.name as nama', 'units.unit_name as satuan', 'categories.name as jenis', 'products.price as harga', 'products.image as foto', 'product_sales.qty as qty', 'product_sales.discount as diskonItem', 'product_sales.net_unit_price as sub')
+                        ->get()
+                        ->map(function ($lims_product_sale) {
+                            return [
+                                'id' => "$lims_product_sale->id",
+                                'nama' => $lims_product_sale->nama,
+                                'satuan' => $lims_product_sale->satuan,
+                                'jenis' => $lims_product_sale->jenis,
+                                'harga' => $lims_product_sale->harga,
+                                'foto' => $lims_product_sale->foto,
+                                'qty' => "$lims_product_sale->qty",
+                                'diskonItem' => "$lims_product_sale->diskonItem",
+                                'sub' => "$lims_product_sale->sub",
+                            ];
+                        });
+                    if ($lims_sale_data->order_discount > 0 && $lims_sale_data->order_discount <= 100) {
+                        $total_diskon = $lims_sale_data->total_price - ($lims_sale_data->total_price * $lims_sale_data->order_discount / 100);
+                    } else {
+                        $total_diskon = $lims_sale_data->total_price - $lims_sale_data->order_discount;
+                    }
+                    if ($lims_sale_data->order_tax_rate) {
+                        $total_diskon += $total_diskon * $lims_sale_data->order_tax_rate / 100;
+                    }
+                    if ($lims_sale_data->shipping_cost) {
+                        $total_diskon += $lims_sale_data->shipping_cost;
+                    }
+                    $kembalian = $lims_sale_data->paid_amount - $total_diskon;
+                    return [
+                        'id' => "$lims_sale_data->id",
+                        'kode' => $lims_sale_data->reference_no,
+                        'kasir' => $lims_sale_data->biller->name,
+                        'warehouse' => $lims_sale_data->warehouse->name,
+                        'customer' => $lims_sale_data->customer_name,
+                        'sub' => "$lims_sale_data->total_price",
+                        'diskon' => "$lims_sale_data->order_discount",
+                        'ppn' => "$lims_sale_data->order_tax",
+                        'total' => "$total_diskon",
+                        'bayar' => "$lims_sale_data->paid_amount",
+                        'kembalian' => "$kembalian",
+                        'ongkir' => "$lims_sale_data->shipping_cost",
+                        'tgl' => date('d M Y H:i:s', strtotime($lims_sale_data->created_at)),
+                        'produk' => $lims_product_sale
+                    ];
+                });
             } else {
-                $lims_sale_data = Sale::orderBy('id', 'desc')->with('biller', 'warehouse')->get();
+                $lims_sale_data = Sale::orderBy('id', 'desc')->with('biller', 'warehouse')
+                ->get()
+                ->map(function ($lims_sale_data) {
+                    $lims_product_sale = Product_Sale::join('products', 'product_sales.product_id', '=', 'products.id')->join('units', 'product_sales.sale_unit_id', '=', 'units.id')->join('categories', 'products.category_id', '=', 'categories.id')->where('sale_id', $lims_sale_data->id)
+                        ->select('product_sales.id as id', 'products.name as nama', 'units.unit_name as satuan', 'categories.name as jenis', 'products.price as harga', 'products.image as foto','product_sales.qty as qty','product_sales.discount as diskonItem', 'product_sales.net_unit_price as sub')
+                        ->get()
+                        ->map(function ($lims_product_sale){
+                            return [
+                                'id' => "$lims_product_sale->id",
+                                'nama' => $lims_product_sale->nama,
+                                'satuan' => $lims_product_sale->satuan,
+                                'jenis' => $lims_product_sale->jenis,
+                                'harga' => $lims_product_sale->harga,
+                                'foto' => $lims_product_sale->foto,
+                                'qty' => "$lims_product_sale->qty",
+                                'diskonItem' => "$lims_product_sale->diskonItem",
+                                'sub' => "$lims_product_sale->sub",
+                            ];
+                        });
+                    if ($lims_sale_data->order_discount > 0 && $lims_sale_data->order_discount <= 100) {
+                        $total_diskon = $lims_sale_data->total_price - ($lims_sale_data->total_price * $lims_sale_data->order_discount / 100);
+                    } else {
+                        $total_diskon = $lims_sale_data->total_price - $lims_sale_data->order_discount;
+                    }
+                    if ($lims_sale_data->order_tax_rate) {
+                        $total_diskon += $total_diskon * $lims_sale_data->order_tax_rate / 100;
+                    }
+                    if ($lims_sale_data->shipping_cost) {
+                        $total_diskon += $lims_sale_data->shipping_cost;
+                    }
+                    $kembalian = $lims_sale_data->paid_amount - $total_diskon;
+                    return [
+                        'id' => "$lims_sale_data->id",
+                        'kode' => $lims_sale_data->reference_no,
+                        'kasir' => $lims_sale_data->biller->name,
+                        'warehouse' => $lims_sale_data->warehouse->name,
+                        'customer' => $lims_sale_data->customer_name,
+                        'sub' => "$lims_sale_data->total_price",
+                        'diskon' => "$lims_sale_data->order_discount",
+                        'ppn' => "$lims_sale_data->order_tax",
+                        'total' => "$total_diskon",
+                        'bayar' => "$lims_sale_data->paid_amount",
+                        'kembalian' => "$kembalian",
+                        'ongkir' => "$lims_sale_data->shipping_cost",
+                        'tgl' => date('d M Y H:i:s', strtotime($lims_sale_data->created_at)),
+                        'produk' => $lims_product_sale
+                    ];
+                });
             }
-            $lims_sale_data->map(function ($lims_sale_data) {
-                $lims_product_sale = Product_Sale::join('products', 'product_sales.product_id', '=', 'products.id')->where('sale_id', $lims_sale_data->id)
-                    // ->select('products.name as nama')
-                    ->get();
-                if ($lims_sale_data->order_discount > 0 && $lims_sale_data->order_discount <= 100) {
-                    $total_diskon = $lims_sale_data->total_price - ($lims_sale_data->total_price * $lims_sale_data->order_discount / 100);
-                } else {
-                    $total_diskon = $lims_sale_data->total_price - $lims_sale_data->order_discount;
-                }
-                if ($lims_sale_data->order_tax_rate) {
-                    $total_diskon += $total_diskon * $lims_sale_data->order_tax_rate / 100;
-                }
-                if ($lims_sale_data->shipping_cost) {
-                    $total_diskon += $lims_sale_data->shipping_cost;
-                }
-                return [
-                    'id' => $lims_sale_data->id,
-                    'kode' => $lims_sale_data->reference_no,
-                    'kasir' => $lims_sale_data->biller->name,
-                    'warehouse' => $lims_sale_data->warehouse->name,
-                    'customer' => $lims_sale_data->customer_name,
-                    'ppn' => $lims_sale_data->order_tax,
-                    'diskon' => $lims_sale_data->order_discount,
-                    'sub' => $lims_sale_data->total_price,
-                    'total' => $total_diskon,
-                    'bayar' => $lims_sale_data->paid_amount,
-                    'kembalian' => $lims_sale_data->paid_amount - $total_diskon,
-                    'ongkir' => $lims_sale_data->shipping_cost,
-                    'tgl' => date('d M Y H:i:s', strtotime($lims_sale_data->created_at)),
-                    'produk' => $lims_product_sale
-                ];
-            });
+
             return response()->json([
                 'body' => [
                     'message' => 'Get All History'
@@ -647,17 +744,24 @@ class PosController extends Controller
                 $lims_sale_data = Sale::with('biller', 'warehouse')
                 ->where('sales.user_id', Auth::id())
                 ->where("sales.id", $data["id"])
-                ->get();
-            } else {
-                $lims_sale_data = Sale::orderBy('id', 'desc')->with('biller', 'warehouse')->get();
-                $lims_sale_data = Sale::with('biller', 'warehouse')
-                ->where("sales.id", $data["id"])
-                ->get();
-            }
-            $lims_sale_data->map(function ($lims_sale_data) {
-                    $lims_product_sale = Product_Sale::join('products', 'product_sales.product_id', '=', 'products.id')->where('sale_id', $lims_sale_data->id)
-                        // ->select('products.name as nama')
-                        ->get();
+                ->get()
+                ->map(function ($lims_sale_data) {
+                    $lims_product_sale = Product_Sale::join('products', 'product_sales.product_id', '=', 'products.id')->join('units', 'product_sales.sale_unit_id', '=', 'units.id')->join('categories', 'products.category_id', '=', 'categories.id')->where('sale_id', $lims_sale_data->id)
+                        ->select('product_sales.id as id', 'products.name as nama', 'units.unit_name as satuan', 'categories.name as jenis', 'products.price as harga', 'products.image as foto', 'product_sales.qty as qty', 'product_sales.discount as diskonItem', 'product_sales.net_unit_price as sub')
+                        ->get()
+                        ->map(function ($lims_product_sale) {
+                            return [
+                                'id' => "$lims_product_sale->id",
+                                'nama' => $lims_product_sale->nama,
+                                'satuan' => $lims_product_sale->satuan,
+                                'jenis' => $lims_product_sale->jenis,
+                                'harga' => $lims_product_sale->harga,
+                                'foto' => $lims_product_sale->foto,
+                                'qty' => "$lims_product_sale->qty",
+                                'diskonItem' => "$lims_product_sale->diskonItem",
+                                'sub' => "$lims_product_sale->sub",
+                            ];
+                        });
                     if ($lims_sale_data->order_discount > 0 && $lims_sale_data->order_discount <= 100) {
                         $total_diskon = $lims_sale_data->total_price - ($lims_sale_data->total_price * $lims_sale_data->order_discount / 100);
                     } else {
@@ -669,23 +773,76 @@ class PosController extends Controller
                     if ($lims_sale_data->shipping_cost) {
                         $total_diskon += $lims_sale_data->shipping_cost;
                     }
+                    $kembalian = $lims_sale_data->paid_amount - $total_diskon;
                     return [
                         'id' => $lims_sale_data->id,
-                        'kode' => $lims_sale_data->reference_no,
                         'kasir' => $lims_sale_data->biller->name,
                         'warehouse' => $lims_sale_data->warehouse->name,
                         'customer' => $lims_sale_data->customer_name,
-                        'ppn' => $lims_sale_data->order_tax,
+                        'kode' => $lims_sale_data->reference_no,
+                        'sub' => "$lims_sale_data->total_price",
                         'diskon' => $lims_sale_data->order_discount,
-                        'sub' => $lims_sale_data->total_price,
-                        'total' => $total_diskon,
-                        'bayar' => $lims_sale_data->paid_amount,
-                        'kembalian' => $lims_sale_data->paid_amount - $total_diskon,
+                        'ppn' => "$lims_sale_data->order_tax",
+                        'total' => "$total_diskon",
                         'ongkir' => $lims_sale_data->shipping_cost,
+                        'bayar' => "$lims_sale_data->paid_amount",
+                        'kembalian' => "$kembalian",
                         'tgl' => date('d M Y H:i:s', strtotime($lims_sale_data->created_at)),
                         'produk' => $lims_product_sale
                     ];
                 });
+            } else {
+                $lims_sale_data = Sale::with('biller', 'warehouse')
+                ->where("sales.id", $data["id"])
+                ->get()
+                ->map(function ($lims_sale_data) {
+                    $lims_product_sale = Product_Sale::join('products', 'product_sales.product_id', '=', 'products.id')->join('units', 'product_sales.sale_unit_id', '=', 'units.id')->join('categories', 'products.category_id', '=', 'categories.id')->where('sale_id', $lims_sale_data->id)
+                        ->select('product_sales.id as id', 'products.name as nama', 'units.unit_name as satuan', 'categories.name as jenis', 'products.price as harga', 'products.image as foto', 'product_sales.qty as qty', 'product_sales.discount as diskonItem', 'product_sales.net_unit_price as sub')
+                        ->get()
+                        ->map(function ($lims_product_sale) {
+                            return [
+                                'id' => "$lims_product_sale->id",
+                                'nama' => $lims_product_sale->nama,
+                                'satuan' => $lims_product_sale->satuan,
+                                'jenis' => $lims_product_sale->jenis,
+                                'harga' => $lims_product_sale->harga,
+                                'foto' => $lims_product_sale->foto,
+                                'qty' => "$lims_product_sale->qty",
+                                'diskonItem' => "$lims_product_sale->diskonItem",
+                                'sub' => "$lims_product_sale->sub",
+                            ];
+                        });
+                    if ($lims_sale_data->order_discount > 0 && $lims_sale_data->order_discount <= 100) {
+                        $total_diskon = $lims_sale_data->total_price - ($lims_sale_data->total_price * $lims_sale_data->order_discount / 100);
+                    } else {
+                        $total_diskon = $lims_sale_data->total_price - $lims_sale_data->order_discount;
+                    }
+                    if ($lims_sale_data->order_tax_rate) {
+                        $total_diskon += $total_diskon * $lims_sale_data->order_tax_rate / 100;
+                    }
+                    if ($lims_sale_data->shipping_cost) {
+                        $total_diskon += $lims_sale_data->shipping_cost;
+                    }
+                    $kembalian = $lims_sale_data->paid_amount - $total_diskon;
+                    return [
+                        'id' => $lims_sale_data->id,
+                        'kasir' => $lims_sale_data->biller->name,
+                        'warehouse' => $lims_sale_data->warehouse->name,
+                        'customer' => $lims_sale_data->customer_name,
+                        'kode' => $lims_sale_data->reference_no,
+                        'sub' => "$lims_sale_data->total_price",
+                        'diskon' => $lims_sale_data->order_discount,
+                        'ppn' => "$lims_sale_data->order_tax",
+                        'total' => "$total_diskon",
+                        'ongkir' => $lims_sale_data->shipping_cost,
+                        'bayar' => "$lims_sale_data->paid_amount",
+                        'kembalian' => "$kembalian",
+                        'tgl' => date('d M Y H:i:s', strtotime($lims_sale_data->created_at)),
+                        'produk' => $lims_product_sale
+                    ];
+                });
+            }
+            
             return response()->json([
                 'body' => [
                     'message' => 'Get Data Sale at id=' . $data['id']

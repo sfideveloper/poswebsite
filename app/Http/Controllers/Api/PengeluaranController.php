@@ -61,6 +61,7 @@ class PengeluaranController extends Controller
             ]);
 
             return response()->json([
+                "status" => true,
                 "body" => [
                     "message" => "Success storing pengeluaran detail"
                 ],
@@ -85,25 +86,36 @@ class PengeluaranController extends Controller
                 ->join('billers', 'pengeluaran.kasir', '=', 'billers.id')
                 ->where('pengeluaran.warehouse', Auth::user()->warehouse_id)
                 ->orderBy("tgl_pengeluaran", "DESC")
-                ->get();
+                ->get()
+                ->map(function ($data) {
+                    return [
+                        'id' => "$data->id",
+                        'kasir' => $data->biller,
+                        'warehouse' => $data->warehouse,
+                        'barang' => $data->barang,
+                        'jml_pengeluaran' => "$data->jml_pengeluaran",
+                        'foto_pengeluaran' => $data->foto_pengeluaran,
+                        'tgl_pengeluaran' => $data->tgl_pengeluaran,
+                    ];
+                });
             } else {
                 $data = Pengeluaran::select('pengeluaran.id', 'kasir', 'barang', 'jml_pengeluaran', 'foto_pengeluaran', 'billers.name as biller', 'warehouses.name as warehouse', DB::raw('DATE_FORMAT(pengeluaran.tgl_pengeluaran, "%d-%m-%Y") as tgl_pengeluaran'))
                 ->join('warehouses', 'pengeluaran.warehouse', '=', 'warehouses.id')
                 ->join('billers', 'pengeluaran.kasir', '=', 'billers.id')
                 ->orderBy("tgl_pengeluaran", "DESC")
-                ->get();
+                ->get()
+                ->map(function ($data) {
+                    return [
+                        'id' => "$data->id",
+                        'kasir' => $data->biller,
+                        'warehouse' => $data->warehouse,
+                        'barang' => $data->barang,
+                        'jml_pengeluaran' => "$data->jml_pengeluaran",
+                        'foto_pengeluaran' => $data->foto_pengeluaran,
+                        'tgl_pengeluaran' => $data->tgl_pengeluaran,
+                    ];
+                });
             }
-            $data->map(function ($data) {
-                return [
-                    'id' => $data->id,
-                    'kasir' => $data->biller,
-                    'warehouse' => $data->warehouse,
-                    'barang' => $data->barang,
-                    'jml_pengeluaran' => $data->jml_pengeluaran,
-                    'foto_pengeluaran' => $data->foto_pengeluaran,
-                    'tgl_pengeluaran' => $data->tgl_pengeluaran,
-                ];
-            });
 
             return response()->json([
                 "body" => [
