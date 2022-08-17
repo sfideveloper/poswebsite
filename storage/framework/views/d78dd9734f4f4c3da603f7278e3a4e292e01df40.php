@@ -360,8 +360,13 @@
                     <?php echo Form::open(['route' => 'report.biller', 'method' => 'post']); ?>
 
                     <?php
+                    if (Auth::user()->role->name == 'Staff') {
+                      $lims_biller_list = DB::table('billers')->whereIn('id', [Auth::user()->biller_id])->get();
+                      $lims_warehouse_list = DB::table('warehouses')->whereIn('id', [Auth::user()->warehouse_id])->get();
+                    }else {
                       $lims_biller_list = DB::table('billers')->where('is_active', true)->get();
                       $lims_warehouse_list = DB::table('warehouses')->where('is_active', true)->get();
+                    }
                     ?>
                       <div class="form-group">
                           <label><?php echo e(ucwords(trans('file.Biller'))); ?> *</label>
@@ -372,7 +377,9 @@
                           </select>
                           <label><?php echo e(ucwords(trans('file.Warehouse'))); ?> *</label>
                           <select name="warehouse_id" class="selectpicker form-control" required data-live-search="true" id="warehouse-id" data-live-search-style="begins" title="Select Warehouse...">
+                            <?php if(Auth::user()->role->name != 'Staff'): ?>
                               <option value="all">All Warehouse</option>
+                            <?php endif; ?>  
                               <?php $__currentLoopData = $lims_warehouse_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $warehouse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                               <option value="<?php echo e($warehouse->id); ?>"><?php echo e($warehouse->name); ?></option>
                               <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

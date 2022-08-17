@@ -10,7 +10,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:UrI+wnxgu1hCwfQcYjVYQC69xAtk/MrvqxeIRiO3Zxc=',
+    'key' => 'base64:ZSGKy4mYzZRfHD+fef2dRk/Dmu4GHX3une7EBP9cv2o=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -101,6 +101,11 @@
         'provider' => 'users',
         'hash' => false,
       ),
+      'sanctum' => 
+      array (
+        'driver' => 'sanctum',
+        'provider' => NULL,
+      ),
     ),
     'providers' => 
     array (
@@ -176,7 +181,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'D:\\Laravel project\\poswebsite\\storage\\framework/cache/data',
+        'path' => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -226,7 +231,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'D:\\Laravel project\\poswebsite\\database\\database.sqlite',
+        'database' => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/database/database.sqlite',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -236,9 +241,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'posweb',
+        'database' => 'poswebsite',
         'username' => 'root',
-        'password' => '',
+        'password' => 'root',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -258,7 +263,7 @@
         'port' => '3306',
         'database' => 'forge',
         'username' => 'forge',
-        'password' => '',
+        'password' => 'root',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -273,7 +278,7 @@
         'port' => '3306',
         'database' => 'forge',
         'username' => 'forge',
-        'password' => '',
+        'password' => 'root',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -315,12 +320,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\Laravel project\\poswebsite\\storage\\app',
+        'root' => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/storage/app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\Laravel project\\poswebsite\\storage\\app/public',
+        'root' => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/storage/app/public',
         'url' => 'https://pos.halalexportindonesia.com/storage',
         'visibility' => 'public',
       ),
@@ -367,13 +372,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'D:\\Laravel project\\poswebsite\\storage\\logs/laravel.log',
+        'path' => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/storage/logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'D:\\Laravel project\\poswebsite\\storage\\logs/laravel.log',
+        'path' => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -423,7 +428,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'D:\\Laravel project\\poswebsite\\storage\\logs/laravel.log',
+        'path' => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/storage/logs/laravel.log',
       ),
     ),
   ),
@@ -446,7 +451,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'D:\\Laravel project\\poswebsite\\resources\\views/vendor/mail',
+        0 => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/resources/views/vendor/mail',
       ),
     ),
     'log_channel' => NULL,
@@ -500,6 +505,28 @@
       'table' => 'failed_jobs',
     ),
   ),
+  'sanctum' => 
+  array (
+    'stateful' => 
+    array (
+      0 => 'localhost',
+      1 => 'localhost:3000',
+      2 => '127.0.0.1',
+      3 => '127.0.0.1:8000',
+      4 => '::1',
+      5 => 'pos.halalexportindonesia.com',
+    ),
+    'guard' => 
+    array (
+      0 => 'web',
+    ),
+    'expiration' => NULL,
+    'middleware' => 
+    array (
+      'verify_csrf_token' => 'App\\Http\\Middleware\\VerifyCsrfToken',
+      'encrypt_cookies' => 'App\\Http\\Middleware\\EncryptCookies',
+    ),
+  ),
   'services' => 
   array (
     'mailgun' => 
@@ -525,7 +552,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'D:\\Laravel project\\poswebsite\\storage\\framework/sessions',
+    'files' => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -545,9 +572,9 @@
   array (
     'paths' => 
     array (
-      0 => 'D:\\Laravel project\\poswebsite\\resources\\views',
+      0 => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/resources/views',
     ),
-    'compiled' => 'D:\\Laravel project\\poswebsite\\storage\\framework\\views',
+    'compiled' => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/storage/framework/views',
   ),
   'flare' => 
   array (
@@ -688,7 +715,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'D:\\Laravel project\\poswebsite\\storage\\framework/cache/laravel-excel',
+      'local_path' => '/Users/muqtadirulmajid/Development/Laravel/poswebsite/storage/framework/cache/laravel-excel',
       'remote_disk' => NULL,
       'remote_prefix' => NULL,
       'force_resync_remote' => NULL,

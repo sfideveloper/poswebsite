@@ -31,13 +31,19 @@ class AuthController extends Controller
 
                 $token = $user->createToken('auth_token')->plainTextToken;
 
-                return response()->json(['message' => 'Hi ' . $user->name . ', welcome to home', 'access_token' => $token, 'token_type' => 'Bearer',]);
+                // return response()->json(['message' => 'Hi ' . $user->name . ', welcome to home', 'access_token' => $token, 'token_type' => 'Bearer',]);
                 return response()->json([
-                    'body' => [
+                    
                         'message' => 'Hi ' . $user->name . ', welcome to home',
                         'access_token' => $token,
-                        'token_type' => 'Bearer'
-                    ],
+                        'token_type' => 'Bearer',
+                        'login' => true,
+                        'data' => [
+                            "nama" => "Administrator",
+                            "id_user" => "1",
+                            "akses_user" => "1"
+                        ],
+                    
                 ], 200);
             }
         } catch (\Throwable $th) {
