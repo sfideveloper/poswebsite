@@ -28,6 +28,7 @@ class WifiController extends Controller
             $data_updated->save(); 
 
             return response()->json([
+                'status' => true,
                 'body' => [
                     'message' => 'Data updated succesfully',
                     

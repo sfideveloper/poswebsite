@@ -31,19 +31,13 @@ class AuthController extends Controller
 
                 $token = $user->createToken('auth_token')->plainTextToken;
 
-                // return response()->json(['message' => 'Hi ' . $user->name . ', welcome to home', 'access_token' => $token, 'token_type' => 'Bearer',]);
+                return response()->json(['message' => 'Hi ' . $user->name . ', welcome to home', 'access_token' => $token, 'token_type' => 'Bearer',]);
                 return response()->json([
                     
                         'message' => 'Hi ' . $user->name . ', welcome to home',
                         'access_token' => $token,
-                        'token_type' => 'Bearer',
-                        'login' => true,
-                        'data' => [
-                            "nama" => "Administrator",
-                            "id_user" => "1",
-                            "akses_user" => "1"
-                        ],
-                    
+                        'token_type' => 'Bearer'
+                    ],
                 ], 200);
             }
         } catch (\Throwable $th) {
@@ -51,7 +45,9 @@ class AuthController extends Controller
                 'body' => [
                     'message' => 'Opps, something gone wrong',
                     'dev' => $th->getMessage()
-                ]
+                ],
+                'login' => false,
+                'data' => '',
             ], 500);
         }
     }

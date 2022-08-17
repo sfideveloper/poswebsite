@@ -37,7 +37,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/tax', [PosController::class, 'getTax']);
     Route::get('/produk', [PosController::class, 'getProduct']);
     Route::get('/brand', [PosController::class, 'getBrand']);
-    Route::get('/produkmenu', [PosController::class, 'getCategory']);
+    Route::get('/produkmenu', [PosController::class, 'getProductMenu']);
     Route::get('/coupon', [PosController::class, 'getCoupon']);
     Route::get('/history', [PosController::class, 'getHistory']);
     Route::post('/postprint', [PosController::class, 'postPrint']);
