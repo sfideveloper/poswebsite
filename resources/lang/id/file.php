@@ -1,4 +1,4 @@
-<?php 
+<?php
 return [
 	'dashboard' => 'dasbor',
 	'language' => 'bahasa',
@@ -411,6 +411,7 @@ return [
 	'Add Unit' => 'Tambahkan Satuan',
 	'Add Warehouse' => 'Tambahkan Toko',
 	'All Warehouse' => 'Semua Toko',
+	'All Category' => 'Semua Kategori',
 	'Net Profit' => 'Laba bersih',
 	'Net Loss' => 'Kerugian bersih',
 	'Net Sale' => 'Penjualan Bersih',
@@ -592,6 +593,6 @@ return [
 	"Invoice Format" => "Format Faktur",
 	"Total Payment" => "Jumlah Pembayaran",
 	"Product Tax" => "Pajak Produk",
-	"No Tax" => "Tanpa Pajak", 
+	"No Tax" => "Tanpa Pajak",
 ];
 ?>

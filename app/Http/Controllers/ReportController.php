@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Biller;
+use App\Category;
 use Illuminate\Http\Request;
 use App\Product;
 use App\ProductPurchase;
@@ -560,14 +561,21 @@ class ReportController extends Controller
     public function productReport(Request $request)
     {
         $data = $request->all();
+        // dd($data);
         $start_date = $data['start_date'];
         $end_date = $data['end_date'];
         $warehouse_id = $data['warehouse_id'];
+        $category_id = $data['category_id'];
         $product_id = [];
         $variant_id = [];
         $product_name = [];
         $product_qty = [];
-        $lims_product_all = Product::select('id', 'name', 'qty', 'is_variant')->where('is_active', true)->get();
+        $query = Product::query();
+        $query->select('id', 'name', 'qty', 'is_variant');
+        if ($category_id != 0) {
+            $query->where('category_id', $category_id);
+        }
+        $lims_product_all = $query->where('is_active', true)->get();
         foreach ($lims_product_all as $product) {
             $lims_product_purchase_data = null;
             $variant_id_all = [];
@@ -596,7 +604,6 @@ class ReportController extends Controller
                         ->whereDate('purchases.created_at', '<=', $end_date)
                         ->first();
             }
-
             if ($lims_product_purchase_data) {
                 $product_name[] = $product->name;
                 $product_id[] = $product->id;
@@ -681,8 +688,10 @@ class ReportController extends Controller
                 }
             }
         }
+        // dd($product_id);
         $lims_warehouse_list = Warehouse::where('is_active', true)->get();
-        return view('report.product_report', compact('product_id', 'variant_id', 'product_name', 'product_qty', 'start_date', 'end_date', 'lims_warehouse_list', 'warehouse_id'));
+        $lims_category_list = Category::where('is_active', true)->get();
+        return view('report.product_report', compact('product_id', 'variant_id', 'product_name', 'product_qty', 'start_date', 'end_date', 'lims_warehouse_list', 'warehouse_id', 'lims_category_list', 'category_id'));
     }
 
     public function purchaseReport(Request $request)
@@ -1266,7 +1275,7 @@ class ReportController extends Controller
         foreach ($lims_sale_data_taxall as $key => $sale) {
             $lims_product_sale_data_taxall[$key] = Product_Sale::where('sale_id', $sale->id)->get();
         }
-        
+
         $warehouse_id_tax = User::where('id', Auth::user()->id)->get('warehouse_id_tax')->first();
         $warehouse_id_tax_get = explode(',', $warehouse_id_tax->warehouse_id_tax);
         $lims_warehouse_list = Warehouse::where('is_active', true)->get();

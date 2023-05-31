@@ -1,4 +1,4 @@
-<?php 
+<?php
 return [
 	'dashboard' => 'Dashboard',
 	'language' => 'Language',
@@ -412,6 +412,7 @@ return [
 	'Add Unit' => 'Add Unit',
 	'Add Warehouse' => 'Add Warehouse',
 	'All Warehouse' => 'All Warehouse',
+	'All Category' => 'All Category',
 	'Net Profit' => 'Net Profit',
 	'Net Loss' => 'Net Loss',
 	'Net Sale' => 'Net Sale',

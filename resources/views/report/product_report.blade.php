@@ -3,7 +3,7 @@
 <div class="alert alert-danger alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{'No Data exist between this date range!'}}</div>
 @endif
 @if(session()->has('not_permitted'))
-  <div class="alert alert-danger alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ session()->get('not_permitted') }}</div> 
+  <div class="alert alert-danger alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ session()->get('not_permitted') }}</div>
 @endif
 <section class="forms">
     <div class="container-fluid">
@@ -16,7 +16,7 @@
                     <div class="card-body">
                         {!! Form::open(['route' => 'report.product', 'method' => 'post']) !!}
                         <div class="row mb-3">
-                            <div class="col-md-4 offset-md-2 mt-3">
+                            <div class="col-md-3 mt-3">
                                 <div class="form-group row">
                                     <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Your Date'))}}</strong> &nbsp;</label>
                                     <div class="d-tc">
@@ -28,15 +28,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 mt-3">
+                            <div class="col-md-3 mt-3">
                                 <div class="form-group row">
                                     <label class="d-tc mt-2"><strong>{{ucwords(trans('file.Choose Warehouse'))}}</strong> &nbsp;</label>
                                     <div class="d-tc">
-                                        <input type="hidden" name="warehouse_id_hidden" value="{{$warehouse_id}}" />
+                                        <input type="hidden" name="warehouse_id_hidden" value="{{$warehouse_id}}"/>
                                         <select id="warehouse_id" name="warehouse_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" >
                                             <option value="0">{{trans('file.All Warehouse')}}</option>
                                             @foreach($lims_warehouse_list as $warehouse)
                                             <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-3">
+                                <div class="form-group row">
+                                    <label class="d-tc mt-2"><strong>{{ucwords(trans('file.category'))}}</strong> &nbsp;</label>
+                                    <div class="d-tc">
+                                        <input type="hidden" name="category_id_hidden" value="{{$category_id}}"/>
+                                        <select id="category_id" name="category_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" >
+                                            <option value="0">{{trans('file.All Category')}}</option>
+                                            @foreach($lims_category_list as $category)
+                                            <option value="{{$category->id}}">{{$category->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -232,6 +246,7 @@
     $("ul#report #product-report-menu").addClass("active");
 
     $('#warehouse_id').val($('input[name="warehouse_id_hidden"]').val());
+    $('#category_id').val($('input[name="category_id_hidden"]').val());
     $('.selectpicker').selectpicker('refresh');
 
     $('#report-table').DataTable( {
